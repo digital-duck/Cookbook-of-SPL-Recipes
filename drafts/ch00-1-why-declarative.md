@@ -150,7 +150,7 @@ FROM articles
 WHERE published_at > '2025-01-01';
 ```
 
-```
+```spl2
 -- SPL: generate a summary using an LLM
 GENERATE summarize(article_text) INTO @summary
 ```
@@ -168,7 +168,7 @@ FROM proposals
 WHERE sentiment_score > 0.7;
 ```
 
-```
+```spl2
 -- SPL: branch based on an LLM judgment
 EVALUATE @sentiment
   WHEN 'positive' THEN
@@ -198,7 +198,7 @@ AS BEGIN
 END;
 ```
 
-```
+```spl2
 -- SPL workflow
 WORKFLOW draft_and_refine
   INPUT:
@@ -225,7 +225,7 @@ RETURNS BOOLEAN AS $$
 $$ LANGUAGE plpgsql;
 ```
 
-```
+```spl2
 -- SPL function: defines system context injected as an LLM prompt
 CREATE FUNCTION expert_reviewer()
 RETURNS TEXT AS $$
@@ -253,7 +253,7 @@ The rule is simple: **use CALL for everything code can do. Use GENERATE only for
 
 A SQL practitioner understands this instinctively. If you can write it as `WHERE date > '2025-01-01'`, you do not need a subquery. If you can compute it in the SELECT clause with a deterministic expression, you do not call a stored procedure. You use the cheapest, most reliable tool that produces the right result.
 
-```
+```spl2
 -- Wrong: asking the LLM to do arithmetic
 GENERATE count_words(@document) INTO @word_count
 
@@ -263,7 +263,7 @@ CALL count_words(@document) INTO @word_count
 
 The LLM cannot count words more reliably than `len(text.split())`. It costs more. It is slower. It might be wrong. There is no reason to involve it.
 
-```
+```spl2
 -- Wrong: trying to parse a JSON field in SPL when code can do it
 GENERATE extract_author(@raw_json) INTO @author
 
@@ -273,7 +273,7 @@ CALL extract_field(@raw_json, 'author') INTO @author
 
 The LLM cannot parse JSON more reliably than `json.loads()`. It should not be asked to.
 
-```
+```spl2
 -- Right: using the LLM for what only it can do
 GENERATE assess_argument_quality(@essay, @criteria) INTO @assessment
 ```
@@ -292,7 +292,7 @@ When you write SQL, you do not write "PostgreSQL." You write SQL. The same `SELE
 
 SPL works the same way for LLM workflows. The same `.spl` file runs against Ollama (local models), OpenRouter (API-based cloud models), or claude_cli (Claude directly). You change the adapter flag at the command line. The workflow does not change.
 
-```
+```bash
 # Same .spl file, three different adapters
 spl2 run workflow.spl --adapter ollama -m gemma3
 spl2 run workflow.spl --adapter openrouter -m openai/gpt-4o
@@ -360,7 +360,7 @@ Count the decisions baked into this file: the provider (Anthropic), the model na
 
 **SPL (declarative)**
 
-```
+```spl2
 CREATE FUNCTION technical_writer()
 RETURNS TEXT AS $$
   You are an experienced technical writer.

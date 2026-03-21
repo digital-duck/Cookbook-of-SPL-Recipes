@@ -44,7 +44,7 @@ The core idea is to use the `context` object to bridge the gap between the comma
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 02: Ollama Proxy
 -- General-purpose LLM query — proxy any prompt to any adapter/model.
 --
@@ -95,7 +95,7 @@ spl2 run cookbook/02_ollama_proxy/proxy.spl --adapter ollama -m gemma3 \
 ```
 
 Expected output:
-```
+```output
 Quantum computing uses the principles of subatomic physics to perform complex 
 calculations that are currently impossible for traditional computers.
 ```
@@ -156,6 +156,6 @@ Do not use this pattern when:
 1.  **Multiple Parameters**: Modify the `SELECT` clause to accept a second parameter `context.topic`. Update the `system_role` to say `'You are an expert in ' || context.topic`. Run it with `topic="Biology" prompt="What is a cell?"`.
 2.  **Default Values**: (Advanced) Research how to use the `COALESCE` or `DEFAULT` equivalent in SPL to provide a fallback if `context.prompt` is missing.
 3.  **Shell Integration**: Use the proxy in a bash pipe. For example:
-    ```bash
-    echo "The weather is nice today" | xargs -I {} spl2 run proxy.spl prompt="Translate to French: {}"
-    ```
+```bash
+echo "The weather is nice today" | xargs -I {} spl2 run proxy.spl prompt="Translate to French: {}"
+```

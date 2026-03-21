@@ -29,7 +29,7 @@ While the vision, architectural intuition, and 48-hour development sprints were 
 
 ## For the Global South and the "GTX 1080 Ti"
 
-Every recipe in this book was benchmarked on a **GTX 1080 Ti**—a piece of commodity hardware you can find on eBay for the price of a few dinners. We didn't build this for the person with an H100 cluster in Virginia; we built it for the student in Lagos, the researcher in Hefei, and the teacher in rural Anhui. 
+Every recipe in this book was benchmarked on a **GTX 1080 Ti**—a piece of commodity hardware you can find on eBay or Craigslist for the price of a few dinners. We didn't build this for the person with an H100 cluster in Virginia; we built it for the student in Lagos, the researcher in Hefei, and the teacher in rural Anhui. 
 
 AI freedom is not just a technical preference; it is a moral imperative. By choosing open-source models and a declarative language, you are reclaiming your right to run state-of-the-art intelligence on your own terms, in your own community, without a middleman.
 

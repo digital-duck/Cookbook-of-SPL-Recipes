@@ -24,7 +24,7 @@ This recipe introduces the use of **Procedures as Agents** and the pattern of "L
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 14: Multi-Agent Collaboration
 -- Specialized agents (Researcher, Analyst, Writer) collaborate on a report.
 

@@ -27,7 +27,7 @@ This recipe introduces the "Two-Phase Loop" pattern, which is essential for gene
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 12: Plan and Execute
 -- A planner decomposes a task, then an executor implements each step.
 

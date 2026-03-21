@@ -24,7 +24,7 @@ This recipe demonstrates the extreme power of **Parallel Fan-Out** using `WITH` 
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 10: Batch Test
 -- Automated testing of key cookbook recipes across multiple models.
 

@@ -28,7 +28,7 @@ This recipe demonstrates **Pass-by-Pass Analysis** and **Threshold-Based Branchi
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 15: Automated Code Review
 -- Multi-pass code review: security, performance, style, then synthesis.
 

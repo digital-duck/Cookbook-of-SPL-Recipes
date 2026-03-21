@@ -36,7 +36,7 @@ This recipe introduces the `rag` namespace, which provides high-level access to 
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 08: RAG Query
 -- Retrieval-augmented generation over indexed documents.
 

@@ -33,7 +33,7 @@ We use the `context` object to capture multiple CLI arguments and then "bind" th
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 03: Multilingual Greeting
 -- Greet in any language — demonstrates parametric context with lang.
 --
@@ -85,7 +85,7 @@ spl2 run cookbook/03_multilingual/multilingual.spl user_input="hello wen" lang="
 ```
 
 Expected output (for Chinese):
-```
+```output
 你好，文！很高兴见到你。我是你的助手。
 (Hello, Wen! Nice to see you. I am your assistant.)
 ```

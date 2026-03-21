@@ -24,7 +24,7 @@ This recipe introduces the `EVALUATE` block for semantic branching and the `EXCE
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 07: Safe Generation with Exception Handling
 -- Demonstrates LLM-specific error handling patterns
 

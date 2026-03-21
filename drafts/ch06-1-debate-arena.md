@@ -24,7 +24,7 @@ This recipe introduces the `WHILE` loop for iterative reasoning and the pattern 
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 11: Debate Arena
 -- Two personas argue opposing sides, then a judge picks the winner.
 

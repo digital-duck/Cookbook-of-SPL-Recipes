@@ -36,7 +36,7 @@ This recipe uses a `WHILE` loop for the Map phase and a final `GENERATE` step fo
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 13: Map-Reduce Summarizer
 -- Splits a document, summarizes chunks, then combines them.
 

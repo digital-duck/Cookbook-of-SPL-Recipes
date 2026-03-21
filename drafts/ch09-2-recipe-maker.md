@@ -120,7 +120,7 @@ It demonstrates the core principle of the entire cookbook in miniature: **every 
 
 ### The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 00: Recipe Maker (Meta-Recipe)
 -- SPL 2.0 eating its own cake.
 

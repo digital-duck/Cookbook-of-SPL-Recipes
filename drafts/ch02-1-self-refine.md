@@ -35,7 +35,7 @@ Generate a draft, then loop: critique the draft, exit if satisfactory, otherwise
 
 ### The .spl File (Annotated)
 
-```sql
+```spl2
 -- SPL 2.0: Self-Refine Pattern
 -- Iteratively improves output through critique and refinement
 
@@ -139,7 +139,7 @@ spl2 run cookbook/05_self_refine/self_refine.spl \
 
 Expected output (truncated):
 
-```
+```output
 [draft] Generating initial draft...
 [critique] Iteration 0: feedback received
 [refined] Iteration 0: draft updated

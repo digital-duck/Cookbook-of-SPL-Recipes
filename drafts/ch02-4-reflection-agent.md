@@ -27,7 +27,7 @@ This recipe demonstrates the use of **Meta-Cognitive Branching**—using the mod
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 16: Reflection Agent
 -- Solve a problem, then reflect and correct until confident.
 

@@ -26,7 +26,7 @@ This recipe introduces `PROCEDURE` definitions and the `CALL` statement. It also
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 06: ReAct Agent — Population Growth
 -- Fetch population via WebSearch, compute growth rate via Python tool.
 
@@ -102,7 +102,7 @@ spl2 run cookbook/06_react_agent/react_agent.spl \
 ```
 
 Expected output:
-```
+```output
 In 2022, France had a population of approximately 67,936,455. 
 By 2023, this grew to 68,170,228, representing a year-over-year 
 growth rate of 0.3441%.

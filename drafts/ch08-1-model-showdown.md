@@ -24,7 +24,7 @@ This recipe introduces the `WORKFLOW` block, which is the powerhouse of SPL 2.0.
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 04: Model Showdown
 -- Same prompt to multiple Ollama models — compare responses side-by-side.
 

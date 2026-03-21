@@ -30,7 +30,7 @@ A `PROMPT` block assembles context in a `SELECT` clause, then fires a single `GE
 
 ## The .spl File (Annotated)
 
-```sql
+```spl2
 -- Recipe 01: Hello World
 -- Minimal SPL program — verify spl2 + adapter + model work.
 --
@@ -81,7 +81,7 @@ The parentheses can accept arguments — in later recipes you will pass `GENERAT
 
 The SQL analogy:
 
-```sql
+```spl2
 -- SQL: compute a value
 SELECT UPPER('hello world') AS result;
 
@@ -112,7 +112,7 @@ spl2 run cookbook/01_hello_world/hello.spl --adapter ollama -m gemma3
 
 Expected output (text will vary across runs):
 
-```
+```output
 Hello! I'm Gemma, a helpful AI assistant developed by Google DeepMind.
 SPL 2.0, or Structured Prompt Language, is a declarative language for
 orchestrating LLM workflows — think SQL for AI pipelines.
@@ -192,10 +192,11 @@ Think of `PROMPT` as `SELECT` without a `FROM`: fast, useful for spot-checks, no
 1. **Change the system instruction.** Edit the `system_role()` string to `'You are a gruff database administrator. Explain what SPL 2.0 is in exactly one sentence, using database terminology only.'` Re-run. Observe how the same `GENERATE greeting()` call produces a completely different response when the system context changes. The step name does not constrain the output — the context does.
 
 2. **Swap the adapter.** If you have an Anthropic API key configured, run:
-   ```bash
-   spl2 run cookbook/01_hello_world/hello.spl --adapter anthropic
-   ```
-   The `.spl` file is unchanged. The response will reflect Claude's style rather than gemma3's. This demonstrates adapter portability: the workflow is the specification, the model is the execution engine.
+```bash
+spl2 run cookbook/01_hello_world/hello.spl --adapter anthropic
+```
+
+The `.spl` file is unchanged. The response will reflect Claude's style rather than gemma3's. This demonstrates adapter portability: the workflow is the specification, the model is the execution engine.
 
 3. **Promote to a WORKFLOW.** Take the `PROMPT` block and rewrite it as a `WORKFLOW` with an `INPUT` parameter called `@persona TEXT DEFAULT 'friendly assistant'`. Pass the persona into the `system_role()` string. Run it with `persona="skeptical engineer"` and `persona="enthusiastic intern"`. This is the shape of Recipe 02.
 

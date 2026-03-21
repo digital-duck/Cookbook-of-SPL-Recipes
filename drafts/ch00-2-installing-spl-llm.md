@@ -56,7 +56,7 @@ spl2 run cookbook/01_hello_world/hello.spl --adapter ollama -m gemma3
 ```
 
 You should see an output like this:
-```
+```output
 Hello! I'm Gemma, a helpful AI assistant... 
 SPL 2.0 is the declarative score for this performance.
 ```
