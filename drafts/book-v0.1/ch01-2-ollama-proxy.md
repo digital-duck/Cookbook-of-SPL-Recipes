@@ -1,4 +1,4 @@
-# Chapter 1.2 — Ollama Proxy
+# Ollama Proxy
 
 *"The simplest tool is often the most powerful when it becomes a building block."*
 
@@ -44,12 +44,12 @@ The core idea is to use the `context` object to bridge the gap between the comma
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 02: Ollama Proxy
 -- General-purpose LLM query — proxy any prompt to any adapter/model.
 --
 -- Usage:
---   spl2 run cookbook/02_ollama_proxy/proxy.spl prompt="Explain quantum computing"
+--   spl run cookbook/02_ollama_proxy/proxy.spl prompt="Explain quantum computing"
 
 PROMPT ollama_proxy                           -- (1) name the prompt block
 SELECT
@@ -90,7 +90,7 @@ We trigger the LLM call. Unlike Recipe 01, we now pass an argument to the step: 
 You can pass the `prompt` parameter as a key-value pair after the file path:
 
 ```bash
-spl2 run cookbook/02_ollama_proxy/proxy.spl --adapter ollama -m gemma3 \
+spl run cookbook/02_ollama_proxy/proxy.spl --adapter ollama -m gemma3 \
     prompt="Explain quantum computing in one sentence"
 ```
 
@@ -104,10 +104,10 @@ Because the adapter and model are specified at the CLI level, this single `.spl`
 
 ```bash
 # Test with Llama 3.2
-spl2 run cookbook/02_ollama_proxy/proxy.spl -m llama3.2 prompt="What is 2+2?"
+spl run cookbook/02_ollama_proxy/proxy.spl -m llama3.2 prompt="What is 2+2?"
 
 # Test with Mistral
-spl2 run cookbook/02_ollama_proxy/proxy.spl -m mistral prompt="Write a haiku about SPL"
+spl run cookbook/02_ollama_proxy/proxy.spl -m mistral prompt="Write a haiku about SPL"
 ```
 
 ---
@@ -141,7 +141,7 @@ The reproducibility of the *answer* depends on the prompt complexity. For factua
 ## When to Use This Pattern
 
 Use the **Ollama Proxy** pattern when:
-- **CLI Tooling**: You want to call an LLM from a shell script, e.g., `git commit -m "$(spl2 run proxy.spl prompt='Summarize these changes...')"`
+- **CLI Tooling**: You want to call an LLM from a shell script, e.g., `git commit -m "$(spl run proxy.spl prompt='Summarize these changes...')"`
 - **Quick Model Testing**: You want to compare how different models handle the exact same prompt without writing any code.
 - **Generic Utility**: You need a "swiss army knife" script that can handle any one-shot task.
 
@@ -157,5 +157,5 @@ Do not use this pattern when:
 2.  **Default Values**: (Advanced) Research how to use the `COALESCE` or `DEFAULT` equivalent in SPL to provide a fallback if `context.prompt` is missing.
 3.  **Shell Integration**: Use the proxy in a bash pipe. For example:
 ```bash
-echo "The weather is nice today" | xargs -I {} spl2 run proxy.spl prompt="Translate to French: {}"
+echo "The weather is nice today" | xargs -I {} spl run proxy.spl prompt="Translate to French: {}"
 ```

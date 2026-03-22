@@ -1,4 +1,4 @@
-# Chapter 0.2 — Installing spl-llm, Running Your First Workflow
+# Installing spl-llm, Running Your First Workflow
 
 *"Before you can conduct, you must first gather the orchestra."*
 
@@ -27,10 +27,10 @@ source venv/bin/activate
 pip install spl-llm
 ```
 
-Verify the installation by running the `spl2` binary:
+Verify the installation by running the `spl` binary:
 
 ```bash
-spl2 --version
+spl --version
 # Expected: spl-llm v2.0.x
 ```
 
@@ -49,10 +49,10 @@ ollama pull gemma3
 
 ## Step 3: Run Your First Workflow
 
-Navigate to the `Cookbook-of-SPL-Recipes` directory. We will run the **Hello World** recipe from Chapter 1.1.
+Navigate to the `Cookbook-of-SPL-Recipes` directory. We will run the **Hello World** recipe from Chapter 2.1.
 
 ```bash
-spl2 run cookbook/01_hello_world/hello.spl --adapter ollama -m gemma3
+spl run cookbook/01_hello_world/hello.spl --adapter ollama -m gemma3
 ```
 
 You should see an output like this:
@@ -85,7 +85,7 @@ Once configured, you can run any recipe without flags:
 
 ```bash
 # Uses the defaults in your config file
-spl2 run hello.spl
+spl run hello.spl
 ```
 
 ## Troubleshooting
@@ -98,7 +98,7 @@ spl2 run hello.spl
 
 ## What Just Happened?
 
-You didn't write any Python. You didn't import an SDK. You didn't manage a response envelope. You simply pointed a **Score** (`hello.spl`) at an **Orchestra** (`ollama`) and let the **Runtime** (`spl2`) handle the performance.
+You didn't write any Python. You didn't import an SDK. You didn't manage a response envelope. You simply pointed a **Score** (`hello.spl`) at an **Orchestra** (`ollama`) and let the **Runtime** (`spl`) handle the performance.
 
 In the next part, we will dive into the **Basics** and see how to pass parameters, handle multiple languages, and compare different models side-by-side.
 

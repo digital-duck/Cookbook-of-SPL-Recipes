@@ -1,4 +1,4 @@
-## Chapter 2.1 — Self-Refine
+## Self-Refine
 
 *"The first draft is never the answer. The discipline is knowing when to stop revising."*
 
@@ -35,7 +35,7 @@ Generate a draft, then loop: critique the draft, exit if satisfactory, otherwise
 
 ### The .spl File (Annotated)
 
-```spl2
+```spl
 -- SPL 2.0: Self-Refine Pattern
 -- Iteratively improves output through critique and refinement
 
@@ -131,7 +131,7 @@ A stored procedure that calls `UPDATE` in a loop until a quality score exceeds a
 ### Running It
 
 ```bash
-spl2 run cookbook/05_self_refine/self_refine.spl \
+spl run cookbook/05_self_refine/self_refine.spl \
     --adapter ollama -m gemma3 \
     task="Write a concise product description for a noise-cancelling travel headphone" \
     max_iterations=3
@@ -200,7 +200,7 @@ Typical wall-clock time for a short copywriting task: 8–14 seconds for a 2-ite
 - Real-time applications. The latency stacks multiplicatively. A 3-second LLM call becomes 15 seconds at `max_iterations=5`.
 
 **The right tool vs. alternatives:**
-- Self-Refine vs. Reflection (Chapter 2.4): Self-refine evaluates the *output*. Reflection evaluates the *reasoning process*. Use self-refine when the output quality is observable; use reflection when the reasoning steps may be subtly wrong even when the output looks correct.
+- Self-Refine vs. Reflection (Chapter 3.4): Self-refine evaluates the *output*. Reflection evaluates the *reasoning process*. Use self-refine when the output quality is observable; use reflection when the reasoning steps may be subtly wrong even when the output looks correct.
 - Self-Refine vs. Ensemble Voting (Recipe 20): Ensemble generates N drafts and picks the best. Self-refine generates one draft and improves it. Use self-refine when you have a clear critique standard; use ensemble when you want diversity.
 
 ---

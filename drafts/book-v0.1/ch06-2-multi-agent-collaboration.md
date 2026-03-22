@@ -1,4 +1,4 @@
-# Chapter 6.2 — Multi-Agent Collaboration
+# Multi-Agent Collaboration
 
 *"The best reports are written by many hands but one mind."*
 
@@ -24,7 +24,7 @@ This recipe introduces the use of **Procedures as Agents** and the pattern of "L
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 14: Multi-Agent Collaboration
 -- Specialized agents (Researcher, Analyst, Writer) collaborate on a report.
 
@@ -83,7 +83,7 @@ SQL Analogy: **Pipelining**. The output of the first stage becomes the filter fo
 Run the collaborative report on a technical topic:
 
 ```bash
-spl2 run cookbook/14_multi_agent/multi_agent.spl --adapter ollama \
+spl run cookbook/14_multi_agent/multi_agent.spl --adapter ollama \
     topic="The impact of quantum computing on cybersecurity"
 ```
 
@@ -124,4 +124,4 @@ Use the **Multi-Agent Collaboration** pattern when:
 
 1.  **Add a "Critic" Agent.** Create a fourth `PROCEDURE` called `critic` that reviews the final report and suggests one last round of improvements.
 2.  **Parallel Research.** (Advanced) If your research can be split into two topics (e.g., "Technical" and "Economic"), use a `WITH` clause to call two researchers in parallel.
-3.  **Model Specialization.** Use the `USING MODEL` clause (Chapter 8.1) to assign different models to different roles (e.g., use a "fast" model for Research and a "strong" model for Analysis).
+3.  **Model Specialization.** Use the `USING MODEL` clause (Chapter 9.1) to assign different models to different roles (e.g., use a "fast" model for Research and a "strong" model for Analysis).

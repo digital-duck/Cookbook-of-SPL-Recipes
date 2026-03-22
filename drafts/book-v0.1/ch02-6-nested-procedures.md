@@ -1,4 +1,4 @@
-# Chapter 2.6 — Nested Procedures
+# Nested Procedures
 
 *"Complexity should be composed, not managed."*
 
@@ -24,7 +24,7 @@ This recipe introduces the pattern of **Procedural Delegation**—passing contro
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 25: Nested Procedures
 -- Demonstrates PROCEDURE calling PROCEDURE — deep composability.
 
@@ -88,11 +88,11 @@ Run the layered explainer for different audiences:
 
 ```bash
 # To high schoolers
-spl2 run cookbook/25_nested_procs/nested_procs.spl --adapter ollama \
+spl run cookbook/25_nested_procs/nested_procs.spl --adapter ollama \
     topic="quantum computing" audience="high school students"
 
 # To policy makers
-spl2 run cookbook/25_nested_procs/nested_procs.spl --adapter ollama \
+spl run cookbook/25_nested_procs/nested_procs.spl --adapter ollama \
     topic="CRISPR gene editing" audience="policy makers"
 ```
 

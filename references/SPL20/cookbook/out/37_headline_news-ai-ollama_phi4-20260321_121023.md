@@ -1,9 +1,9 @@
 
 ```bash
-spl2 run cookbook/37_headline_news/headline_news.spl --adapter ollama -m phi4 topic=artificial intelligence
+spl run cookbook/37_headline_news/headline_news.spl --adapter ollama -m phi4 topic=artificial intelligence
 ```
 
-```spl2
+```spl
 -- Recipe 37: Headline News Aggregator
 -- Generate, expand, and evaluate a daily news digest for a given topic area.
 -- Uses claude_cli adapter with Opus model for broad knowledge synthesis.
@@ -16,13 +16,13 @@ spl2 run cookbook/37_headline_news/headline_news.spl --adapter ollama -m phi4 to
 --     → commit structured daily digest
 --
 -- Usage:
---   spl2 run cookbook/37_headline_news/headline_news.spl --adapter claude_cli -m claude-opus-4-6 \
+--   spl run cookbook/37_headline_news/headline_news.spl --adapter claude_cli -m claude-opus-4-6 \
 --       topic="artificial intelligence"
 --
---   spl2 run cookbook/37_headline_news/headline_news.spl --adapter claude_cli -m claude-opus-4-6 \
+--   spl run cookbook/37_headline_news/headline_news.spl --adapter claude_cli -m claude-opus-4-6 \
 --       topic="renewable energy" format="executive brief" max_headlines=5
 --
---   spl2 run cookbook/37_headline_news/headline_news.spl --adapter claude_cli -m claude-opus-4-6 \
+--   spl run cookbook/37_headline_news/headline_news.spl --adapter claude_cli -m claude-opus-4-6 \
 --       topic="quantum computing" format="bullet points" perspective="global"
 
 CREATE FUNCTION news_format_guide(format TEXT DEFAULT 'structured')

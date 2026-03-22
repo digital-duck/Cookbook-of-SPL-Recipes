@@ -1,4 +1,4 @@
-# Chapter 3.3 — Hypothesis Tester
+# Hypothesis Tester
 
 *"The first principle is that you must not fool yourself — and you are the easiest person to fool."*
 
@@ -85,7 +85,7 @@ SQL Analogy: **Threshold Filtering**. You are filtering your "Insights" by a qua
 Test a common business observation:
 
 ```bash
-spl2 run cookbook/35_hypothesis_tester/hypothesis.spl \
+spl run cookbook/35_hypothesis_tester/hypothesis.spl \
     --adapter ollama -m gemma3 \
     observation="Remote teams show lower productivity in the first month after joining"
 ```

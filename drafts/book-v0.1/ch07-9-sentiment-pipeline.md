@@ -1,4 +1,4 @@
-# Chapter 7.9 — Sentiment Pipeline
+# Sentiment Pipeline
 
 *"Data tells you what happened; sentiment tells you why it matters."*
 
@@ -28,7 +28,7 @@ This recipe introduces **Batch Schema Enforcement**—forcing the LLM to return 
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 31: Sentiment Pipeline
 -- Batch sentiment over a list, aggregate trend statistics.
 
@@ -80,7 +80,7 @@ Once we have the LLM's scores, we hand them back to Python.
 Run the pipeline on a file of product reviews:
 
 ```bash
-spl2 run cookbook/31_sentiment_pipeline/sentiment.spl \
+spl run cookbook/31_sentiment_pipeline/sentiment.spl \
     --adapter ollama --tools cookbook/31_sentiment_pipeline/tools.py \
     filename="product_reviews.txt" \
     domain="product_reviews"

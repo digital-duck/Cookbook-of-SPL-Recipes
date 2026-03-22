@@ -4,13 +4,13 @@ Demonstrates registering deterministic Python functions as SPL CALL-able tools.
 All computation here is pure Python — zero LLM calls, zero hallucination risk.
 
 Load with:
-    spl2 run cookbook/36_tool_use/tool_use.spl \
+    spl run cookbook/36_tool_use/tool_use.spl \
         --adapter ollama \
         --tools cookbook/36_tool_use/tools.py \
         sales="1200,1450,1380,1600,1750,1900"
 """
 
-from spl2.tools import spl_tool
+from spl.tools import spl_tool
 
 
 @spl_tool

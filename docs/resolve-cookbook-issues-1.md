@@ -20,7 +20,7 @@ sample order data and tools, please fix those areas, and I will help validate th
 /home/gongai/projects/digital-duck/SPL20/cookbook/28_support_triage   
 
 ```bash
-$ spl2 run cookbook/28_support_triage/support_triage.spl     --adapter ollama -m gemma3     --tools cookbook/28_support_triage/tools.py     ticket="My account has been charged twice for the same order #ORD-12345"     2>&1 | tee cookbook/out/28_support_triage-$(date +%Y%m%d_%H%M%S).md
+$ spl run cookbook/28_support_triage/support_triage.spl     --adapter ollama -m gemma3     --tools cookbook/28_support_triage/tools.py     ticket="My account has been charged twice for the same order #ORD-12345"     2>&1 | tee cookbook/out/28_support_triage-$(date +%Y%m%d_%H%M%S).md
 ```
 
 
@@ -30,7 +30,7 @@ add tools to integrate them with .spl script in order to achieve an end-to-end r
 see /home/gongai/projects/digital-duck/SPL20/cookbook/29_meeting_actions
 
 ```bash
-spl2 run cookbook/29_meeting_actions/meeting_actions.spl \
+spl run cookbook/29_meeting_actions/meeting_actions.spl \
     --adapter ollama -m gemma3 \
     --tools cookbook/29_meeting_actions/tools.py \
     filename=sprint_planning.txt \
@@ -44,7 +44,7 @@ add tools to integrate them with .spl script in order to achieve an end-to-end r
 /home/gongai/projects/digital-duck/SPL20/cookbook/31_sentiment_pipeline
 
 ```bash
-spl2 run cookbook/31_sentiment_pipeline/sentiment.spl \
+spl run cookbook/31_sentiment_pipeline/sentiment.spl \
     --adapter ollama -m gemma3 \
     --tools cookbook/31_sentiment_pipeline/tools.py \
     filename=product_reviews.txt \
@@ -59,7 +59,7 @@ add tools to integrate them with .spl script in order to achieve an end-to-end r
 /home/gongai/projects/digital-duck/SPL20/cookbook/32_socratic_tutor
 
 ```bash
-spl2 run cookbook/32_socratic_tutor/socratic_tutor.spl \
+spl run cookbook/32_socratic_tutor/socratic_tutor.spl \
     --adapter ollama -m gemma3 \
     --tools cookbook/32_socratic_tutor/tools.py \
     topic_id=sky_blue subject=science student_level="middle school" \
@@ -73,7 +73,7 @@ add tools to integrate them with .spl script in order to achieve an end-to-end r
 
 
 ```bash
-spl2 run cookbook/33_interview_sim/interview_sim.spl \
+spl run cookbook/33_interview_sim/interview_sim.spl \
     --adapter ollama -m gemma3 \
     --tools cookbook/33_interview_sim/tools.py \
     role_key=senior_swe focus=system_design candidate_id=alice_senior_swe difficulty=hard \
@@ -86,7 +86,7 @@ add tools to integrate them with .spl script in order to achieve an end-to-end r
 /home/gongai/projects/digital-duck/SPL20/cookbook/26_ab_test
 
 ```bash
-spl2 run cookbook/26_ab_test/ab_test.spl \
+spl run cookbook/26_ab_test/ab_test.spl \
     --adapter ollama -m gemma3 \
     --tools cookbook/26_ab_test/tools.py \
     experiment_id=neural_networks \
@@ -114,7 +114,7 @@ add tools to integrate them with .spl script in order to achieve an end-to-end r
 
 
 ```bash
-spl2 run cookbook/18_guardrails/guardrails.spl \
+spl run cookbook/18_guardrails/guardrails.spl \
     --adapter ollama -m gemma3 \
     --tools cookbook/18_guardrails/tools.py \
     input_id=safe_encryption \
@@ -154,7 +154,7 @@ bash cookbook/22_text2spl_demo/text2spl_demo.sh \
 
 
   Summary of what was done:                                                                                             
-  - Root cause: spl2 text2spl exits non-zero when generated code fails validation — the script was treating a generation
+  - Root cause: spl text2spl exits non-zero when generated code fails validation — the script was treating a generation
    success with a syntax warning as a full failure                                                                      
   - Fix: Added --no-validate to the generation step; validation now runs separately as an informational check           
   - Behavior: Demo 1 (prompt mode) validates cleanly. Demos 2 & 3 (workflow/auto) generate files but show known         
@@ -223,7 +223,7 @@ bash cookbook/22_text2spl_demo/text2spl_demo.sh \
   
  ● This is a beautiful vision. The CLI contract you're describing is essentially a universal workflow compiler:          
                                          
-  spl2 run recipe_maker.spl \                                                                                           
+  spl run recipe_maker.spl \                                                                                           
       --adapter ollama -m gemma3 \       # generative layer
       --tools tools.py \                  # deterministic/integration layer                                             
       --dataset orders.json \             # data layer (local/RDBMS/Drive)                                              
@@ -333,7 +333,7 @@ application building, what do you think
 
   So the full CLI signature becomes:
 
-  spl2 run recipe_maker.spl \
+  spl run recipe_maker.spl \
       --adapter ollama -m gemma3 \
       --tools tools.py \
       --dataset data.json \
@@ -373,8 +373,8 @@ delicious
                                                                                                                         
   On standalone mode:                                                                                                   
   Smart. Someone with an existing recipe (like the 33 we've already built) should be able to run:
-  spl2 run recipe_maker.spl --reflect --output-dir cookbook/33_interview_sim/                                           
-  spl2 run recipe_maker.spl --publish --output-dir cookbook/33_interview_sim/
+  spl run recipe_maker.spl --reflect --output-dir cookbook/33_interview_sim/                                           
+  spl run recipe_maker.spl --publish --output-dir cookbook/33_interview_sim/
                                                                                                                         
   Retrofit the older recipes into the registry without rebuilding them.                                                 
                                                                                                                         
@@ -518,7 +518,7 @@ These five share the same symptom: gemma3 generated code when asked for natural 
   readme.md — Full documentation including the full lifecycle table (v1 generate → v2 feedback/reflect → v3 publish).   
   
   To run it:                                                                                                            
-  spl2 run cookbook/00_recipe_maker/recipe_maker.spl \      
+  spl run cookbook/00_recipe_maker/recipe_maker.spl \      
       --adapter ollama -m gemma3 \                    
       --tools cookbook/00_recipe_maker/tools.py \                                                                       
       concept="Your recipe idea here" \                                                                                 

@@ -1,4 +1,4 @@
-# Chapter 5.1 — RAG Query
+# RAG Query
 
 *"Knowledge is not what you have in your head, but knowing where to find it."*
 
@@ -36,7 +36,7 @@ This recipe introduces the `rag` namespace, which provides high-level access to 
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 08: RAG Query
 -- Retrieval-augmented generation over indexed documents.
 
@@ -82,13 +82,13 @@ pip install numpy faiss-cpu sentence-transformers
 
 # 2. Add a document to the index
 # This chunks the file into paragraphs and stores their embeddings locally.
-spl2 rag add /path/to/your/document.md
+spl rag add /path/to/your/document.md
 ```
 
 Now, run the query:
 
 ```bash
-spl2 run cookbook/08_rag_query/rag_query.spl --adapter ollama \
+spl run cookbook/08_rag_query/rag_query.spl --adapter ollama \
     question="What is the main argument of this document?"
 ```
 
@@ -128,6 +128,6 @@ Use the **RAG Query** pattern when:
 
 ## Exercises
 
-1.  **Inspect the Retrieval.** Run `spl2 rag query "your question" --top-k 5` from the command line. This shows you exactly what the model will see *before* it generates an answer. This is the "EXPLAIN" plan for your RAG query.
+1.  **Inspect the Retrieval.** Run `spl rag query "your question" --top-k 5` from the command line. This shows you exactly what the model will see *before* it generates an answer. This is the "EXPLAIN" plan for your RAG query.
 2.  **Filter by Metadata.** (Advanced) Research how to add metadata to your documents (e.g., `author`, `date`) and filter your `rag.query` to only search specific files.
 3.  **No-Grounding Test.** Run the recipe *before* you index any documents. Observe how the model handles the empty context. Does it admit it doesn't know, or does it try to guess? This is a great way to test the "honesty" of a model.

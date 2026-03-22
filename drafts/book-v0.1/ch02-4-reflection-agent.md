@@ -1,4 +1,4 @@
-# Chapter 2.4 — Reflection Agent
+# Reflection Agent
 
 *"A genius is someone who makes their mistakes quickly and catches them even faster."*
 
@@ -27,7 +27,7 @@ This recipe demonstrates the use of **Meta-Cognitive Branching**—using the mod
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 16: Reflection Agent
 -- Solve a problem, then reflect and correct until confident.
 
@@ -97,7 +97,7 @@ SQL Analogy: **Conditional COMMIT**. You only finalize the transaction if the da
 Run the reflection agent on a complex design problem:
 
 ```bash
-spl2 run cookbook/16_reflection/reflection.spl --adapter ollama \
+spl run cookbook/16_reflection/reflection.spl --adapter ollama \
     problem="Design a URL shortener system that handles 1M requests per second"
 ```
 
@@ -139,6 +139,6 @@ Use the **Reflection Agent** pattern when:
 
 ## Exercises
 
-1.  **Strict Judge.** Use the `USING MODEL` clause (Chapter 8.1) to ensure the `confidence_score` step always uses your strongest model (e.g., `gemma3`), even if `phi4` is doing the reflection.
+1.  **Strict Judge.** Use the `USING MODEL` clause (Chapter 9.1) to ensure the `confidence_score` step always uses your strongest model (e.g., `gemma3`), even if `phi4` is doing the reflection.
 2.  **Add a "Divergent" step.** In the reflection pass, ask the model to specifically "Think about an alternative perspective" to prevent it from just reinforcing its own biases.
 3.  **Manual Stop.** Add a step inside the loop that asks for human feedback before the next reflection pass begins.

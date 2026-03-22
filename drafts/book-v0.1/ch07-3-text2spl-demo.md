@@ -1,4 +1,4 @@
-# Chapter 7.3 — Text2SPL Demo
+# Text2SPL Demo
 
 *"The final barrier to programming is syntax; we are removing it."*
 
@@ -8,7 +8,7 @@
 
 For many, the biggest obstacle to using SPL 2.0 is the same obstacle they face with SQL: learning the keywords, the structure, and the punctuation. While SPL is designed to be readable, it still requires you to follow a "grammar." But what if you didn't have to? What if you could describe what you wanted in plain English and the system wrote the code for you?
 
-This is the vision of **Text2SPL**. It is a "Compiler for Intent." Instead of writing a `.spl` file manually, you provide a natural language description—like "Summarize this document and then translate it into Chinese"—and the `spl2` runtime generates the equivalent code.
+This is the vision of **Text2SPL**. It is a "Compiler for Intent." Instead of writing a `.spl` file manually, you provide a natural language description—like "Summarize this document and then translate it into Chinese"—and the `spl` runtime generates the equivalent code.
 
 The SQL analogy is **Natural Language to SQL (NL2SQL)**. Modern data platforms allow analysts to ask "What was the revenue in Q3?" and the system automatically generates the `SELECT ... FROM ... WHERE ...` query. Text2SPL brings this same "Zero-Barrier" experience to AI orchestration.
 
@@ -18,7 +18,7 @@ The Text2SPL Demo recipe (Recipe 22) showcases this capability. It demonstrates 
 
 ## The SPL Approach
 
-This chapter doesn't focus on a `.spl` file, but rather on the `text2spl` command built into the `spl2` binary.
+This chapter doesn't focus on a `.spl` file, but rather on the `text2spl` command built into the `spl` binary.
 
 ---
 
@@ -26,7 +26,7 @@ This chapter doesn't focus on a `.spl` file, but rather on the `text2spl` comman
 
 ```bash
 # Example 1: Compiling a simple PROMPT
-spl2 text2spl "summarize a document with a 2000 token budget" \
+spl text2spl "summarize a document with a 2000 token budget" \
     --mode prompt -o summarize.spl
 ```
 
@@ -38,7 +38,7 @@ When you run this command, the runtime:
 
 ```bash
 # Example 2: Compiling a multi-step WORKFLOW
-spl2 text2spl "build a review agent that drafts, critiques, and refines text" \
+spl text2spl "build a review agent that drafts, critiques, and refines text" \
     --mode workflow -o review_agent.spl
 ```
 
@@ -58,7 +58,7 @@ This script will generate three different `.spl` files in the `generated/` direc
 
 ```bash
 # Execute the code generated from natural language
-spl2 run generated/summarize.spl --adapter ollama text="Your document here..."
+spl run generated/summarize.spl --adapter ollama text="Your document here..."
 ```
 
 ---

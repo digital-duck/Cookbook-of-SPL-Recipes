@@ -1,4 +1,4 @@
-# Chapter 9.2 — The Recipe Maker: SPL Eating Its Own Cake
+# The Recipe Maker: SPL Eating Its Own Cake
 
 *"The best proof of a cooking method is a meal cooked with it."*
 
@@ -76,7 +76,7 @@ Version 1 of the recipe-maker implements the **generate phase** only. The `--fee
 The recipe-maker introduces five new CLI concepts that will become the standard interface for production SPL workflows:
 
 ```bash
-spl2 run cookbook/00_recipe_maker/recipe_maker.spl \
+spl run cookbook/00_recipe_maker/recipe_maker.spl \
     --adapter ollama -m gemma3 \
     --tools cookbook/00_recipe_maker/tools.py \
     concept="Customer churn predictor with SHAP explainability" \
@@ -102,7 +102,7 @@ If you squint, this is a compiler invocation. `concept` is the source. `output_d
 
 ---
 
-## Chapter 9.2 — Recipe 00: Recipe Maker
+## Recipe 00: Recipe Maker
 
 ### The Pattern
 
@@ -120,7 +120,7 @@ It demonstrates the core principle of the entire cookbook in miniature: **every 
 
 ### The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 00: Recipe Maker (Meta-Recipe)
 -- SPL 2.0 eating its own cake.
 
@@ -219,7 +219,7 @@ The SQL analogy: `load_patterns()` is a lookup join against the pattern catalog.
 ### Running It
 
 ```bash
-spl2 run cookbook/00_recipe_maker/recipe_maker.spl \
+spl run cookbook/00_recipe_maker/recipe_maker.spl \
     --adapter ollama -m gemma3 \
     --tools cookbook/00_recipe_maker/tools.py \
     concept="Interview simulator for data science roles with scoring rubric" \
@@ -248,7 +248,7 @@ NEXT STEPS — Human Review Required:
      /tmp/spl_recipes/ds_interview/
 
   2. Run the generated workflow:
-     spl2 run /tmp/spl_recipes/ds_interview/workflow.spl
+     spl run /tmp/spl_recipes/ds_interview/workflow.spl
         --adapter ollama -m <model>
         --tools /tmp/spl_recipes/ds_interview/tools.py
 
@@ -327,4 +327,4 @@ This is the conductor's work. The score is written. Now it needs to be played.
 
 ---
 
-*Next: Chapter 9.3 — The Road Ahead: Declarative AI, Momagrid, and Where SPL Fits*
+*Next: Chapter 10.3 — The Road Ahead: Declarative AI, Momagrid, and Where SPL Fits*

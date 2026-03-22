@@ -1,4 +1,4 @@
-# Chapter 3.2 — Tree of Thought
+# Tree of Thought
 
 *"A single path is a tunnel; multiple paths are a map."*
 
@@ -24,7 +24,7 @@ This recipe demonstrates **Parallel Exploration**—generating multiple independ
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 17: Tree of Thought
 -- Explores multiple reasoning paths in parallel, then selects the best.
 
@@ -85,7 +85,7 @@ Even after we've picked a "winner" and refined it, we perform one last verificat
 Run the Tree of Thought on a strategic decision:
 
 ```bash
-spl2 run cookbook/17_tree_of_thought/tree_of_thought.spl --adapter ollama \
+spl run cookbook/17_tree_of_thought/tree_of_thought.spl --adapter ollama \
     problem="Should we rewrite our legacy monolith in Rust or Go?"
 ```
 
@@ -127,6 +127,6 @@ Use the **Tree of Thought** pattern when:
 
 ## Exercises
 
-1.  **Parallelize the Branches.** Use the `WITH` clause (Chapter 8.1) to run Phase 1, 2, and 3 in parallel blocks. This will reduce the latency by nearly 60% if your hardware can handle it.
+1.  **Parallelize the Branches.** Use the `WITH` clause (Chapter 9.1) to run Phase 1, 2, and 3 in parallel blocks. This will reduce the latency by nearly 60% if your hardware can handle it.
 2.  **Add a "Devil's Advocate."** In Phase 2, instead of just "developing" the path, ask the model to specifically "Find the three biggest reasons why this approach will fail."
-3.  **Variable Branching.** Modify the input to accept `@branch_count` and use a `WHILE` loop (Chapter 6.1) to generate an arbitrary number of paths instead of exactly three.
+3.  **Variable Branching.** Modify the input to accept `@branch_count` and use a `WHILE` loop (Chapter 7.1) to generate an arbitrary number of paths instead of exactly three.

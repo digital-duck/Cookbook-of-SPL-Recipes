@@ -1,4 +1,4 @@
-# Chapter 1.3 — Multilingual Greeting
+# Multilingual Greeting
 
 *"Language is the first barrier to knowledge; code should be the first bridge."*
 
@@ -33,12 +33,12 @@ We use the `context` object to capture multiple CLI arguments and then "bind" th
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 03: Multilingual Greeting
 -- Greet in any language — demonstrates parametric context with lang.
 --
 -- Usage:
---   spl2 run cookbook/03_multilingual/multilingual.spl user_input="hello" lang="Chinese"
+--   spl run cookbook/03_multilingual/multilingual.spl user_input="hello" lang="Chinese"
 
 PROMPT multilingual_greeting                  -- (1) name the prompt block
 SELECT
@@ -75,13 +75,13 @@ Test it with different languages:
 
 ```bash
 # To Chinese
-spl2 run cookbook/03_multilingual/multilingual.spl user_input="hello wen" lang="Chinese"
+spl run cookbook/03_multilingual/multilingual.spl user_input="hello wen" lang="Chinese"
 
 # To French
-spl2 run cookbook/03_multilingual/multilingual.spl user_input="hello wen" lang="French"
+spl run cookbook/03_multilingual/multilingual.spl user_input="hello wen" lang="French"
 
 # To Spanish
-spl2 run cookbook/03_multilingual/multilingual.spl user_input="hello wen" lang="Spanish"
+spl run cookbook/03_multilingual/multilingual.spl user_input="hello wen" lang="Spanish"
 ```
 
 Expected output (for Chinese):

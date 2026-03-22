@@ -1,20 +1,20 @@
 
 ```bash
-spl2 run cookbook/12_plan_and_execute/plan_execute.spl --adapter ollama -m qwen2.5-coder task=Build a REST API for a todo app output_dir=cookbook/12_plan_and_execute/output
+spl run cookbook/12_plan_and_execute/plan_execute.spl --adapter ollama -m qwen2.5-coder task=Build a REST API for a todo app output_dir=cookbook/12_plan_and_execute/output
 ```
 
-```spl2
+```spl
 -- Recipe 12: Plan and Execute
 -- A planner agent decomposes a task into steps, then an executor implements each one.
 -- When output_dir is set, generated code files are written to disk.
 --
 -- Usage:
---   spl2 run cookbook/12_plan_and_execute/plan_execute.spl --adapter ollama \
+--   spl run cookbook/12_plan_and_execute/plan_execute.spl --adapter ollama \
 --       --tools cookbook/12_plan_and_execute/tools.py \
 --       task="Build a REST API for a todo app" \
 --       output_dir="cookbook/12_plan_and_execute/output"
 --
---   spl2 run cookbook/12_plan_and_execute/plan_execute.spl --adapter ollama \
+--   spl run cookbook/12_plan_and_execute/plan_execute.spl --adapter ollama \
 --       task="Set up a CI/CD pipeline for a Python project"
 
 

@@ -1,4 +1,4 @@
-# Chapter 2.2 — ReAct Agent
+# ReAct Agent
 
 *"Don't ask a poet to do your taxes, and don't ask an LLM to do your math."*
 
@@ -26,7 +26,7 @@ This recipe introduces `PROCEDURE` definitions and the `CALL` statement. It also
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 06: ReAct Agent — Population Growth
 -- Fetch population via WebSearch, compute growth rate via Python tool.
 
@@ -94,7 +94,7 @@ Only after the data has been fetched and the math has been verified do we go bac
 This recipe requires a Python tool file and a web search capability:
 
 ```bash
-spl2 run cookbook/06_react_agent/react_agent.spl \
+spl run cookbook/06_react_agent/react_agent.spl \
     --adapter claude_cli \
     --allowed-tools WebSearch \
     --tools cookbook/06_react_agent/tools.py \

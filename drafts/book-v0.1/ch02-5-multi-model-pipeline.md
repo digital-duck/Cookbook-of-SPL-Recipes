@@ -1,4 +1,4 @@
-# Chapter 2.5 — Multi-Model Pipeline
+# Multi-Model Pipeline
 
 *"Choose the right instrument for each movement of the symphony."*
 
@@ -27,7 +27,7 @@ This recipe introduces the `USING MODEL` clause at the step level, allowing for 
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 21: Multi-Model Pipeline
 -- Each step targets the model best suited for that task.
 
@@ -86,7 +86,7 @@ SQL Analogy: **Cross-Engine Join**. You are joining the output of Model A with t
 This recipe highlights the power of adapters. Ensure you have your keys configured for cloud models if you choose to use them:
 
 ```bash
-spl2 run cookbook/21_multi_model_pipeline/multi_model.spl --adapter openrouter \
+spl run cookbook/21_multi_model_pipeline/multi_model.spl --adapter openrouter \
     topic="The impact of AI on rural education"
 ```
 

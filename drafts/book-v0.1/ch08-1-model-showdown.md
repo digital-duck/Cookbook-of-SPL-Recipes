@@ -1,4 +1,4 @@
-# Chapter 8.1 — Model Showdown
+# Model Showdown
 
 *"A conductor is only as good as their understanding of each instrument in the orchestra."*
 
@@ -24,7 +24,7 @@ This recipe introduces the `WORKFLOW` block, which is the powerhouse of SPL 2.0.
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 04: Model Showdown
 -- Same prompt to multiple Ollama models — compare responses side-by-side.
 
@@ -115,14 +115,14 @@ We call a final `GENERATE` step using the `compare_responses` template we define
 Run the showdown with the default models:
 
 ```bash
-spl2 run cookbook/04_model_showdown/showdown.spl --adapter ollama \
+spl run cookbook/04_model_showdown/showdown.spl --adapter ollama \
     prompt="Explain recursion in 3 sentences"
 ```
 
 Or override the models to compare specific versions:
 
 ```bash
-spl2 run cookbook/04_model_showdown/showdown.spl --adapter ollama \
+spl run cookbook/04_model_showdown/showdown.spl --adapter ollama \
     prompt="Write a haiku about a GTX 1080 Ti" \
     model_1="llama3.2" model_2="mistral" model_3="qwen2.5"
 ```

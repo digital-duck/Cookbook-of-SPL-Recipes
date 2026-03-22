@@ -1,4 +1,4 @@
-# Chapter 1.1 — Hello World
+# Hello World
 
 *"Before you cook anything, you verify that the stove is on."*
 
@@ -6,7 +6,7 @@
 
 ## The Pattern
 
-Every technology stack demands a ritual: write the simplest possible program, run it, and confirm that the scaffolding holds. SPL is no different. Before you write a multi-step workflow that CALLs tools and GENERATEs structured output, you need to know that `spl2` is installed, the adapter is configured, the model is running, and the runtime can connect them end to end.
+Every technology stack demands a ritual: write the simplest possible program, run it, and confirm that the scaffolding holds. SPL is no different. Before you write a multi-step workflow that CALLs tools and GENERATEs structured output, you need to know that `spl` is installed, the adapter is configured, the model is running, and the runtime can connect them end to end.
 
 The naive approach is to write a Python script: import the Ollama client, define a system message, send the request, print the response. It works. It also requires you to manage the HTTP client, handle the response envelope, deal with streaming vs. non-streaming modes, and remember the exact API shape of whichever model host you are using. For a sanity check, that is too much ceremony.
 
@@ -30,14 +30,14 @@ A `PROMPT` block assembles context in a `SELECT` clause, then fires a single `GE
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 01: Hello World
--- Minimal SPL program — verify spl2 + adapter + model work.
+-- Minimal SPL program — verify spl + adapter + model work.
 --
 -- Usage:
---   spl2 run cookbook/01_hello_world/hello.spl
---   spl2 run cookbook/01_hello_world/hello.spl --adapter ollama
---   spl2 run cookbook/01_hello_world/hello.spl --adapter ollama -m gemma3
+--   spl run cookbook/01_hello_world/hello.spl
+--   spl run cookbook/01_hello_world/hello.spl --adapter ollama
+--   spl run cookbook/01_hello_world/hello.spl --adapter ollama -m gemma3
 
 PROMPT hello_world                           -- (1) declare a named PROMPT block
 SELECT
@@ -81,7 +81,7 @@ The parentheses can accept arguments — in later recipes you will pass `GENERAT
 
 The SQL analogy:
 
-```spl2
+```spl
 -- SQL: compute a value
 SELECT UPPER('hello world') AS result;
 
@@ -107,7 +107,7 @@ ollama pull gemma3    # one-time download, ~5 GB
 Run the recipe:
 
 ```bash
-spl2 run cookbook/01_hello_world/hello.spl --adapter ollama -m gemma3
+spl run cookbook/01_hello_world/hello.spl --adapter ollama -m gemma3
 ```
 
 Expected output (text will vary across runs):
@@ -123,14 +123,14 @@ The response is printed to stdout. No files are written, no state is committed. 
 You can also run without specifying an adapter if Ollama is your configured default:
 
 ```bash
-spl2 run cookbook/01_hello_world/hello.spl
+spl run cookbook/01_hello_world/hello.spl
 ```
 
 And you can swap models without changing the file:
 
 ```bash
-spl2 run cookbook/01_hello_world/hello.spl --adapter ollama -m llama3.2
-spl2 run cookbook/01_hello_world/hello.spl --adapter ollama -m mistral
+spl run cookbook/01_hello_world/hello.spl --adapter ollama -m llama3.2
+spl run cookbook/01_hello_world/hello.spl --adapter ollama -m mistral
 ```
 
 The `.spl` file does not change. The adapter and model are runtime concerns, not workflow concerns. This is an early demonstration of a principle that pays off in later recipes: SPL workflows are model-agnostic by design.
@@ -163,7 +163,7 @@ Latency on a GTX 1080 Ti with gemma3: **3–8 seconds** for a two-sentence respo
 
 The response content varies across runs. The model is not seeded to a fixed random state, so each run produces a different phrasing. This is expected and correct for a generative sanity check. What you are verifying is not the exact text but that text arrives at all.
 
-If you need reproducible output for a test: set `temperature=0` via the adapter configuration, or use a workflow with structured output constraints (see Chapter 1.4). For a hello world, variability is not a problem — it is confirmation that the model is actually generating, not returning a cached string.
+If you need reproducible output for a test: set `temperature=0` via the adapter configuration, or use a workflow with structured output constraints (see Chapter 2.4). For a hello world, variability is not a problem — it is confirmation that the model is actually generating, not returning a cached string.
 
 ---
 
@@ -172,7 +172,7 @@ If you need reproducible output for a test: set `temperature=0` via the adapter 
 The `PROMPT` form — `PROMPT name / SELECT context / GENERATE step()` — is the right shape for:
 
 - **Stack verification**: Confirm the runtime, adapter, and model are wired together correctly before writing anything more complex.
-- **One-shot queries**: A single natural-language question that needs one LLM response and no post-processing. The Ollama proxy recipe (Chapter 1.2) extends this pattern with a parameter.
+- **One-shot queries**: A single natural-language question that needs one LLM response and no post-processing. The Ollama proxy recipe (Chapter 2.2) extends this pattern with a parameter.
 - **Prototyping a system message**: When you are tuning the persona or instruction in `system_role()`, a `PROMPT` block lets you iterate without running a full workflow.
 - **Demonstrations and smoke tests**: CI pipelines that verify adapter connectivity use a hello-world-style `PROMPT` as the probe.
 
@@ -193,7 +193,7 @@ Think of `PROMPT` as `SELECT` without a `FROM`: fast, useful for spot-checks, no
 
 2. **Swap the adapter.** If you have an Anthropic API key configured, run:
 ```bash
-spl2 run cookbook/01_hello_world/hello.spl --adapter anthropic
+spl run cookbook/01_hello_world/hello.spl --adapter anthropic
 ```
 
 The `.spl` file is unchanged. The response will reflect Claude's style rather than gemma3's. This demonstrates adapter portability: the workflow is the specification, the model is the execution engine.
@@ -202,4 +202,4 @@ The `.spl` file is unchanged. The response will reflect Claude's style rather th
 
 ---
 
-*Next: Chapter 1.2 — Ollama Proxy: Parameterized LLM Queries*
+*Next: Chapter 2.2 — Ollama Proxy: Parameterized LLM Queries*

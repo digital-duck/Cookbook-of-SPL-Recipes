@@ -1,4 +1,16 @@
-# Chapter 0.1 — Why Declarative? SQL as the Mental Model
+# Why Declarative? SQL as the Mental Model
+
+---
+
+## Who This Chapter Is For
+
+This chapter is written for two audiences, and I want to name them directly.
+
+**If you are a SQL practitioner** — a data engineer, BI developer, analyst, or anyone who has spent years writing queries, stored procedures, or ETL pipelines — this chapter will feel like recognition. The declarative mental model you already use for data is the same model SPL applies to AI workflows. The transfer is structural, not metaphorical. By the end of this chapter, SPL will not feel like a new language. It will feel like an extension of one you already know.
+
+**If you are in the Global South**, or anywhere that frontier AI infrastructure is expensive, slow, or inaccessible — this chapter is equally for you. The reason SPL matters for accessibility is not just that it is simpler to write. It is that it decouples the *logic* of a workflow from the *infrastructure* that runs it. A workflow you develop on a GTX 1080 Ti in Nairobi runs on a Momagrid node in São Paulo, a cloud API in Singapore, or a local Ollama instance in Hefei — without changing a single line of code. You write against the language. The runtime figures out the rest.
+
+Both audiences are building the same thing: AI workflows that are readable, portable, and maintainable. The path just looks different depending on where you are starting from.
 
 ---
 
@@ -150,7 +162,7 @@ FROM articles
 WHERE published_at > '2025-01-01';
 ```
 
-```spl2
+```spl
 -- SPL: generate a summary using an LLM
 GENERATE summarize(article_text) INTO @summary
 ```
@@ -168,7 +180,7 @@ FROM proposals
 WHERE sentiment_score > 0.7;
 ```
 
-```spl2
+```spl
 -- SPL: branch based on an LLM judgment
 EVALUATE @sentiment
   WHEN 'positive' THEN
@@ -198,7 +210,7 @@ AS BEGIN
 END;
 ```
 
-```spl2
+```spl
 -- SPL workflow
 WORKFLOW draft_and_refine
   INPUT:
@@ -225,7 +237,7 @@ RETURNS BOOLEAN AS $$
 $$ LANGUAGE plpgsql;
 ```
 
-```spl2
+```spl
 -- SPL function: defines system context injected as an LLM prompt
 CREATE FUNCTION expert_reviewer()
 RETURNS TEXT AS $$
@@ -253,7 +265,7 @@ The rule is simple: **use CALL for everything code can do. Use GENERATE only for
 
 A SQL practitioner understands this instinctively. If you can write it as `WHERE date > '2025-01-01'`, you do not need a subquery. If you can compute it in the SELECT clause with a deterministic expression, you do not call a stored procedure. You use the cheapest, most reliable tool that produces the right result.
 
-```spl2
+```spl
 -- Wrong: asking the LLM to do arithmetic
 GENERATE count_words(@document) INTO @word_count
 
@@ -263,7 +275,7 @@ CALL count_words(@document) INTO @word_count
 
 The LLM cannot count words more reliably than `len(text.split())`. It costs more. It is slower. It might be wrong. There is no reason to involve it.
 
-```spl2
+```spl
 -- Wrong: trying to parse a JSON field in SPL when code can do it
 GENERATE extract_author(@raw_json) INTO @author
 
@@ -273,7 +285,7 @@ CALL extract_field(@raw_json, 'author') INTO @author
 
 The LLM cannot parse JSON more reliably than `json.loads()`. It should not be asked to.
 
-```spl2
+```spl
 -- Right: using the LLM for what only it can do
 GENERATE assess_argument_quality(@essay, @criteria) INTO @assessment
 ```
@@ -294,9 +306,9 @@ SPL works the same way for LLM workflows. The same `.spl` file runs against Olla
 
 ```bash
 # Same .spl file, three different adapters
-spl2 run workflow.spl --adapter ollama -m gemma3
-spl2 run workflow.spl --adapter openrouter -m openai/gpt-4o
-spl2 run workflow.spl --adapter claude_cli -m claude-opus-4-5
+spl run workflow.spl --adapter ollama -m gemma3
+spl run workflow.spl --adapter openrouter -m openai/gpt-4o
+spl run workflow.spl --adapter claude_cli -m claude-opus-4-5
 ```
 
 A SQL database does not expose B-tree implementations to your queries. An SPL adapter does not expose API schemas, authentication headers, response parsing, or token accounting to your workflows. These are infrastructure concerns. The workflow describes intent. The adapter handles execution.
@@ -304,6 +316,20 @@ A SQL database does not expose B-tree implementations to your queries. An SPL ad
 This matters enormously in practice. When you build a workflow against a local Ollama model during development, you are not taking on technical debt. You are building the real workflow. When you move to production on a cloud model, you change one flag. The workflow file is unchanged, unmodified, and untested against the new model — but it runs, because the adapter handles the translation.
 
 SQL practitioners know what it is like to develop against a local database and deploy against a production cluster. The adapter abstraction is the same thing.
+
+This portability has a deeper implication that matters especially if you are in the Global South or working with constrained infrastructure. The same `.spl` workflow that you develop locally on Ollama can be submitted to **Momagrid** — a decentralized inference network where GPU nodes contributed by independent operators around the world form a shared compute grid. No cloud account. No API key from a company headquartered in another continent. Just change the adapter flag:
+
+```bash
+# Develop locally — your own GPU, zero cost
+spl run workflow.spl --adapter ollama -m gemma3
+
+# Run on the decentralized grid — community compute
+spl run workflow.spl --adapter momagrid -m gemma3
+```
+
+The workflow is identical. The infrastructure is different. The language does not know or care which runtime executes it.
+
+This is the full vision: SPL as the score, Momagrid as the distributed orchestra. Anyone with a GPU can contribute capacity. Anyone with a workflow can run it. The barrier is a used GPU and a pip install — not a credit card linked to a cloud provider in Virginia.
 
 ---
 
@@ -360,7 +386,7 @@ Count the decisions baked into this file: the provider (Anthropic), the model na
 
 **SPL (declarative)**
 
-```spl2
+```spl
 CREATE FUNCTION technical_writer()
 RETURNS TEXT AS $$
   You are an experienced technical writer.
@@ -404,7 +430,7 @@ You already know declarative thinking. You already know how to describe what you
 
 The SQL-to-SPL transfer is not a leap. It is a lateral move.
 
-The domain changes: instead of rows and columns, you are working with text and language model outputs. The stakes change: instead of a deterministic join, you are routing through a probabilistic judgment. The tooling changes: instead of `psql` or `dbeaver`, you use `spl2`.
+The domain changes: instead of rows and columns, you are working with text and language model outputs. The stakes change: instead of a deterministic join, you are routing through a probabilistic judgment. The tooling changes: instead of `psql` or `dbeaver`, you use `spl`.
 
 But the mental model is the same. Describe what you want. Let the engine handle how. Trust the abstraction until you have a reason not to.
 

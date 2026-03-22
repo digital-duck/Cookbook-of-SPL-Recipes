@@ -1,4 +1,4 @@
-# Chapter 6.5 — Interview Sim
+# Interview Sim
 
 *"To master a skill, you must first survive the simulation."*
 
@@ -82,7 +82,7 @@ As always, we hand the numbers back to Python. Python sums the scores, calculate
 Run a simulation for a Senior SWE role:
 
 ```bash
-spl2 run cookbook/33_interview_sim/interview_sim.spl \
+spl run cookbook/33_interview_sim/interview_sim.spl \
     --adapter ollama --tools cookbook/33_interview_sim/tools.py \
     role="Senior Software Engineer" focus="Distributed Systems" \
     candidate_id="alice_senior_swe"

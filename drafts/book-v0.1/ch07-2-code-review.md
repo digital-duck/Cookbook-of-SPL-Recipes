@@ -1,4 +1,4 @@
-# Chapter 7.2 — Code Review
+# Code Review
 
 *"A second pair of eyes is good; a second, third, and fourth pair of specialized eyes is better."*
 
@@ -28,7 +28,7 @@ This recipe demonstrates **Pass-by-Pass Analysis** and **Threshold-Based Branchi
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 15: Automated Code Review
 -- Multi-pass code review: security, performance, style, then synthesis.
 
@@ -85,7 +85,7 @@ SQL Analogy: A **Trigger with a Threshold**. If a transaction amount exceeds a l
 Review a Python file with a known security flaw:
 
 ```bash
-spl2 run cookbook/15_code_review/code_review.spl --adapter ollama \
+spl run cookbook/15_code_review/code_review.spl --adapter ollama \
     code="def run_cmd(user_input): eval(user_input)" \
     language="Python"
 ```
@@ -128,4 +128,4 @@ Use the **Code Review** pattern when:
 
 1.  **Add a "Fixer" step.** If the verdict is `request_changes`, add a step that tries to generate a "Fixed" version of the code and includes it in the final review.
 2.  **Language-Specific Rules.** Modify the `security_audit` prompt to look for specific flaws in specific languages (e.g., "Buffer overflows" in C++, "SQL Injection" in PHP).
-3.  **Parallel Audits.** (Advanced) Use the `WITH` clause (Chapter 8.1) to run all four audit passes in parallel, significantly reducing the total execution time.
+3.  **Parallel Audits.** (Advanced) Use the `WITH` clause (Chapter 9.1) to run all four audit passes in parallel, significantly reducing the total execution time.

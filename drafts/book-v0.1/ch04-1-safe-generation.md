@@ -1,4 +1,4 @@
-# Chapter 4.1 — Safe Generation
+# Safe Generation
 
 *"Trust, but verify. Then verify again."*
 
@@ -24,7 +24,7 @@ This recipe introduces the `EVALUATE` block for semantic branching and the `EXCE
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 07: Safe Generation with Exception Handling
 -- Demonstrates LLM-specific error handling patterns
 
@@ -93,7 +93,7 @@ Some errors are transient or can be fixed by changing parameters. If the context
 Run the safe generation with a potentially complex prompt:
 
 ```bash
-spl2 run cookbook/07_safe_generation/safe_generation.spl --adapter ollama \
+spl run cookbook/07_safe_generation/safe_generation.spl --adapter ollama \
     prompt="What are the trade-offs of microservices?"
 ```
 
@@ -133,5 +133,5 @@ Use the **Safe Generation** pattern when:
 ## Exercises
 
 1.  **Strict Guardrails.** Modify the `EVALUATE` block so that `OTHERWISE` results in a `REJECT` or an error message rather than a `best_effort` commit.
-2.  **Add a "Banned Word" check.** Use a Python tool (Chapter 2.2) to check for specific words in `@result`. If found, trigger a custom exception.
+2.  **Add a "Banned Word" check.** Use a Python tool (Chapter 3.2) to check for specific words in `@result`. If found, trigger a custom exception.
 3.  **Two-Model Judge.** Modify the recipe to use two different models as judges and only commit if they *both* agree the quality is high.

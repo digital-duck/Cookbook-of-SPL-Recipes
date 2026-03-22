@@ -1,4 +1,4 @@
-# Chapter 7.1 — Map-Reduce Summarizer
+# Map-Reduce Summarizer
 
 *"To understand the mountain, you must first understand the stones."*
 
@@ -36,7 +36,7 @@ This recipe uses a `WHILE` loop for the Map phase and a final `GENERATE` step fo
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 13: Map-Reduce Summarizer
 -- Splits a document, summarizes chunks, then combines them.
 
@@ -101,7 +101,7 @@ We don't just take the first draft. We use a `quality_score` step to check if th
 Run the summarizer on a large text file:
 
 ```bash
-spl2 run cookbook/13_map_reduce/map_reduce.spl --adapter ollama \
+spl run cookbook/13_map_reduce/map_reduce.spl --adapter ollama \
     document="$(cat large_report.txt)" \
     style="executive brief"
 ```
@@ -141,4 +141,4 @@ Use the **Map-Reduce Summarizer** pattern when:
 
 1.  **Change the Chunking.** Modify the `chunk_plan` to always split by exactly 1,000 words instead of looking for section headers. Compare the quality of the final summary.
 2.  **Add a "Key Takeaways" section.** Update the `reduce_summaries` step to always include a "Top 3 Action Items" section at the end of the summary.
-3.  **Parallel Map.** (Advanced) If you have multiple GPUs or are using a distributed runtime like **Momagrid**, research how to use `WITH` (Chapter 8.1) to run all the `summarize_chunk` calls in parallel instead of in a `WHILE` loop.
+3.  **Parallel Map.** (Advanced) If you have multiple GPUs or are using a distributed runtime like **Momagrid**, research how to use `WITH` (Chapter 9.1) to run all the `summarize_chunk` calls in parallel instead of in a `WHILE` loop.

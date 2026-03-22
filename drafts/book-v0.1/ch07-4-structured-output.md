@@ -1,4 +1,4 @@
-# Chapter 7.4 — Structured Output
+# Structured Output
 
 *"The bridge between human language and machine logic is a well-defined schema."*
 
@@ -26,7 +26,7 @@ This recipe uses a **Schema-Driven Prompt** pattern, where the output format is 
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 23: Structured Output
 -- Extract typed data from text using JSON schema.
 
@@ -81,7 +81,7 @@ The `GENERATE` step takes the `text` and the `schema`. Depending on the adapter 
 Run the extractor on a messy string:
 
 ```bash
-spl2 run cookbook/23_structured_output/structured_output.spl --adapter ollama \
+spl run cookbook/23_structured_output/structured_output.spl --adapter ollama \
     text="John Smith, 42, joined Acme Corp earning $95,000/year"
 ```
 
@@ -127,7 +127,7 @@ On a **GTX 1080 Ti**, structured generation is just as fast as unstructured gene
 Use the **Structured Output** pattern when:
 - **ETL Pipelines**: Extracting data from thousands of documents into a database.
 - **Form Filling**: Turning a voice transcript into a structured customer record.
-- **Workflow Inputs**: When the output of one step needs to be precisely parsed as the input for a calculation or a tool call (Chapter 2.2).
+- **Workflow Inputs**: When the output of one step needs to be precisely parsed as the input for a calculation or a tool call (Chapter 3.2).
 
 ---
 

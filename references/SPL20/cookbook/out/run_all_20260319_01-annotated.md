@@ -6,12 +6,12 @@
 
 ```sql
 -- Recipe 01: Hello World
--- Minimal SPL program — verify spl2 + adapter + model work.
+-- Minimal SPL program — verify spl + adapter + model work.
 --
 -- Usage:
---   spl2 run cookbook/01_hello_world/hello.spl
---   spl2 run cookbook/01_hello_world/hello.spl --adapter ollama
---   spl2 run cookbook/01_hello_world/hello.spl --adapter ollama -m gemma3
+--   spl run cookbook/01_hello_world/hello.spl
+--   spl run cookbook/01_hello_world/hello.spl --adapter ollama
+--   spl run cookbook/01_hello_world/hello.spl --adapter ollama -m gemma3
 
 PROMPT hello_world
 SELECT
@@ -21,7 +21,7 @@ GENERATE greeting()
 
      cmd :
 ```bash
-spl2 run ./01_hello_world/hello.spl --adapter ollama -m gemma3
+spl run ./01_hello_world/hello.spl --adapter ollama -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/01_hello_world/hello_20260319_022640.log
 ```output
@@ -47,9 +47,9 @@ Log: /home/gongai/.spl/logs/hello-ollama-20260319-022640.log
 -- The --model (-m) flag overrides the model at runtime without editing this file.
 --
 -- Usage:
---   spl2 run cookbook/02_ollama_proxy/proxy.spl --adapter ollama -m gemma3 prompt="Explain quantum computing"
---   spl2 run cookbook/02_ollama_proxy/proxy.spl --adapter ollama -m llama3.2 prompt="Write a haiku about coding"
---   spl2 run cookbook/02_ollama_proxy/proxy.spl --adapter ollama -m mistral prompt="What is 2+2?"
+--   spl run cookbook/02_ollama_proxy/proxy.spl --adapter ollama -m gemma3 prompt="Explain quantum computing"
+--   spl run cookbook/02_ollama_proxy/proxy.spl --adapter ollama -m llama3.2 prompt="Write a haiku about coding"
+--   spl run cookbook/02_ollama_proxy/proxy.spl --adapter ollama -m mistral prompt="What is 2+2?"
 
 PROMPT ollama_proxy
 SELECT
@@ -60,7 +60,7 @@ GENERATE answer(prompt)
 
      cmd :
 ```bash
-spl2 run ./02_ollama_proxy/proxy.spl --adapter ollama prompt=Explain quantum computing in one sentence -m gemma3
+spl run ./02_ollama_proxy/proxy.spl --adapter ollama prompt=Explain quantum computing in one sentence -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/02_ollama_proxy/proxy_20260319_022642.log
 ```text
@@ -83,10 +83,10 @@ Log: /home/gongai/.spl/logs/proxy-ollama-20260319-022642.log
 -- Greet in any language — demonstrates parametric context with lang.
 --
 -- Usage:
---   spl2 run cookbook/03_multilingual/multilingual.spl --adapter ollama user_input="hello wen" lang="Chinese"
---   spl2 run cookbook/03_multilingual/multilingual.spl --adapter ollama user_input="hello wen" lang="French"
---   spl2 run cookbook/03_multilingual/multilingual.spl --adapter ollama user_input="hello wen" lang="Japanese"
---   spl2 run cookbook/03_multilingual/multilingual.spl --adapter ollama user_input="hello wen" lang="Spanish"
+--   spl run cookbook/03_multilingual/multilingual.spl --adapter ollama user_input="hello wen" lang="Chinese"
+--   spl run cookbook/03_multilingual/multilingual.spl --adapter ollama user_input="hello wen" lang="French"
+--   spl run cookbook/03_multilingual/multilingual.spl --adapter ollama user_input="hello wen" lang="Japanese"
+--   spl run cookbook/03_multilingual/multilingual.spl --adapter ollama user_input="hello wen" lang="Spanish"
 
 PROMPT multilingual_greeting
 SELECT
@@ -98,7 +98,7 @@ GENERATE greeting(input, lang)
 
      cmd :
 ```bash
-spl2 run ./03_multilingual/multilingual.spl --adapter ollama user_input=hello wen lang=Chinese -m gemma3
+spl run ./03_multilingual/multilingual.spl --adapter ollama user_input=hello wen lang=Chinese -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/03_multilingual/multilingual_20260319_022643.log
 ```text
@@ -124,8 +124,8 @@ Log: /home/gongai/.spl/logs/multilingual-ollama-20260319-022643.log
 -- Uses CTEs to run each model in parallel and collect all results in one query.
 --
 -- Usage:
---   spl2 run cookbook/04_model_showdown/showdown.spl --adapter ollama prompt="What is the meaning of life?"
---   spl2 run cookbook/04_model_showdown/showdown.spl --adapter ollama prompt="Explain recursion in 3 sentences"
+--   spl run cookbook/04_model_showdown/showdown.spl --adapter ollama prompt="What is the meaning of life?"
+--   spl run cookbook/04_model_showdown/showdown.spl --adapter ollama prompt="Explain recursion in 3 sentences"
 
 WITH
   gemma3_result AS (
@@ -307,7 +307,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./05_self_refine/self_refine.spl --adapter ollama task=Write a haiku about coding -m gemma3
+spl run ./05_self_refine/self_refine.spl --adapter ollama task=Write a haiku about coding -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/05_self_refine/self_refine_20260319_022704.log
 ```text
@@ -388,7 +388,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./06_react_agent/react_agent.spl --adapter ollama task=What is the population of France? -m gemma3
+spl run ./06_react_agent/react_agent.spl --adapter ollama task=What is the population of France? -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/06_react_agent/react_agent_20260319_022706.log
 ```text
@@ -479,7 +479,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./07_safe_generation/safe_generation.spl --adapter ollama prompt=Explain how encryption works -m gemma3
+spl run ./07_safe_generation/safe_generation.spl --adapter ollama prompt=Explain how encryption works -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/07_safe_generation/safe_generation_20260319_022734.log
 ```text
@@ -511,11 +511,11 @@ Log: /home/gongai/.spl/logs/safe_generation-ollama-20260319-022734.log
 --
 -- Setup:
 --   pip install numpy faiss-cpu
---   spl2 rag add /home/gongai/projects/digital-duck/zinets/who-is-wen.md
+--   spl rag add /home/gongai/projects/digital-duck/zinets/who-is-wen.md
 --
 -- Usage:
---   spl2 run cookbook/08_rag_query/rag_query.spl --adapter ollama question="Where did Wen grow up?"
---   spl2 run cookbook/08_rag_query/rag_query.spl --adapter ollama question="What is Momagrid and why was it built?"
+--   spl run cookbook/08_rag_query/rag_query.spl --adapter ollama question="Where did Wen grow up?"
+--   spl run cookbook/08_rag_query/rag_query.spl --adapter ollama question="What is Momagrid and why was it built?"
 
 PROMPT rag_answer
 SELECT
@@ -528,7 +528,7 @@ GENERATE answer(question)
 
      cmd :
 ```bash
-spl2 run ./08_rag_query/rag_query.spl --adapter ollama question=What language is best for systems programming? -m gemma3
+spl run ./08_rag_query/rag_query.spl --adapter ollama question=What language is best for systems programming? -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/08_rag_query/rag_query_20260319_022743.log
 ```text
@@ -552,8 +552,8 @@ Log: /home/gongai/.spl/logs/rag_query-ollama-20260319-022743.log
 -- Each GENERATE feeds into the next via workflow variables.
 --
 -- Usage:
---   spl2 run cookbook/09_chain_of_thought/chain.spl --adapter ollama -m gemma3 topic="distributed AI inference"
---   spl2 run cookbook/09_chain_of_thought/chain.spl --adapter ollama -m llama3.2 topic="quantum computing"
+--   spl run cookbook/09_chain_of_thought/chain.spl --adapter ollama -m gemma3 topic="distributed AI inference"
+--   spl run cookbook/09_chain_of_thought/chain.spl --adapter ollama -m llama3.2 topic="quantum computing"
 
 WORKFLOW chain_of_thought
     INPUT: @topic TEXT
@@ -574,7 +574,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./09_chain_of_thought/chain.spl --adapter ollama topic=distributed AI inference -m gemma3
+spl run ./09_chain_of_thought/chain.spl --adapter ollama topic=distributed AI inference -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/09_chain_of_thought/chain_20260319_022746.log
 ```text
@@ -642,7 +642,7 @@ RECIPES=(
 for model in $MODELS; do
     for entry in "${RECIPES[@]}"; do
         IFS='|' read -r script params <<< "$entry"
-        spl2 run "$COOKBOOK_DIR/$script" --adapter "$ADAPTER" -m "$model" $params
+        spl run "$COOKBOOK_DIR/$script" --adapter "$ADAPTER" -m "$model" $params
     done
 done
 ```
@@ -687,8 +687,8 @@ bash ./10_batch_test/batch_test.sh
 -- Demonstrates multi-perspective reasoning, adversarial generation, and semantic evaluation.
 --
 -- Usage:
---   spl2 run cookbook/11_debate_arena/debate.spl --adapter ollama -m gemma3 topic="AI should be open-sourced"
---   spl2 run cookbook/11_debate_arena/debate.spl --adapter ollama -m llama3.2 topic="Remote work is better than office work"
+--   spl run cookbook/11_debate_arena/debate.spl --adapter ollama -m gemma3 topic="AI should be open-sourced"
+--   spl run cookbook/11_debate_arena/debate.spl --adapter ollama -m llama3.2 topic="Remote work is better than office work"
 
 WORKFLOW debate_arena
     INPUT: @topic TEXT, @max_rounds int DEFAULT 3
@@ -732,7 +732,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./11_debate_arena/debate.spl --adapter ollama topic=AI should be open-sourced -m gemma3
+spl run ./11_debate_arena/debate.spl --adapter ollama topic=AI should be open-sourced -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/11_debate_arena/debate_20260319_022811.log
 ```text
@@ -799,8 +799,8 @@ Log: /home/gongai/.spl/logs/debate-ollama-20260319-022811.log
 -- Demonstrates agentic planning, sequential execution, and progress tracking.
 --
 -- Usage:
---   spl2 run cookbook/12_plan_and_execute/plan_execute.spl --adapter ollama -m gemma3 task="Build a REST API for a todo app"
---   spl2 run cookbook/12_plan_and_execute/plan_execute.spl --adapter ollama task="Set up a CI/CD pipeline for a Python project"
+--   spl run cookbook/12_plan_and_execute/plan_execute.spl --adapter ollama -m gemma3 task="Build a REST API for a todo app"
+--   spl run cookbook/12_plan_and_execute/plan_execute.spl --adapter ollama task="Set up a CI/CD pipeline for a Python project"
 
 WORKFLOW plan_and_execute
     INPUT: @task TEXT
@@ -849,7 +849,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./12_plan_and_execute/plan_execute.spl --adapter ollama task=Build a REST API for a todo app -m gemma3
+spl run ./12_plan_and_execute/plan_execute.spl --adapter ollama task=Build a REST API for a todo app -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/12_plan_and_execute/plan_execute_20260319_022941.log
 ```text
@@ -927,8 +927,8 @@ Log: /home/gongai/.spl/logs/plan_execute-ollama-20260319-022941.log
 -- Demonstrates the map-reduce pattern for handling content beyond context limits.
 --
 -- Usage:
---   spl2 run cookbook/13_map_reduce/map_reduce.spl --adapter ollama -m gemma3 document="$(cat large_doc.txt)"
---   spl2 run cookbook/13_map_reduce/map_reduce.spl --adapter ollama document="$(cat README.md)" style="bullet points"
+--   spl run cookbook/13_map_reduce/map_reduce.spl --adapter ollama -m gemma3 document="$(cat large_doc.txt)"
+--   spl run cookbook/13_map_reduce/map_reduce.spl --adapter ollama document="$(cat README.md)" style="bullet points"
 
 WORKFLOW map_reduce_summarizer
     INPUT: @document TEXT, @style TEXT DEFAULT 'paragraph', @quality_threshold FLOAT DEFAULT 0.7
@@ -969,7 +969,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./13_map_reduce/map_reduce.spl --adapter ollama document="The quick brown fox jumps over the lazy dog." style="bullet points" -m gemma3
+spl run ./13_map_reduce/map_reduce.spl --adapter ollama document="The quick brown fox jumps over the lazy dog." style="bullet points" -m gemma3
 ```
 ```text
 Error: Parse error at 26:18: Expected IDENTIFIER, got OUTPUT ('OUTPUT')
@@ -984,7 +984,7 @@ Error: Parse error at 26:18: Expected IDENTIFIER, got OUTPUT ('OUTPUT')
 -- Demonstrates procedural decomposition, CALL-based delegation, and role specialization.
 --
 -- Usage:
---   spl2 run cookbook/14_multi_agent/multi_agent.spl --adapter ollama -m gemma3 topic="Impact of AI on healthcare"
+--   spl run cookbook/14_multi_agent/multi_agent.spl --adapter ollama -m gemma3 topic="Impact of AI on healthcare"
 
 -- Agent 1: Researcher
 PROCEDURE researcher(topic TEXT) RETURNS TEXT
@@ -1035,7 +1035,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./14_multi_agent/multi_agent.spl --adapter ollama topic=Impact of AI on healthcare -m gemma3
+spl run ./14_multi_agent/multi_agent.spl --adapter ollama topic=Impact of AI on healthcare -m gemma3
 ```
 ```text
 Error: Parse error at 12:22: Expected identifier, got AT ('@')
@@ -1050,7 +1050,7 @@ Error: Parse error at 12:22: Expected identifier, got AT ('@')
 -- Demonstrates tool-augmented analysis, multi-criteria evaluation, and structured output.
 --
 -- Usage:
---   spl2 run cookbook/15_code_review/code_review.spl --adapter ollama code="def foo(x): return eval(x)" language="Python"
+--   spl run cookbook/15_code_review/code_review.spl --adapter ollama code="def foo(x): return eval(x)" language="Python"
 
 WORKFLOW code_review
     INPUT: @code TEXT, @language TEXT
@@ -1102,7 +1102,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./15_code_review/code_review.spl --adapter ollama code="def foo(x): return eval(x)" language=Python -m gemma3
+spl run ./15_code_review/code_review.spl --adapter ollama code="def foo(x): return eval(x)" language=Python -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/15_code_review/code_review_20260319_023019.log
 ```text
@@ -1146,7 +1146,7 @@ Log: /home/gongai/.spl/logs/code_review-ollama-20260319-023019.log
 -- Demonstrates meta-cognitive loops and self-assessment patterns.
 --
 -- Usage:
---   spl2 run cookbook/16_reflection/reflection.spl --adapter ollama problem="Design a URL shortener system"
+--   spl run cookbook/16_reflection/reflection.spl --adapter ollama problem="Design a URL shortener system"
 
 WORKFLOW reflection_agent
     INPUT: @problem TEXT, @max_reflections int DEFAULT 3, @confidence_threshold FLOAT DEFAULT 0.85
@@ -1184,7 +1184,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./16_reflection/reflection.spl --adapter ollama problem=Design a URL shortener system -m gemma3
+spl run ./16_reflection/reflection.spl --adapter ollama problem=Design a URL shortener system -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/16_reflection/reflection_20260319_023049.log
 ```text
@@ -1235,7 +1235,7 @@ Log: /home/gongai/.spl/logs/reflection-ollama-20260319-023049.log
 -- Demonstrates branching exploration, comparative evaluation, and path scoring.
 --
 -- Usage:
---   spl2 run cookbook/17_tree_of_thought/tree_of_thought.spl --adapter ollama problem="Should we rewrite the legacy system or incrementally refactor?"
+--   spl run cookbook/17_tree_of_thought/tree_of_thought.spl --adapter ollama problem="Should we rewrite the legacy system or incrementally refactor?"
 
 WORKFLOW tree_of_thought
     INPUT: @problem TEXT
@@ -1287,7 +1287,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./17_tree_of_thought/tree_of_thought.spl --adapter ollama problem="Should we rewrite the legacy system or incrementally refactor?" -m gemma3
+spl run ./17_tree_of_thought/tree_of_thought.spl --adapter ollama problem="Should we rewrite the legacy system or incrementally refactor?" -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/17_tree_of_thought/tree_of_thought_20260319_023252.log
 ```text
@@ -1325,8 +1325,8 @@ Log: /home/gongai/.spl/logs/tree_of_thought-ollama-20260319-023252.log
 -- Demonstrates safety-first patterns: content filtering, PII detection, and output sanitization.
 --
 -- Usage:
---   spl2 run cookbook/18_guardrails/guardrails.spl --adapter ollama user_input="Explain how encryption works"
---   spl2 run cookbook/18_guardrails/guardrails.spl --adapter ollama user_input="My SSN is 123-45-6789, help me file taxes"
+--   spl run cookbook/18_guardrails/guardrails.spl --adapter ollama user_input="Explain how encryption works"
+--   spl run cookbook/18_guardrails/guardrails.spl --adapter ollama user_input="My SSN is 123-45-6789, help me file taxes"
 
 WORKFLOW guardrails_pipeline
     INPUT: @user_input TEXT
@@ -1387,7 +1387,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./18_guardrails/guardrails.spl --adapter ollama user_input=Explain how encryption works -m gemma3
+spl run ./18_guardrails/guardrails.spl --adapter ollama user_input=Explain how encryption works -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/18_guardrails/guardrails_20260319_023406.log
 ```text
@@ -1423,11 +1423,11 @@ Log: /home/gongai/.spl/logs/guardrails-ollama-20260319-023406.log
 -- Demonstrates memory.get/memory.set, context accumulation, and stateful interactions.
 --
 -- Usage:
---   spl2 run cookbook/19_memory_conversation/memory_chat.spl --adapter ollama user_input="My name is Alice and I'm a data scientist"
---   spl2 run cookbook/19_memory_conversation/memory_chat.spl --adapter ollama user_input="What do you know about me?"
+--   spl run cookbook/19_memory_conversation/memory_chat.spl --adapter ollama user_input="My name is Alice and I'm a data scientist"
+--   spl run cookbook/19_memory_conversation/memory_chat.spl --adapter ollama user_input="What do you know about me?"
 --
--- Memory persists across runs via `spl2 memory` store.
--- Reset with: spl2 memory delete chat_user_profile
+-- Memory persists across runs via `spl memory` store.
+-- Reset with: spl memory delete chat_user_profile
 
 WORKFLOW memory_conversation
     INPUT: @user_input TEXT, @history_turns int DEFAULT 10
@@ -1463,7 +1463,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./19_memory_conversation/memory_chat.spl --adapter ollama user_input="My name is Alice and I am a data scientist" -m gemma3
+spl run ./19_memory_conversation/memory_chat.spl --adapter ollama user_input="My name is Alice and I am a data scientist" -m gemma3
 ```
 ```text
 Error: Parse error at 19:27: Expected statement keyword, got LPAREN ('(')
@@ -1480,7 +1480,7 @@ Error: Parse error at 19:27: Expected statement keyword, got LPAREN ('(')
 -- Demonstrates ensemble methods, comparative scoring, and consensus-driven output.
 --
 -- Usage:
---   spl2 run cookbook/20_ensemble_voting/ensemble.spl --adapter ollama question="What causes inflation?"
+--   spl run cookbook/20_ensemble_voting/ensemble.spl --adapter ollama question="What causes inflation?"
 
 WORKFLOW ensemble_voting
     INPUT: @question TEXT
@@ -1536,7 +1536,7 @@ END
 
      cmd :
 ```bash
-spl2 run ./20_ensemble_voting/ensemble.spl --adapter ollama question=What causes inflation? -m gemma3
+spl run ./20_ensemble_voting/ensemble.spl --adapter ollama question=What causes inflation? -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/20_ensemble_voting/ensemble_20260319_023408.log
 ```text
@@ -1576,7 +1576,7 @@ Log: /home/gongai/.spl/logs/ensemble-ollama-20260319-023408.log
 -- Each step can target a different model — the right model for each task.
 --
 -- Usage:
---   spl2 run cookbook/21_multi_model_pipeline/multi_model.spl --adapter ollama topic="climate change"
+--   spl run cookbook/21_multi_model_pipeline/multi_model.spl --adapter ollama topic="climate change"
 
 CREATE FUNCTION research(topic TEXT) RETURNS TEXT AS $$
 You are a research specialist.
@@ -1644,7 +1644,7 @@ END;
 
      cmd :
 ```bash
-spl2 run ./21_multi_model_pipeline/multi_model.spl --adapter ollama topic=climate change -m gemma3
+spl run ./21_multi_model_pipeline/multi_model.spl --adapter ollama topic=climate change -m gemma3
 ```
      log : /home/gongai/projects/digital-duck/SPL20/cookbook/21_multi_model_pipeline/multi_model_20260319_023456.log
 ```text

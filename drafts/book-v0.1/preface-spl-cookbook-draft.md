@@ -27,7 +27,7 @@ GROUP BY name
 
 Then, with this book, you will learn to write this:
 
-```spl2
+```spl
 PROMPT answer: """
 Summarize the key findings from this document.
 Return exactly 3 bullet points.
@@ -39,7 +39,7 @@ ADAPTER ollama;
 
 And then this:
 
-```spl2
+```spl
 WORKFLOW research_agent(input: text) -> report: text
 BEGIN
   GENERATE plan FROM input USING planner;

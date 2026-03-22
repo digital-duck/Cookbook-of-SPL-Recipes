@@ -37,10 +37,10 @@ Tool connectors mirror the adapter pattern:
 
 ```bash
 # Adapter: swappable LLM backend
-spl2 run script.spl --adapter ollama -m gemma3
+spl run script.spl --adapter ollama -m gemma3
 
 # Connector: swappable tool backend  (proposed)
-spl2 run script.spl --connector pdf=pymupdf --connector transcribe=whisper
+spl run script.spl --connector pdf=pymupdf --connector transcribe=whisper
 ```
 
 Defaults are declared in `.spl/connectors.yaml`:
@@ -125,7 +125,7 @@ Vision-capable models (LLaVA, GPT-4o) are connectors, not special syntax. `tool.
 
 ### What it does
 
-`Text2SPL` converts a plain-English task description into valid SPL 2.0 source code. It is implemented in `spl2/text2spl.py` and is adapter-agnostic — it works with any `LLMAdapter` (Ollama, OpenAI, Anthropic, etc.).
+`Text2SPL` converts a plain-English task description into valid SPL 2.0 source code. It is implemented in `spl/text2spl.py` and is adapter-agnostic — it works with any `LLMAdapter` (Ollama, OpenAI, Anthropic, etc.).
 
 ### Architecture
 
@@ -158,14 +158,14 @@ Natural language description
 ### CLI usage
 
 ```bash
-# compile natural language to SPL (proposed spl2 compile command)
-spl2 compile "summarize a PDF and store the result" --mode workflow
-spl2 compile "translate an email to French" --adapter ollama -m gemma3
+# compile natural language to SPL (proposed spl compile command)
+spl compile "summarize a PDF and store the result" --mode workflow
+spl compile "translate an email to French" --adapter ollama -m gemma3
 ```
 
 ### Model selection
 
-No model is hardcoded — the caller controls adapter and model via CLI flags, the same as `spl2 run`. However, **a dedicated code-generation model is strongly recommended** for Text2SPL:
+No model is hardcoded — the caller controls adapter and model via CLI flags, the same as `spl run`. However, **a dedicated code-generation model is strongly recommended** for Text2SPL:
 
 - Code-specialised models (e.g. `deepseek-coder`, `codestral`, `qwen2.5-coder`, `claude-sonnet`) produce structurally cleaner output and hallucinate less syntax.
 - Using a general-purpose chat model for code generation wastes capability and increases retry rate.
@@ -184,7 +184,7 @@ This is tracked in the Backlog as **dedicated Text2SPL model config**.
 > **Development workaround (active):** Use the `claude_cli` adapter with `claude-sonnet-4-6` as the Text2SPL compiler. This avoids VRAM pressure entirely (runs via Claude subscription, no local model loaded) and produces the highest-quality `(NL, SPL)` training pairs available — Sonnet 4.6 becomes the **reference oracle** whose outputs will seed fine-tuning of the future specialty model.
 >
 > ```bash
-> spl2 compile "build a review agent that refines until quality > 0.8" \
+> spl compile "build a review agent that refines until quality > 0.8" \
 >   --adapter claude_cli -m claude-sonnet-4-6 --mode workflow
 > ```
 >
@@ -201,7 +201,7 @@ The current `Text2SPL` compiler embeds 4 hand-written examples in the system pro
 
 ### Self-Learning Flywheel
 
-The core insight is that every successful `spl2 compile` invocation produces a validated `(description, SPL)` pair — a free training signal. Combined with the existing cookbook corpus and user-contributed recipes, the system gets smarter every time it is used.
+The core insight is that every successful `spl compile` invocation produces a validated `(description, SPL)` pair — a free training signal. Combined with the existing cookbook corpus and user-contributed recipes, the system gets smarter every time it is used.
 
 ```
           ┌─────────────────────────────────────────────────┐
@@ -236,7 +236,7 @@ The core insight is that every successful `spl2 compile` invocation produces a v
 
 | Loop | Trigger | Effect |
 |------|---------|--------|
-| **Compile-time RAG** | Every `spl2 compile` call | Top-k similar examples injected into prompt immediately |
+| **Compile-time RAG** | Every `spl compile` call | Top-k similar examples injected into prompt immediately |
 | **DB growth** | Every validated (NL, SPL) pair | Vector DB expands; future retrievals improve |
 | **Model fine-tuning** | Scheduled / when DB reaches threshold | Specialty SPL model retrained on curated pairs; general LLM no longer needed |
 
@@ -247,7 +247,7 @@ All `(description, SPL)` pairs are eligible, regardless of origin:
 | Source | Quality signal |
 |--------|---------------|
 | Cookbook recipes (`cookbook/*/`) | Hand-curated; highest quality |
-| User `spl2 compile` invocations | Validated by parser+analyzer; auto-accepted |
+| User `spl compile` invocations | Validated by parser+analyzer; auto-accepted |
 | Dynamically generated SPL (from workflows calling `Text2SPL`) | Validated; accepted if no retry needed |
 | Rejected/retried generations | Stored as negative examples for fine-tuning |
 
@@ -264,7 +264,7 @@ Indexing pipeline  (triggered on new pair, or batch-rebuild)
 └──────────────────────────────────────────────────────────────┘
          │
          ▼
-  Vector index (spl2 built-in VectorStore, or Chroma / FAISS)
+  Vector index (spl built-in VectorStore, or Chroma / FAISS)
 
 At compile time:
   NL description
@@ -358,12 +358,12 @@ General LLM + Code-RAG  →  (fine-tuning)  →  Specialty SPL model
 
 | Phase | Scope |
 |-------|-------|
-| 1 — Offline indexer | `spl2 index-recipes` command; embeds all cookbook `.spl` files into the built-in `VectorStore` |
+| 1 — Offline indexer | `spl index-recipes` command; embeds all cookbook `.spl` files into the built-in `VectorStore` |
 | 2 — Dynamic retrieval | `Text2SPL` accepts optional `rag_store`; injects top-k examples at compile time |
-| 3 — Live pair capture | Every validated `spl2 compile` invocation appends `(description, SPL)` to the DB automatically |
+| 3 — Live pair capture | Every validated `spl compile` invocation appends `(description, SPL)` to the DB automatically |
 | 4 — Self-indexing | Indexer workflow written in SPL; triggered when a recipe is added or updated |
 | 5 — DB pruning | Deduplication, quality scoring, and coverage-based retirement of stale pairs |
-| 6 — Fine-tune export | `spl2 export-training-data` — exports curated pairs as JSONL for model fine-tuning |
+| 6 — Fine-tune export | `spl export-training-data` — exports curated pairs as JSONL for model fine-tuning |
 | 7 — Specialty model | Fine-tune Qwen2.5-Coder (or equivalent) on exported dataset; deploy via Ollama as `spl-coder` |
 | 8 — Model-replaces-RAG | Specialty model is good enough that RAG retrieval becomes optional (fallback only) |
 
@@ -385,9 +385,58 @@ Three cookbook recipes currently fail due to parser gaps:
 
 - `PARALLEL DO ... END` — run independent GENERATE calls concurrently
 - `STREAM INTO @var` — streaming token output for long generations
-- `spl2 memory` CLI — read/write/delete named memory slots from the command line
+- `spl memory` CLI — read/write/delete named memory slots from the command line
 - Workflow-level memory writes (`STORE @var IN memory.key`) — currently stubbed out
-- `spl2 test` — built-in test runner for `.spl` files with expected output matching
-- `spl2 compile` — CLI command for Text2SPL (natural language → SPL source)
-- Dedicated Text2SPL model config — allow users to pin a code-generation model (e.g. `deepseek-coder`, `qwen2.5-coder`) for `spl2 compile` separately from the runtime model used by `spl2 run`
-- `spl2 index-recipes` — offline indexer that embeds all cookbook `.spl` files into the vector store for Code-RAG retrieval
+- `spl test` — built-in test runner for `.spl` files with expected output matching
+- `spl compile` — CLI command for Text2SPL (natural language → SPL source)
+- Dedicated Text2SPL model config — allow users to pin a code-generation model (e.g. `deepseek-coder`, `qwen2.5-coder`) for `spl compile` separately from the runtime model used by `spl run`
+- `spl index-recipes` — offline indexer that embeds all cookbook `.spl` files into the vector store for Code-RAG retrieval
+
+---
+
+## Feedback from v0.1 Editorial Review — Technical Items
+
+*Captured from Opus 4.6 editorial review, March 2026. These items have implications for the SPL runtime, documentation, or cookbook beyond pure editorial work.*
+
+### 1. CALL/GENERATE Split — Explicit Documentation
+
+**Finding:** The CALL/GENERATE distinction (deterministic tool calls vs. probabilistic LLM invocations) is the most valuable design principle in the book. Every recipe implicitly teaches it, but it is never stated as a standalone principle.
+
+**Action:** Add a dedicated "The CALL/GENERATE Split" sidebar or mini-chapter in the book and in the SPL language reference. This should be the first design principle introduced after Hello World — before any WORKFLOW recipe. The insight that separates a reader who finishes the book from one who *understands* it.
+
+**Priority:** High. Small documentation effort, large comprehension payoff.
+
+### 2. Adapter Portability Proof Chapter — "One Recipe, Four Adapters"
+
+**Finding:** The book repeatedly promises that the same `.spl` file runs unchanged across adapters (Ollama, Anthropic, OpenRouter, Momagrid). This is the central value proposition. Yet no chapter demonstrates it by running the same recipe across three or four adapters and showing output side-by-side.
+
+**Chapter 9.1 (Model Showdown) comes close** but swaps models *within* a single adapter rather than swapping adapters.
+
+**Action:** Add a chapter titled "One Recipe, Four Adapters" that runs a single meaningful recipe (not Hello World — something with a WORKFLOW, at least two GENERATE calls, and a non-trivial output) against Ollama, Anthropic, and OpenRouter. Show the outputs. Show the latencies. Show what changes (output variation due to model differences) and what doesn't (the `.spl` file is identical). This is the proof that backs up the promise.
+
+**Implementation note:** The recipe should use `--adapter ollama`, `--adapter claude_cli`, and `--adapter openrouter` with the same `.spl` source. The outputs will differ (different models produce different text), but the *structure* and *execution flow* should be identical. Capture this with actual benchmark data.
+
+**Priority:** High. This is the single strongest argument for SPL's architecture — it currently goes undemonstrated.
+
+### 3. Error Handling Coverage
+
+**Finding:** No dedicated recipe teaches what happens when things go wrong in production: malformed JSON from structured-output workflows, Python tools raising exceptions, Ollama server unreachable mid-workflow. The EXCEPTION block is mentioned in Hello World and the recipe-maker, but never the primary topic.
+
+**Status:** *Partially addressed* — `ch04-3-error-handling-patterns.md` was added in v0.2 covering four error handling patterns (graceful degradation, retry with backoff, multi-step isolation, LLM-as-judge validation).
+
+**Remaining gap:** The chapter covers pattern templates but does not show concrete runtime error messages and recovery flows for the three specific failure modes above. Consider adding a "When Things Go Wrong" appendix or expanding ch04-3 with concrete error output examples from actual failed runs.
+
+**Priority:** Medium. The chapter exists; the gap is concrete error trace examples.
+
+### 4. SPL Ecosystem and Adoption Documentation
+
+**Finding:** SPL is not yet widely adopted. A reader investing time in learning SPL is making a bet on the language's future. The book should address this directly rather than implying inevitability.
+
+**Action:** Add an honest section to the closing chapter (ch09-1) covering:
+- Current state of the SPL ecosystem: open-source status, GitHub stats, known production deployments (if any), community size
+- The roadmap: what is planned for SPL v3, Momagrid scale milestones
+- Migration path: if a reader's team evaluates SPL and decides it is not right for them, what do they take away? (The patterns, the mental model, the CALL/GENERATE discipline — these transfer to any framework)
+
+**Status:** *Partially addressed* — ch09-1 covers the roadmap and what SPL is not trying to replace, but does not have an explicit "here is the honest state of the ecosystem" section.
+
+**Priority:** Medium. Builds trust by being direct about where the project is.

@@ -52,7 +52,7 @@ If analyzing a `.spl` file:
 
 ### Technical References
 - **Package:** `spl-llm` (PyPI).
-- **Binary:** `spl2`.
+- **Binary:** `spl`.
 - **Primary Model:** `gemma3`.
 - **Reference Hardware:** GTX 1080 Ti.
 - **Academic Foundations:** arXiv:2602.21257 (SPL 1.0) and forthcoming SPL 2.0 / Momagrid papers.

@@ -1,4 +1,4 @@
-# Chapter 6.3 — Ensemble Voting
+# Ensemble Voting
 
 *"The wisdom of the crowd is more reliable than the genius of the individual."*
 
@@ -24,7 +24,7 @@ This recipe demonstrates **Multi-Sample Generation** and **Consensus-Driven Synt
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 20: Ensemble Voting
 -- Generates multiple independent answers, then uses majority voting to pick the best.
 
@@ -80,7 +80,7 @@ Finally, we take the highest-scoring candidate and "polish" it using the consens
 Run the ensemble on a controversial or factual topic:
 
 ```bash
-spl2 run cookbook/20_ensemble_voting/ensemble.spl --adapter ollama \
+spl run cookbook/20_ensemble_voting/ensemble.spl --adapter ollama \
     question="What are the main causes of the Great Depression?"
 ```
 
@@ -121,6 +121,6 @@ Use the **Ensemble Voting** pattern when:
 
 ## Exercises
 
-1.  **Parallel Execution.** (Required for speed) Use the `WITH` clause (Chapter 8.1) to run all 5 candidates and all 5 scores in parallel blocks.
+1.  **Parallel Execution.** (Required for speed) Use the `WITH` clause (Chapter 9.1) to run all 5 candidates and all 5 scores in parallel blocks.
 2.  **Diversity Prompting.** Instead of running the same prompt five times, give each candidate a slightly different "Persona" (e.g., "Answer as an economist," "Answer as a historian," "Answer as a sociologist").
 3.  **Weighted Voting.** Modify the `select_winner` step to give more "weight" to candidates that have higher individual scores.

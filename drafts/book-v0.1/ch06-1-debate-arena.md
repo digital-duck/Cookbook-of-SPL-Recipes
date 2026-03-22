@@ -1,4 +1,4 @@
-# Chapter 6.1 — Debate Arena
+# Debate Arena
 
 *"The truth is a spark that flies when two stones of opinion are struck together."*
 
@@ -24,7 +24,7 @@ This recipe introduces the `WHILE` loop for iterative reasoning and the pattern 
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 11: Debate Arena
 -- Two personas argue opposing sides, then a judge picks the winner.
 
@@ -84,7 +84,7 @@ After the rebuttals are complete, we call the `judge_debate` step. This step rec
 Pick a controversial topic and let the models fight it out:
 
 ```bash
-spl2 run cookbook/11_debate_arena/debate.spl --adapter ollama \
+spl run cookbook/11_debate_arena/debate.spl --adapter ollama \
     topic="Remote work is better than office work"
 ```
 
@@ -124,6 +124,6 @@ Use the **Debate Arena** pattern when:
 
 ## Exercises
 
-1.  **Change the Personas.** (Advanced) Research how to use `CREATE FUNCTION` (Chapter 8.1) to give the Pro and Con sides specific "backgrounds" (e.g., "You are a CEO" vs. "You are a junior developer").
+1.  **Change the Personas.** (Advanced) Research how to use `CREATE FUNCTION` (Chapter 9.1) to give the Pro and Con sides specific "backgrounds" (e.g., "You are a CEO" vs. "You are a junior developer").
 2.  **Add a Moderator.** Insert a step inside the `WHILE` loop where a "Moderator" model summarizes the debate so far and asks a specific follow-up question.
 3.  **Variable Rounds.** Modify the workflow to accept `@max_rounds` from the command line, and try a "Lightning Round" (1 round) vs. an "Exhaustive Debate" (5 rounds).

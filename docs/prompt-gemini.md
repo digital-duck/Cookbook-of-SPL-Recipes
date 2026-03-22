@@ -15,7 +15,7 @@ at /home/gongai/projects/digital-duck/zinets/docs/arxiv/Momagrid-paper/momagrid-
 
 (3) SPL 2.0: A Declarative Language for Agentic Workflow Orchestration
 see my arXiv paper (in preparation) 
-at /home/gongai/projects/digital-duck/zinets/docs/arxiv/SPL2.0-Agentic-Flow/paper/spl2-declarative-agentic-workflow-v0.6.tex
+at /home/gongai/projects/digital-duck/zinets/docs/arxiv/SPL2.0-Agentic-Flow/paper/spl-declarative-agentic-workflow-v0.6.tex
 
 I believe that above 3 pieces when fit together will break down the AI application development barrier significantly,
 and they will make AI more accessible to everyone everywhere, especially, people in the Global South.

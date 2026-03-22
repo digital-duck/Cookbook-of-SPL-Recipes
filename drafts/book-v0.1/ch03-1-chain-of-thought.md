@@ -1,4 +1,4 @@
-## Chapter 3.1 — Chain of Thought
+## Chain of Thought
 
 ### The Pattern
 
@@ -20,7 +20,7 @@ Model the reasoning stages explicitly as a linear chain of GENERATE steps, threa
 -- Each GENERATE feeds into the next via workflow variables.
 --
 -- Usage:
---   spl2 run cookbook/09_chain_of_thought/chain.spl \
+--   spl run cookbook/09_chain_of_thought/chain.spl \
 --       --adapter ollama -m gemma3 \
 --       topic="distributed AI inference"
 
@@ -73,7 +73,7 @@ Each CTE can only see what the previous one produced. There is no way for `summa
 ### Running It
 
 ```bash
-spl2 run cookbook/09_chain_of_thought/chain.spl \
+spl run cookbook/09_chain_of_thought/chain.spl \
     --adapter ollama -m gemma3 \
     topic="distributed AI inference"
 ```
@@ -146,7 +146,7 @@ One observed failure mode: if `@topic` is extremely broad ("everything about AI"
 
 - A single, well-crafted prompt reliably produces the quality you need. Complexity for its own sake is expensive.
 - Latency is the binding constraint. Three sequential LLM calls compound latency. If you need a fast answer and quality is acceptable from one pass, use one pass.
-- The stages are not genuinely sequential. If step two does not depend on step one's output, they should run in parallel (see Chapter 3.2, Tree of Thought, which explores parallel path generation before convergence).
+- The stages are not genuinely sequential. If step two does not depend on step one's output, they should run in parallel (see Chapter 4.2, Tree of Thought, which explores parallel path generation before convergence).
 
 **Comparison with alternatives:**
 

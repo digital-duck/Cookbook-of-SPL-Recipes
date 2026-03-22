@@ -1,4 +1,4 @@
-# Chapter 7.10 — Progressive Summary
+# Progressive Summary
 
 *"The length of a summary should be determined by the reader's time, not the document's size."*
 
@@ -27,7 +27,7 @@ This recipe introduces **Sequential Expansion**—using the output of a "compres
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 34: Progressive Summarizer
 -- Layered summary: sentence → paragraph → page.
 
@@ -83,7 +83,7 @@ SQL Analogy: **Drill-Down**. You are starting at the highest level of aggregatio
 Run the summarizer on a long research paper:
 
 ```bash
-spl2 run cookbook/34_progressive_summary/progressive_summary.spl \
+spl run cookbook/34_progressive_summary/progressive_summary.spl \
     --adapter ollama -m gemma3 \
     text="$(cat research_paper.txt)" layers=3
 ```
@@ -117,7 +117,7 @@ On a **GTX 1080 Ti**, a 3-layer summary takes **20–40 seconds**. The sequentia
 Use the **Progressive Summary** pattern when:
 - **Multi-Stakeholder Reporting**: When you need to send different versions of the same information to different people (e.g., Slack, Email, and internal wiki).
 - **Zoomable UIs**: Building interfaces where a user can click a "Show More" button to see a more detailed summary of a document.
-- **Context Management**: When you need to summarize a document to fit into a specific token budget for a downstream prompt (e.g., Chapter 5.1).
+- **Context Management**: When you need to summarize a document to fit into a specific token budget for a downstream prompt (e.g., Chapter 6.1).
 
 ---
 

@@ -1,4 +1,4 @@
-# Chapter 7.8 — Code Gen + Tests
+# Code Gen + Tests
 
 *"Code without tests is just a bug waiting to happen."*
 
@@ -29,7 +29,7 @@ This recipe demonstrates **Contextual Pipelining**—passing the implementation 
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 30: Code Generator + Tests
 -- Generate logic, then generate tests — in a single workflow.
 
@@ -87,7 +87,7 @@ Just as we inject style guides, we inject framework instructions. If the user wa
 Generate a Python function for email validation:
 
 ```bash
-spl2 run cookbook/30_code_gen/code_gen.spl --adapter ollama \
+spl run cookbook/30_code_gen/code_gen.spl --adapter ollama \
     spec="A function that validates an email address using regex" \
     language="Python"
 ```
@@ -95,7 +95,7 @@ spl2 run cookbook/30_code_gen/code_gen.spl --adapter ollama \
 Then, try a complex algorithm in Go:
 
 ```bash
-spl2 run cookbook/30_code_gen/code_gen.spl --adapter ollama \
+spl run cookbook/30_code_gen/code_gen.spl --adapter ollama \
     spec="Binary search over a sorted list, return index or -1" \
     language="Go" \
     test_framework="testing"

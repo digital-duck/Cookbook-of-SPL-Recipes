@@ -1,0 +1,34 @@
+% --- Hierarchical i.j.k.l numbering ---
+% Part numbers as Arabic (1, 2, ...) instead of Roman
+\renewcommand{\thepart}{\arabic{part}}
+% Reset chapter counter at every new part
+\makeatletter\@addtoreset{chapter}{part}\makeatother
+% Chapter displayed as i.j  (e.g. 9.3)
+\renewcommand{\thechapter}{\thepart.\arabic{chapter}}
+% Section/subsection follow automatically: i.j.k and i.j.k.l
+
+% Clean chapter mark: "9.3  A/B Test" without "CHAPTER" prefix
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\quad #1}{}}
+
+% --- TOC label-width fix (prevents number/title overlap) ---
+% tocloft lets us control the width reserved for each numbering level.
+% With deep numbers like 10.1.5.4 the defaults are far too narrow.
+\usepackage{tocloft}
+%                        indent from left    label box width
+\setlength{\cftchapindent}{0em}
+\setlength{\cftchapnumwidth}{3.5em}         % "10.2" needs ~3em
+\setlength{\cftsecindent}{3.5em}
+\setlength{\cftsecnumwidth}{4em}            % "10.1.5" needs ~3.5em
+\setlength{\cftsubsecindent}{7.5em}
+\setlength{\cftsubsecnumwidth}{4.5em}       % "10.1.5.4" needs ~4em
+\setlength{\cftsubsubsecindent}{12em}
+\setlength{\cftsubsubsecnumwidth}{5em}
+
+% --- Header/footer layout
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}                              % clear all header/footer fields
+\fancyhead[C]{\small\leftmark}          % chapter title centred in header
+\fancyfoot[C]{\thepage}                 % page number centred in footer
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}

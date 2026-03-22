@@ -1,4 +1,4 @@
-# Chapter 5.2 — Memory Conversation
+# Memory Conversation
 
 *"The difference between a tool and a partner is memory."*
 
@@ -24,7 +24,7 @@ This recipe introduces the `memory` namespace and the pattern of "Fact Extractio
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 19: Memory-Augmented Conversation
 -- Conversational agent that remembers facts from prior turns.
 
@@ -79,11 +79,11 @@ Run the conversation over multiple turns. Notice how the model "learns" as you g
 
 ```bash
 # Turn 1: Introduce yourself
-spl2 run cookbook/19_memory_conversation/memory_chat.spl \
+spl run cookbook/19_memory_conversation/memory_chat.spl \
     user_input="My name is Alice and I'm a data scientist"
 
 # Turn 2: Test the memory
-spl2 run cookbook/19_memory_conversation/memory_chat.spl \
+spl run cookbook/19_memory_conversation/memory_chat.spl \
     user_input="What is my name and what do I do?"
 ```
 
@@ -121,6 +121,6 @@ Use the **Memory Conversation** pattern when:
 
 ## Exercises
 
-1.  **Inspect the Memory.** Use the command line `spl2 memory get chat_user_profile` to see the raw text the model has stored about you.
+1.  **Inspect the Memory.** Use the command line `spl memory get chat_user_profile` to see the raw text the model has stored about you.
 2.  **Add a "Mood" Memory.** Modify the workflow to track the user's emotional state over time (e.g., "Frustrated," "Curious") and adjust the `@response` tone accordingly.
 3.  **Reset Logic.** Add a special input command (e.g., `user_input="Forget everything"`) that triggers a `memory.delete` call to wipe the profile and start over.

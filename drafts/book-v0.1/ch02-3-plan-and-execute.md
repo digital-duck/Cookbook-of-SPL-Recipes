@@ -1,4 +1,4 @@
-# Chapter 2.3 — Plan and Execute
+# Plan and Execute
 
 *"A complex task is just a series of simple tasks that haven't been organized yet."*
 
@@ -27,7 +27,7 @@ This recipe introduces the "Two-Phase Loop" pattern, which is essential for gene
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 12: Plan and Execute
 -- A planner decomposes a task, then an executor implements each step.
 
@@ -94,7 +94,7 @@ We use a Python tool to write the generated code to disk immediately. We don't w
 This is a "heavy" recipe. It's best to use a strong model like **qwen2.5-coder** or **Claude 3.5 Sonnet**:
 
 ```bash
-spl2 run cookbook/12_plan_and_execute/plan_execute.spl \
+spl run cookbook/12_plan_and_execute/plan_execute.spl \
     --adapter ollama -m qwen2.5-coder \
     --tools cookbook/12_plan_and_execute/tools.py \
     task="Build a REST API for a todo app" \

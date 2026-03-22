@@ -1,4 +1,4 @@
-# Chapter 1.4 — Few-Shot Learning
+# Few-Shot Learning
 
 *"Show, don't just tell."*
 
@@ -24,7 +24,7 @@ This recipe uses `CREATE FUNCTION` with a `SELECT CASE` block to deliver dynamic
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 24: Few-Shot Prompting
 -- Embed gold-standard examples in context to guide output format.
 
@@ -80,7 +80,7 @@ The `GENERATE` step receives both the user's `text` and the `examples`. Because 
 Run the classifier for the finance domain:
 
 ```bash
-spl2 run cookbook/24_few_shot/few_shot.spl --adapter ollama \
+spl run cookbook/24_few_shot/few_shot.spl --adapter ollama \
     text="The quarterly results exceeded all analyst forecasts" \
     domain="finance"
 ```
@@ -93,7 +93,7 @@ Expected output (clean JSON):
 Now try the operations domain:
 
 ```bash
-spl2 run cookbook/24_few_shot/few_shot.spl --adapter ollama \
+spl run cookbook/24_few_shot/few_shot.spl --adapter ollama \
     text="System outage detected in EU-WEST-2" \
     domain="ops"
 ```

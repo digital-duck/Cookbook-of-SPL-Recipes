@@ -1,4 +1,4 @@
-# Chapter 7.5 — Data Extraction
+# Data Extraction
 
 *"The real world is messy; your data doesn't have to be."*
 
@@ -24,7 +24,7 @@ This recipe demonstrates **Conditional Schema Injection**—choosing the data bl
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 27: Data Extraction
 -- Pull structured fields from messy text using dynamic schemas.
 
@@ -81,7 +81,7 @@ The `GENERATE` step uses the schema to constrain the output. Because we explicit
 Extract data from a noisy payment request:
 
 ```bash
-spl2 run cookbook/27_data_extraction/data_extraction.spl --adapter ollama \
+spl run cookbook/27_data_extraction/data_extraction.spl --adapter ollama \
     text="Please process payment of USD 4,250.00 to Riverside Consulting (ref: PO-8821)" \
     format="invoice"
 ```

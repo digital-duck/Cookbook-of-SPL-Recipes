@@ -1,4 +1,4 @@
-# Chapter 8.2 — Batch Test
+# Batch Test
 
 *"Don't just run it once; run it until it breaks, then run it again."*
 
@@ -24,7 +24,7 @@ This recipe demonstrates the extreme power of **Parallel Fan-Out** using `WITH` 
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 10: Batch Test
 -- Automated testing of key cookbook recipes across multiple models.
 
@@ -96,7 +96,7 @@ The final `@report` is committed with metadata. This makes it easy to parse the 
 Run the batch test with your local models:
 
 ```bash
-spl2 run cookbook/10_batch_test/batch_test.spl --adapter ollama
+spl run cookbook/10_batch_test/batch_test.spl --adapter ollama
 ```
 
 Expected output:

@@ -1,4 +1,4 @@
-# Chapter 6.4 — Socratic Tutor
+# Socratic Tutor
 
 *"The highest form of teaching is not giving answers, but asking the right questions."*
 
@@ -24,7 +24,7 @@ This recipe demonstrates **Persona-Driven Branching**—using a strict system ro
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 32: Socratic Tutor
 -- Ask guiding questions rather than giving answers directly.
 
@@ -93,7 +93,7 @@ SQL Analogy: **Conditional Routing**. You are routing the "Transaction" (the les
 Test the tutor on a scientific concept:
 
 ```bash
-spl2 run cookbook/32_socratic_tutor/socratic_tutor.spl \
+spl run cookbook/32_socratic_tutor/socratic_tutor.spl \
     --adapter ollama --tools cookbook/32_socratic_tutor/tools.py \
     topic="Why do objects fall at the same speed?" student_level="middle school"
 ```
@@ -135,5 +135,5 @@ Use the **Socratic Tutor** pattern when:
 ## Exercises
 
 1.  **Add a "Subject" Bias.** Modify the `socratic_persona` to accept a `@subject` parameter (e.g., "Physics," "History") and observe how it uses different analogies.
-2.  **Extend the Loop.** Use a `WHILE` loop (Chapter 6.1) to allow the dialogue to continue for up to 10 turns, or until the `@understanding_score` reaches 9.
+2.  **Extend the Loop.** Use a `WHILE` loop (Chapter 7.1) to allow the dialogue to continue for up to 10 turns, or until the `@understanding_score` reaches 9.
 3.  **Strict Mode.** Add an `EXCEPTION` handler that triggers if the model ever says the phrase "The answer is" and forces a `RETRY` with a stricter safety prompt.

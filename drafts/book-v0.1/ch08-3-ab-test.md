@@ -1,4 +1,4 @@
-# Chapter 8.3 — A/B Test
+# A/B Test
 
 *"The only thing better than a good prompt is a proven prompt."*
 
@@ -30,7 +30,7 @@ This recipe demonstrates **Numeric Evaluation**—using SPL's arithmetic capabil
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 26: Prompt A/B Test
 -- Compare two variants, score them, and pick the winner.
 
@@ -84,7 +84,7 @@ SQL Analogy: **Threshold Filtering**. You are only acting on data that exceeds a
 Run an ad-hoc test comparing two ways to explain neural networks:
 
 ```bash
-spl2 run cookbook/26_ab_test/ab_test.spl --adapter ollama \
+spl run cookbook/26_ab_test/ab_test.spl --adapter ollama \
     task="Explain neural networks" \
     prompt_a="Explain like I'm 5 years old" \
     prompt_b="Give a technical explanation with analogies"

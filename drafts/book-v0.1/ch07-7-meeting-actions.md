@@ -1,4 +1,4 @@
-# Chapter 7.7 — Meeting Actions
+# Meeting Actions
 
 *"Talk is cheap; action items are the currency of progress."*
 
@@ -28,7 +28,7 @@ This recipe introduces the use of **Schema Grounding**—passing a formal JSON S
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 29: Meeting Notes → Action Items
 -- Transcript in, structured TODO list + owners out.
 
@@ -82,7 +82,7 @@ Humans say things like "by Friday" or "next Tuesday." Computers need things like
 Run the action item extractor on a sample sprint planning transcript:
 
 ```bash
-spl2 run cookbook/29_meeting_actions/meeting_actions.spl \
+spl run cookbook/29_meeting_actions/meeting_actions.spl \
     --adapter ollama --tools cookbook/29_meeting_actions/tools.py \
     filename="sprint_planning.txt" \
     output_format="markdown"

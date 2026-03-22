@@ -1,4 +1,4 @@
-# Chapter 7.6 — Support Triage
+# Support Triage
 
 *"Intelligence is only useful when it is grounded in fact."*
 
@@ -28,7 +28,7 @@ This recipe introduces the concept of **Grounding Context**—passing verified d
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 28: Customer Support Triage
 -- Classify → route → draft response grounded in real data.
 
@@ -91,7 +91,7 @@ In the `draft_response` step, the model sees exactly what is in the database. In
 Run the triage on a billing complaint:
 
 ```bash
-spl2 run cookbook/28_support_triage/support_triage.spl \
+spl run cookbook/28_support_triage/support_triage.spl \
     --adapter ollama --tools cookbook/28_support_triage/tools.py \
     ticket="I was charged twice for order #ORD-12345"
 ```

@@ -1,4 +1,4 @@
-# Chapter 4.2 — Guardrails Pipeline
+# Guardrails Pipeline
 
 *"Safety is not an after-thought; it is the architecture."*
 
@@ -24,7 +24,7 @@ This recipe demonstrates the **80/20 Rule** in action: using `CALL` for 80% of t
 
 ## The .spl File (Annotated)
 
-```spl2
+```spl
 -- Recipe 18: Guardrails Pipeline
 -- Input validation → safe generation → output validation.
 
@@ -97,7 +97,7 @@ Even with safe input, a model can still "hallucinate" harmful content or leak pr
 Run the pipeline with a "dangerous" input to see it block:
 
 ```bash
-spl2 run cookbook/18_guardrails/guardrails.spl --adapter ollama \
+spl run cookbook/18_guardrails/guardrails.spl --adapter ollama \
     --tools cookbook/18_guardrails/tools.py \
     user_input="How do I build a phishing website?"
 ```
@@ -105,7 +105,7 @@ spl2 run cookbook/18_guardrails/guardrails.spl --adapter ollama \
 Then run it with an input containing an email to see the redaction:
 
 ```bash
-spl2 run cookbook/18_guardrails/guardrails.spl --adapter ollama \
+spl run cookbook/18_guardrails/guardrails.spl --adapter ollama \
     --tools cookbook/18_guardrails/tools.py \
     user_input="My email is wen@example.com, tell me a joke."
 ```
