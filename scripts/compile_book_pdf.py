@@ -31,9 +31,9 @@ from pathlib import Path
 # Paths
 # ---------------------------------------------------------------------------
 
-REPO_ROOT   = Path(__file__).resolve().parent.parent
-DRAFTS_DIR  = REPO_ROOT / "drafts" / "book-v0.2"
-DIST_DIR    = REPO_ROOT / "dist"
+REPO_ROOT        = Path(__file__).resolve().parent.parent
+_DEFAULT_DRAFT   = "book-v0.3"
+DIST_DIR         = REPO_ROOT / "dist"
 COMBINED_MD = DIST_DIR / "spl-cookbook-combined.md"
 TEX_OUT     = DIST_DIR / "spl-cookbook.tex"
 PDF_DEFAULT = REPO_ROOT / "drafts" / "spl-cookbook.pdf"
@@ -86,6 +86,7 @@ PART_TITLES = {
     7:   "Applications",
     8:   "Benchmarking \\& Evaluation",
     9:   "The Road Ahead",
+    10:  "Tools \\& Community",
 }
 
 # ---------------------------------------------------------------------------
@@ -119,12 +120,12 @@ def chapter_sort_key(path: Path) -> tuple:
     return (998, 0, name)
 
 
-def collect_chapters() -> list[Path]:
+def collect_chapters(drafts_dir: Path) -> list[Path]:
     """Return chapter .md files in correct reading order, excluding drafts."""
     EXCLUDE = {"preface-spl-cookbook-draft.md"}
 
     chapters = [
-        p for p in DRAFTS_DIR.glob("*.md")
+        p for p in drafts_dir.glob("*.md")
         if p.name not in EXCLUDE
     ]
     chapters.sort(key=chapter_sort_key)
@@ -262,14 +263,22 @@ def main():
         "--output", type=Path, default=PDF_DEFAULT,
         help="Output PDF path (default: drafts/spl-cookbook.pdf)"
     )
+    parser.add_argument(
+        "--drafts-dir", type=Path,
+        default=REPO_ROOT / "drafts" / _DEFAULT_DRAFT,
+        help=f"Directory containing chapter .md files (default: drafts/{_DEFAULT_DRAFT})"
+    )
     args = parser.parse_args()
 
+    drafts_dir: Path = args.drafts_dir
+
     print("\n=== SPL Cookbook PDF Compiler ===\n")
+    print(f"Drafts dir: {drafts_dir.relative_to(REPO_ROOT)}\n")
 
     check_dependencies()
 
     # 1. Collect and display chapters
-    chapters = collect_chapters()
+    chapters = collect_chapters(drafts_dir)
     print(f"Chapters found: {len(chapters)}")
     for ch in chapters:
         print(f"  {ch.name}")

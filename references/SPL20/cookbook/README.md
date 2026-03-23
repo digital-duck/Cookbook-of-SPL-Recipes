@@ -22,7 +22,7 @@ ollama serve                     # start ollama (if not running)
 python cookbook/run_all.py 2>&1 | tee cookbook/out/run_all_$(date +%Y%m%d_%H%M%S).md 
 
 # retry failed recipes
-python cookbook/run_all.py --ids "04,10, 23-35" 2>&1 | tee cookbook/out/run_all_failed-$(date +%Y%m%d_%H%M%S).md 
+python cookbook/run_all.py --ids "18, 38-40" 2>&1 | tee cookbook/out/run_all_failed-$(date +%Y%m%d_%H%M%S).md 
 
 python cookbook/run_all.py --ids "04,10, 25,26, 29,30, 32,33" 2>&1 | tee cookbook/out/run_all_failed-$(date +%Y%m%d_%H%M%S).md 
 

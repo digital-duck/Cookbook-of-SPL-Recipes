@@ -1,5 +1,9 @@
 go_git.log
 
+# Generated PDF builds (binary — bloats repo; regenerate with: make book)
+drafts/*.pdf
+drafts/spl-cookbook.pdf
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

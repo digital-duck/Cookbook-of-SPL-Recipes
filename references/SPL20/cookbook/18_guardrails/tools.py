@@ -168,8 +168,7 @@ def detect_pii(text: str) -> str:
         found["phone"] = len(phones)
 
     if found:
-        detail = json.dumps(found)
-        return f"pii_found:{detail}"
+        return "pii_found"
     return "clean"
 
 
@@ -210,10 +209,10 @@ def classify_input_keywords(text: str) -> str:
 
     for kw in _HARMFUL_KEYWORDS:
         if kw in lower:
-            return f"harmful:keyword={kw}"
+            return "harmful"
 
     for kw in _OFF_TOPIC_KEYWORDS:
         if kw in lower:
-            return f"off_topic:keyword={kw}"
+            return "off_topic"
 
     return "safe"

@@ -1,15 +1,15 @@
 {
-  "_comment": "SPL 2.0 Cookbook Catalog \u2014 single source of truth for all recipes.",
+  "_comment": "SPL 2.0 Cookbook Catalog — single source of truth for all recipes.",
   "_schema": {
-    "is_active": "bool   \u2014 included in default batch run (python run_all.py)",
-    "approval_status": "string \u2014 new | approved | wip | disabled | rejected",
-    "category": "string \u2014 basics | agentic | reasoning | safety | retrieval | multi-agent | application | benchmarking"
+    "is_active": "bool   — included in default batch run (python run_all.py)",
+    "approval_status": "string — new | approved | wip | disabled | rejected",
+    "category": "string — basics | agentic | reasoning | safety | retrieval | multi-agent | application | benchmarking"
   },
   "recipes": [
     {
       "id": "01",
       "name": "Hello World",
-      "description": "Minimal SPL program \u2014 verify spl + adapter + model work",
+      "description": "Minimal SPL program — verify spl + adapter + model work",
       "args": [
         "spl",
         "run",
@@ -26,7 +26,7 @@
     {
       "id": "02",
       "name": "Ollama Proxy",
-      "description": "General-purpose LLM query \u2014 proxy any Ollama model",
+      "description": "General-purpose LLM query — proxy any Ollama model",
       "args": [
         "spl",
         "run",
@@ -44,7 +44,7 @@
     {
       "id": "03",
       "name": "Multilingual Greeting",
-      "description": "Greet in any language \u2014 parametric context demo",
+      "description": "Greet in any language — parametric context demo",
       "args": [
         "spl",
         "run",
@@ -63,7 +63,7 @@
     {
       "id": "04",
       "name": "Model Showdown",
-      "description": "Same prompt to multiple models \u2014 compare output and latency via parallel CTEs",
+      "description": "Same prompt to multiple models — compare output and latency via parallel CTEs",
       "args": [
         "spl",
         "run",
@@ -81,7 +81,7 @@
     {
       "id": "05",
       "name": "Self-Refine",
-      "description": "Iterative improvement: draft \u2192 critique \u2192 refine loop",
+      "description": "Iterative improvement: draft → critique → refine loop",
       "args": [
         "spl",
         "run",
@@ -159,7 +159,7 @@
     {
       "id": "09",
       "name": "Chain of Thought",
-      "description": "Multi-step reasoning: Research \u2192 Analyze \u2192 Summarize",
+      "description": "Multi-step reasoning: Research → Analyze → Summarize",
       "args": [
         "spl",
         "run",
@@ -249,7 +249,7 @@
     {
       "id": "14",
       "name": "Multi-Agent Collaboration",
-      "description": "Researcher \u2192 Analyst \u2192 Writer collaboration via PROCEDURE",
+      "description": "Researcher → Analyst → Writer collaboration via PROCEDURE",
       "args": [
         "spl",
         "run",
@@ -286,7 +286,7 @@
     {
       "id": "16",
       "name": "Reflection Agent",
-      "description": "Meta-cognitive loop: solve \u2192 reflect \u2192 correct until confident",
+      "description": "Meta-cognitive loop: solve → reflect → correct until confident",
       "args": [
         "spl",
         "run",
@@ -394,7 +394,7 @@
     {
       "id": "22",
       "name": "Text2SPL Demo",
-      "description": "Natural language to SPL 2.0 compiler \u2014 prompt, workflow, and auto modes",
+      "description": "Natural language to SPL 2.0 compiler — prompt, workflow, and auto modes",
       "args": [
         "bash",
         "./22_text2spl_demo/text2spl_demo.sh"
@@ -408,7 +408,7 @@
     {
       "id": "23",
       "name": "Structured Output",
-      "description": "CREATE FUNCTION with JSON schema \u2014 extract typed data from free text",
+      "description": "CREATE FUNCTION with JSON schema — extract typed data from free text",
       "args": [
         "spl",
         "run",
@@ -426,7 +426,7 @@
     {
       "id": "24",
       "name": "Few-Shot Prompting",
-      "description": "Gold-standard examples embedded in SELECT context \u2014 in-context learning",
+      "description": "Gold-standard examples embedded in SELECT context — in-context learning",
       "args": [
         "spl",
         "run",
@@ -445,7 +445,7 @@
     {
       "id": "25",
       "name": "Nested Procedures",
-      "description": "PROCEDURE calling PROCEDURE \u2014 deep composability without external orchestration",
+      "description": "PROCEDURE calling PROCEDURE — deep composability without external orchestration",
       "args": [
         "spl",
         "run",
@@ -464,7 +464,7 @@
     {
       "id": "26",
       "name": "Prompt A/B Test",
-      "description": "CTEs + EVALUATE scoring \u2014 compare two prompt variants, pick winner automatically",
+      "description": "CTEs + EVALUATE scoring — compare two prompt variants, pick winner automatically",
       "args": [
         "spl",
         "run",
@@ -484,7 +484,7 @@
     {
       "id": "27",
       "name": "Data Extraction",
-      "description": "Pull structured fields from messy text \u2014 names, dates, amounts, references",
+      "description": "Pull structured fields from messy text — names, dates, amounts, references",
       "args": [
         "spl",
         "run",
@@ -503,7 +503,7 @@
     {
       "id": "28",
       "name": "Customer Support Triage",
-      "description": "Classify \u2192 route \u2192 draft response in one workflow",
+      "description": "Classify → route → draft response in one workflow",
       "args": [
         "spl",
         "run",
@@ -578,7 +578,7 @@
     {
       "id": "32",
       "name": "Socratic Tutor",
-      "description": "Ask guiding questions rather than giving answers \u2014 persona-constrained generation",
+      "description": "Ask guiding questions rather than giving answers — persona-constrained generation",
       "args": [
         "spl",
         "run",
@@ -616,7 +616,7 @@
     {
       "id": "34",
       "name": "Progressive Summarizer",
-      "description": "Layered summary: sentence \u2192 paragraph \u2192 page with fidelity verification",
+      "description": "Layered summary: sentence → paragraph → page with fidelity verification",
       "args": [
         "spl",
         "run",
@@ -635,7 +635,7 @@
     {
       "id": "35",
       "name": "Hypothesis Tester",
-      "description": "Generate hypothesis \u2192 design test \u2192 evaluate evidence \u2192 conclude",
+      "description": "Generate hypothesis → design test → evaluate evidence → conclude",
       "args": [
         "spl",
         "run",
@@ -654,7 +654,7 @@
     {
       "id": "36",
       "name": "Tool-Use / Function-Call",
-      "description": "Register Python functions as CALL-able tools \u2014 deterministic math, zero LLM cost",
+      "description": "Register Python functions as CALL-able tools — deterministic math, zero LLM cost",
       "args": [
         "spl",
         "run",
@@ -676,7 +676,7 @@
     {
       "id": "37",
       "name": "Headline News Aggregator",
-      "description": "Generate \u2192 expand \u2192 evaluate coverage \u2192 daily news digest for any topic area",
+      "description": "Generate → expand → evaluate coverage → daily news digest for any topic area",
       "args": [
         "spl",
         "run",
@@ -692,6 +692,65 @@
       "is_active": true,
       "approval_status": "new",
       "category": "application"
+    },
+    {
+      "id": "38",
+      "name": "Human-in-the-Loop Approval Gate",
+      "description": "Generate draft → request approval (auto-approves in dev mode) → branch on decision",
+      "args": [
+        "spl",
+        "run",
+        "./38_human_in_the_loop/human_approval.spl",
+        "--adapter",
+        "ollama",
+        "--tools",
+        "./38_human_in_the_loop/tools.py",
+        "topic=Q1 Performance Review",
+        "data=Revenue: $2.4M (+12% YoY). Churn: 3.2% (-0.8pp). NPS: 47 (+5)."
+      ],
+      "dir": "38_human_in_the_loop",
+      "log": "human_approval",
+      "is_active": true,
+      "approval_status": "new",
+      "category": "safety"
+    },
+    {
+      "id": "39",
+      "name": "Document Q&A",
+      "description": "Grounded Q&A over document context — answer from text only, no hallucination",
+      "args": [
+        "spl",
+        "run",
+        "./39_doc_qa/doc_qa.spl",
+        "--adapter",
+        "ollama",
+        "question=What is the main finding?",
+        "context=SPL (Structured Prompt Language) is a declarative language for LLM workflow orchestration. Key finding: declarative workflows reduce code by 5-7x versus imperative frameworks while remaining readable by SQL practitioners. Benchmarked on GTX 1080 Ti hardware available for under $200."
+      ],
+      "dir": "39_doc_qa",
+      "log": "doc_qa",
+      "is_active": true,
+      "approval_status": "new",
+      "category": "retrieval"
+    },
+    {
+      "id": "40",
+      "name": "Portability Test",
+      "description": "One recipe, four adapters — same .spl file runs unchanged across ollama/claude_cli/openrouter/momagrid",
+      "args": [
+        "spl",
+        "run",
+        "./40_portability_test/portability_test.spl",
+        "--adapter",
+        "ollama",
+        "topic=The economic impact of open-source AI models",
+        "quality_threshold=0.75"
+      ],
+      "dir": "40_portability_test",
+      "log": "portability_test",
+      "is_active": true,
+      "approval_status": "new",
+      "category": "benchmarking"
     }
   ]
 }

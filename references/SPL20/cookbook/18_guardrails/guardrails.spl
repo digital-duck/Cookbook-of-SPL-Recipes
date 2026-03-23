@@ -39,16 +39,14 @@ DO
     CALL classify_input_keywords(@user_input) INTO @keyword_class
 
     EVALUATE @keyword_class
-        WHEN STARTSWITH 'harmful' THEN
+        WHEN 'harmful' THEN
             COMMIT 'I cannot help with that request.' WITH
-                status        = 'blocked_harmful',
-                gate          = 'keyword_prescreen',
-                keyword_match = @keyword_class
-        WHEN STARTSWITH 'off_topic' THEN
+                status = 'blocked_harmful',
+                gate   = 'keyword_prescreen'
+        WHEN 'off_topic' THEN
             COMMIT 'That question is outside my scope. Please ask something relevant.' WITH
-                status        = 'blocked_off_topic',
-                gate          = 'keyword_prescreen',
-                keyword_match = @keyword_class
+                status = 'blocked_off_topic',
+                gate   = 'keyword_prescreen'
         OTHERWISE
             -- Continue to LLM classification
     END
@@ -73,7 +71,7 @@ DO
     CALL detect_pii(@user_input) INTO @pii_report
 
     EVALUATE @pii_report
-        WHEN STARTSWITH 'pii_found' THEN
+        WHEN 'pii_found' THEN
             -- Gate 2b: Redact PII (deterministic — no LLM)
             CALL redact_pii(@user_input) INTO @clean_input
         OTHERWISE

@@ -1,0 +1,25 @@
+# requirements.txt — spl-cookbook
+# Full dependency list for development.
+# For end users: pip install spl-cookbook
+
+# ── SPL runtime ─────────────────────────────────────────────────────────────
+spl-llm>=2.0.0           # SPL 2.0 declarative workflow engine (imports as 'spl')
+dd-config>=0.1.0         # Configuration management (used by spl-llm)
+dd-logging>=0.1.0        # Structured logging (used by spl-llm)
+
+# ── Core runtime deps (also pulled in by spl-llm) ───────────────────────────
+click>=8.0               # CLI framework
+httpx>=0.24.0            # HTTP client (Ollama, OpenRouter, Momagrid, DeepSeek adapters)
+pyyaml>=6.0              # YAML config parsing
+
+# ── Recipe Kitchen UI ────────────────────────────────────────────────────────
+streamlit>=1.30.0        # Browser UI for Recipe Kitchen
+
+# ── LLM provider SDKs (install only what you use) ───────────────────────────
+# anthropic>=0.20.0      # Claude API adapter  →  pip install spl-cookbook[anthropic]
+# openai>=1.0.0          # OpenAI API adapter  →  pip install spl-cookbook[openai]
+# google-genai>=0.3.0    # Gemini API adapter  →  pip install spl-cookbook[google]
+
+# ── Dev / test ───────────────────────────────────────────────────────────────
+pytest>=7.0
+pytest-asyncio>=0.21

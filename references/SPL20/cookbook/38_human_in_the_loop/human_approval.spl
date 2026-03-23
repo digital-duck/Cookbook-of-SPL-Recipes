@@ -1,0 +1,57 @@
+-- human_approval.spl
+-- Pattern: human-in-the-loop approval gate
+-- tool.request_approval() is a Python stub that auto-approves in dev mode
+-- In production: replace stub with email/Slack webhook that blocks on response
+
+CREATE FUNCTION draft_report(topic TEXT, data TEXT) RETURNS TEXT AS $$
+Write a concise 3-sentence executive summary report.
+Be specific and factual. Avoid vague generalities.
+
+Topic: {topic}
+Source data: {data}
+$$;
+
+CREATE FUNCTION refine_report(draft TEXT, comments TEXT) RETURNS TEXT AS $$
+Improve this executive summary based on reviewer comments.
+Keep it to 3 sentences. Be specific and factual.
+
+Original summary: {draft}
+Reviewer comments: {comments}
+$$;
+
+WORKFLOW human_approval_gate
+  INPUT:
+    @topic TEXT DEFAULT 'Q1 Performance Review',
+    @data  TEXT DEFAULT 'Revenue: $2.4M (+12% YoY). Churn: 3.2% (-0.8pp). NPS: 47 (+5).'
+  OUTPUT:
+    @final_report TEXT,
+    @disposition  TEXT
+DO
+  -- Step 1: Generate draft
+  GENERATE draft_report(@topic, @data) INTO @draft
+
+  -- Step 2: Request approval (auto-approves in dev mode via stub tool)
+  CALL request_approval(@draft) INTO @decision
+
+  -- Step 3: Branch on decision
+  EVALUATE @decision
+    WHEN 'approved' THEN
+      @final_report := @draft
+      @disposition  := 'approved'
+      COMMIT @final_report WITH status = 'approved'
+
+    WHEN 'revise' THEN
+      GENERATE refine_report(@draft, 'Make it more specific and concise.') INTO @final_report
+      @disposition := 'revised'
+      COMMIT @final_report WITH status = 'revised'
+
+    OTHERWISE
+      @final_report := @draft
+      @disposition  := 'auto_approved'
+      COMMIT @final_report WITH status = 'auto_approved'
+  END
+
+EXCEPTION
+  WHEN GenerationError THEN
+    COMMIT '' WITH status = 'generation_failed'
+END

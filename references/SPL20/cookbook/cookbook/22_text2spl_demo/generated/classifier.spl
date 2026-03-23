@@ -1,10 +1,17 @@
-PROMPT classify_intent WITH BUDGET 2000 TOKENS
-SELECT @user_input AS input LIMIT 500 TOKENS
-GENERATE classify(input) INTO @intent;
-IF @intent = 'hello' THEN
-  CALL greet_handler(@input)
-ELSE IF @intent = 'goodbye' THEN
-  CALL goodbye_handler(@input)
-ELSE
-  CALL default_handler(@input);
+PROMPT classify_intent
+SELECT @input AS text LIMIT 100 TOKENS
+GENERATE classify(text) WITH OUTPUT BUDGET 200 TOKENS INTO @intent;
+
+WORKFLOW route_handler
+  INPUT @intent TEXT
+  OUTPUT @handler TEXT
+DO
+  EVALUATE
+    WHEN 'greeting' THEN
+      @handler := 'handle_greeting';
+    WHEN 'question' THEN
+      @handler := 'handle_question';
+    OTHERWISE
+      @handler := 'default_handler';
+  END;
 END;

@@ -1,0 +1,23 @@
+-- doc_qa.spl
+-- Pattern: document-grounded Q&A (single question, no conversation loop)
+-- Simplified version of the full Chat Over PDF pattern (ch05-3)
+-- Pass document text directly via @context; full PDF ingestion requires tool connectors
+
+CREATE FUNCTION answer_from_doc(question TEXT, context TEXT) RETURNS TEXT AS $$
+You are a precise research assistant. Answer the question using ONLY the information
+in the provided document context. Do not use outside knowledge.
+
+If the answer is in the context, quote the relevant passage and explain it concisely.
+If the answer is NOT in the context, say explicitly: "This information is not in the document."
+
+Document context:
+{context}
+
+Question: {question}
+$$;
+
+PROMPT doc_qa
+SELECT
+    @question AS question,
+    @context  AS context
+GENERATE answer_from_doc(@question, @context)

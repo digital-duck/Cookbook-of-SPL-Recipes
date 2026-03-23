@@ -404,6 +404,10 @@ Three cookbook recipes currently fail due to parser gaps:
 
 **Action:** Add a dedicated "The CALL/GENERATE Split" sidebar or mini-chapter in the book and in the SPL language reference. This should be the first design principle introduced after Hello World — before any WORKFLOW recipe. The insight that separates a reader who finishes the book from one who *understands* it.
 
+**Status:** *Addressed in v0.3* — `ch10-4-extending-with-udf.md` opens with a dedicated section titled "CALL Is SPL's Design Strength" that states the principle explicitly, quotes the editorial finding, and provides a capabilities table showing what becomes possible when any Python function is a first-class CALL target. The section establishes that `@spl_tool` is SPL's Foreign Function Interface into the entire Python ecosystem.
+
+**Remaining gap:** ~~Introduce earlier in front matter~~ — *addressed*. `ch00-1-why-declarative.md` § "CALL vs. GENERATE: The Most Important Distinction" now includes the extension hook framing: `@spl_tool` as SPL's bridge into the Python ecosystem, with a concrete database-lookup + LLM-narrative example showing the clean boundary between the declarative SPL layer and imperative Python.
+
 **Priority:** High. Small documentation effort, large comprehension payoff.
 
 ### 2. Adapter Portability Proof Chapter — "One Recipe, Four Adapters"
@@ -440,3 +444,51 @@ Three cookbook recipes currently fail due to parser gaps:
 **Status:** *Partially addressed* — ch09-1 covers the roadmap and what SPL is not trying to replace, but does not have an explicit "here is the honest state of the ecosystem" section.
 
 **Priority:** Medium. Builds trust by being direct about where the project is.
+
+---
+
+## Recipe Kitchen — Streamlit UI
+
+A browser-based UI for exploring, running, and creating SPL recipes without touching the CLI.
+
+**Location:** `scripts/recipe_kitchen.py`
+
+**Start it:**
+```bash
+cd /path/to/Cookbook-of-SPL-Recipes/references/SPL20
+streamlit run ../../scripts/recipe_kitchen.py
+```
+
+**Requirements:** `pip install streamlit` (plus the existing SPL runtime dependencies)
+
+### Three tabs
+
+#### Tab 1 — Playground
+- Category filter + recipe selector (reads `cookbook_catalog.json`)
+- Editable input parameters: any `key=value` args in the catalog entry become live text fields
+- Base command shown read-only; only input params are editable
+- One-click run — output, stderr, exit code, and elapsed time displayed inline
+
+#### Tab 2 — Recipe Maker
+- Plain-English description → SPL workflow (calls `spl/text2spl.py`)
+- Mode selector: `auto` / `prompt` / `workflow`
+- Adapter and model selectors (defaults: `ollama`, `gemma3`)
+- Inline SPL editor — generated code is editable before running
+- Save to `.spl` file with a custom recipe name
+- Run directly from the editor without saving
+
+#### Tab 3 — Bake-All
+- Shows count of active recipes broken down by category
+- Runs `run_all.py` as a subprocess (timeout: 600 s); saves timestamped Markdown log to `cookbook/out/`
+- Log browser: select any previous run, see approximate PASS/FAIL counts (based on ✓/✗/ERROR markers), view full log inline
+
+### Architecture notes
+- `load_catalog()` is cached with `@st.cache_data(ttl=30)` — catalog changes are picked up within 30 s without a restart
+- `run_command(args, cwd, timeout)` — thin wrapper around `subprocess.run`; returns `(stdout, stderr, returncode)`
+- Recipe Maker writes to a temp file `_tmp_recipe_kitchen.spl`, runs it, then deletes it
+- All recipe runs execute in `COOKBOOK_DIR` as working directory (same as the CLI)
+
+### Planned enhancements
+- Recipe diff view: compare outputs across two adapter/model combinations side by side
+- Save-to-catalog: promote a generated recipe directly into `cookbook_catalog.json`
+- Live streaming output: show LLM tokens as they arrive (requires streaming subprocess support)

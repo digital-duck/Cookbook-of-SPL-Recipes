@@ -1,0 +1,58 @@
+-- portability_test.spl
+-- Pattern: One Recipe, Four Adapters — proving adapter portability
+-- This file runs unchanged across --adapter ollama / claude_cli / openrouter / momagrid
+-- Only the CLI flag changes. The workflow logic is identical on every backend.
+
+CREATE FUNCTION write_summary(topic TEXT) RETURNS TEXT AS $$
+Write a concise executive summary (exactly 3 sentences) about the following topic.
+Be specific, factual, and direct. Avoid filler phrases.
+Topic: {topic}
+$$;
+
+CREATE FUNCTION evaluate_summary(summary TEXT) RETURNS TEXT AS $$
+Rate the quality of this executive summary on a scale from 0.0 to 1.0.
+Criteria: specificity (no vague language), factual density, conciseness (no redundancy).
+Summary: {summary}
+Return ONLY a decimal number between 0.0 and 1.0. Nothing else.
+$$;
+
+CREATE FUNCTION refine_summary(summary TEXT, topic TEXT) RETURNS TEXT AS $$
+Improve this executive summary. It was rated below threshold for quality.
+Make it more specific, factual, and direct. Remove vague or redundant language.
+Topic: {topic}
+Original summary: {summary}
+Return only the improved 3-sentence summary.
+$$;
+
+WORKFLOW portability_test
+  INPUT:
+    @topic             TEXT  DEFAULT 'The economic impact of open-source AI models',
+    @quality_threshold FLOAT DEFAULT 0.75
+  OUTPUT:
+    @final_summary TEXT,
+    @quality_score FLOAT,
+    @refined       BOOL
+DO
+  -- Pass 1: initial draft
+  GENERATE write_summary(@topic) INTO @draft
+
+  -- Evaluate quality; parse the returned decimal string to a float
+  GENERATE evaluate_summary(@draft) INTO @score_str
+  CALL to_float(@score_str) INTO @quality_score
+
+  EVALUATE @quality_score
+    WHEN > @quality_threshold THEN
+      @final_summary := @draft
+      @refined := FALSE
+      COMMIT @final_summary WITH quality = @quality_score, refined = 'no'
+
+    OTHERWISE
+      GENERATE refine_summary(@draft, @topic) INTO @final_summary
+      @refined := TRUE
+      COMMIT @final_summary WITH quality = @quality_score, refined = 'yes'
+  END
+
+EXCEPTION
+  WHEN GenerationError THEN
+    COMMIT '' WITH status = 'generation_failed'
+END

@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spl-cookbook"
+version = "0.1.0"
+description = "A Cookbook of SPL Recipes — browser UI, batch runner, and recipe maker for SPL agentic workflows"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.11"
+keywords = ["spl", "llm", "agentic", "workflow", "orchestration", "declarative"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    # SPL runtime
+    "spl-llm>=2.0.0",
+    # Recipe Kitchen UI
+    "streamlit>=1.30.0",
+    # SPL runtime transitive (pinned here for clarity)
+    "click>=8.0",
+    "httpx>=0.24.0",
+    "pyyaml>=6.0",
+    "dd-config>=0.1.0",
+    "dd-logging>=0.1.0",
+]
+
+[project.optional-dependencies]
+# LLM provider SDKs — install the ones you use
+anthropic = ["anthropic>=0.20.0"]
+openai    = ["openai>=1.0.0"]
+google    = ["google-genai>=0.3.0"]
+
+# Install all provider SDKs
+all = [
+    "anthropic>=0.20.0",
+    "openai>=1.0.0",
+    "google-genai>=0.3.0",
+]
+
+# Development / testing
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+    "spl-cookbook[all]",
+]
+
+[project.scripts]
+recipe-kitchen = "spl_cookbook.cli:recipe_kitchen"
+bake-all       = "spl_cookbook.cli:bake_all"
+
+[project.urls]
+Repository = "https://github.com/digital-duck/Cookbook-of-SPL-Recipes"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+spl_cookbook = ["py.typed"]

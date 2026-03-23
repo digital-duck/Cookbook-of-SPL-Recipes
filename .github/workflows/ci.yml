@@ -1,0 +1,111 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── 1. SPL runtime tests ───────────────────────────────────────────────────
+  spl-tests:
+    name: SPL runtime tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: references/SPL20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install SPL runtime
+        run: pip install -e ".[dev]"
+
+      - name: Run tests
+        run: pytest --tb=short
+
+  # ── 2. spl-cookbook package install ───────────────────────────────────────
+  package-install:
+    name: pip install spl-cookbook
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install spl-cookbook (editable)
+        run: pip install -e ".[dev]"
+
+      - name: Verify entry points
+        run: |
+          recipe-kitchen --help 2>&1 | grep -i streamlit || true
+          bake-all --help 2>&1 || true
+
+      - name: Import check
+        run: python -c "import spl_cookbook; print(spl_cookbook.__version__)"
+
+  # ── 3. PDF build check (tex-only, no LaTeX required) ──────────────────────
+  book-tex:
+    name: Book .tex compile check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install pandoc
+        run: sudo apt-get install -y pandoc
+
+      - name: Install spl-cookbook
+        run: pip install -e .
+
+      - name: Compile to .tex (no PDF)
+        run: python scripts/compile_book_pdf.py --tex-only
+
+      - name: Verify .tex was generated
+        run: test -f dist/spl-cookbook.tex
+
+  # ── 4. SPL syntax check (dry-run all .spl files) ──────────────────────────
+  spl-syntax:
+    name: SPL syntax check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install SPL runtime
+        run: pip install -e references/SPL20
+
+      - name: Check all .spl files parse cleanly
+        run: |
+          failed=0
+          for f in $(find references/SPL20/cookbook -name "*.spl" | sort); do
+            python -c "
+          from spl.lexer import Lexer
+          from spl.parser import Parser
+          import sys
+          src = open('$f').read()
+          try:
+              tokens = Lexer(src).tokenize()
+              Parser(tokens).parse()
+              print('OK  $f')
+          except Exception as e:
+              print('ERR $f:', e)
+              sys.exit(1)
+          " || failed=1
+          done
+          exit $failed
