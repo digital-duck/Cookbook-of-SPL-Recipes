@@ -95,6 +95,130 @@ Use the **Text2SPL** pattern when:
 
 <!-- --- -->
 
+## A Live Session: The Intent Router
+
+The following is not a constructed example. It is a real compilation run from a live development session on the SPL 2.0 Knowledge Studio.
+
+The input was a single line:
+
+```
+classify user intent and route to the right handler
+```
+
+The compiler was Claude Sonnet 4.6 in `auto` mode. The generated script:
+
+```spl
+WORKFLOW intent_router
+    INPUT @user_input TEXT, @context TEXT DEFAULT ''
+    OUTPUT @handler_response TEXT
+DO
+    -- Step 1: Classify the user intent
+    GENERATE classify(@user_input, intent_categories()) INTO @intent
+
+    -- Step 2: Extract any entities or parameters needed by handlers
+    GENERATE extract_entities(@user_input) INTO @entities
+
+    -- Step 3: Route to the appropriate handler
+    EVALUATE @intent
+        WHEN 'question' THEN
+            GENERATE answer(@user_input, @context, @entities) INTO @handler_response
+            COMMIT @handler_response WITH handler = 'qa', intent = @intent
+
+        WHEN 'command' THEN
+            GENERATE execute_command(@user_input, @entities) INTO @handler_response
+            COMMIT @handler_response WITH handler = 'command', intent = @intent
+
+        WHEN 'complaint' THEN
+            GENERATE handle_complaint(@user_input, @entities) INTO @handler_response
+            COMMIT @handler_response WITH handler = 'complaint', intent = @intent
+
+        WHEN 'chitchat' THEN
+            GENERATE casual_reply(@user_input) INTO @handler_response
+            COMMIT @handler_response WITH handler = 'chitchat', intent = @intent
+
+        WHEN 'feedback' THEN
+            GENERATE acknowledge_feedback(@user_input, @entities) INTO @handler_response
+            COMMIT @handler_response WITH handler = 'feedback', intent = @intent
+
+        OTHERWISE
+            GENERATE fallback_response(@user_input, @intent) INTO @handler_response
+            COMMIT @handler_response WITH handler = 'fallback', intent = @intent
+    END
+
+EXCEPTION
+    WHEN HallucinationDetected THEN
+        RETRY WITH temperature = 0.1
+    WHEN RefusalToAnswer THEN
+        GENERATE safe_fallback(@user_input) INTO @handler_response
+        COMMIT @handler_response WITH handler = 'safe_fallback'
+END;
+
+CREATE FUNCTION intent_categories()
+RETURNS TEXT AS $$
+Supported intent categories:
+- question:   user is asking for information or clarification
+- command:    user is requesting an action to be performed
+- complaint:  user is expressing dissatisfaction or reporting a problem
+- chitchat:   casual or social conversation with no specific goal
+- feedback:   user is providing a review, rating, or suggestion
+- unknown:    intent cannot be determined with confidence
+$$;
+```
+
+This was compiled from eleven words. The compiler inferred:
+
+- A three-step pipeline: classify, extract entities, then route
+- Six intent categories — including an `unknown` fallback
+- Per-handler `COMMIT` statements that tag the output with handler metadata
+- `EXCEPTION` handling for `HallucinationDetected` and `RefusalToAnswer` — AI-specific failure modes the compiler invented on its own
+- A `CREATE FUNCTION intent_categories()` that injects domain knowledge as structured system context
+
+The script was then run against Gemma3 (local, via Ollama) with the input:
+
+```
+The app keeps crashing every time I try to upload a file, this is really frustrating
+```
+
+Gemma3 correctly routed it to the `complaint` handler, called `handle_complaint`, and produced a structured troubleshooting response. The full round-trip — compile on Claude, execute on Gemma3 — worked without modification.
+
+<!-- --- -->
+
+## The Bootstrap Insight
+
+The intent router is not production-ready. The intent categories are generic. The handler logic is shallow. A real deployment would need domain-specific categories, tighter prompts, and validation of the routing decisions.
+
+But that is exactly the point.
+
+*"It may not be useful out-of-the-box, but it bootstraps the further iteration and refinement process. One can try various LLM models, add new logic — this is why declarative programming is so powerful."* — Wen Gong
+
+This is the correct frame for Text2SPL. The compiled script is not the destination. It is a **scaffold** — a structured starting point that encodes the compiler's best interpretation of your intent. From there, the developer's job shifts from writing code to refining a spec.
+
+The iteration loop looks like this:
+
+```
+describe → compile → inspect → refine → iterate
+```
+
+Compare it to the imperative alternative:
+
+```
+design → code → debug → refactor → re-debug → iterate
+```
+
+In the imperative loop, every iteration requires touching implementation details: which API, which prompt format, which response accessor, which retry logic. In the SPL loop, every iteration is a conversation about intent. You change what the workflow does, not how it talks to a model.
+
+The bootstrapped script also encodes structural knowledge that survives iteration. The compiler inferred that a complaint handler needs different logic than a chitchat handler. It inferred that entity extraction should precede routing so that handlers have structured input to work with. It inferred that AI workflows need typed exception handling. These are good decisions. They do not get thrown away when you refine the domain vocabulary. They become the scaffold on which the domain-specific version is built.
+
+**The script is the spec.** `EVALUATE @intent WHEN 'complaint'` reads like a requirements document. When a product manager says "add a `billing` intent," you know exactly where to add one line — no hunting through callback chains, prompt templates, or routing middleware.
+
+**The model is configurable.** The same script ran on Claude during compilation and Gemma3 during execution. Tomorrow you can point the runtime at GPT-4o or Mistral for a quality comparison, with zero code changes. The adapter is runtime config, not source code.
+
+**The version history is free.** The Knowledge Studio saved this as `intent_router v1`. When you refine the `intent_categories()` function or add a `billing` handler, that becomes `v2` — a natural experiment log with no extra tooling required.
+
+This is the same reason SQL outlasted every "better" imperative data access approach. The abstraction is at the right level. SPL 2.0 is that abstraction for agentic workflows. The models are the orchestra. SPL is the score. The score says what to play. Text2SPL gives you a first draft of the score from a description of the music you want to hear.
+
+<!-- --- -->
+
 ## Exercises
 
 1.  **Describe a "Self-Healer".** Try compiling the description: *"Generate a blog post, check it for facts, and if facts are missing, search the web and rewrite."* Use `--mode auto` and see if it generates a `WHILE` loop.
