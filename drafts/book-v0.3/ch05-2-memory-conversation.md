@@ -40,7 +40,7 @@ DO
 
     EVALUATE @new_facts
         WHEN 'no_new_facts' THEN -- do nothing
-        OTHERWISE
+        ELSE
             GENERATE merge_profile(@profile, @new_facts) INTO @profile -- (3) Updating the state
     END
 

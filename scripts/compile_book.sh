@@ -9,8 +9,8 @@
 
 set -euo pipefail
 
-REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-DRAFTS_DIR="${1:-drafts/book-v0.3}"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd -P)"
+DRAFTS_DIR="${1:-drafts/book-v0.5}"
 shift || true   # consume first arg so remaining args pass through to the script
 
 # Resolve to absolute path

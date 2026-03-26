@@ -4,7 +4,7 @@
 
 <!-- --- -->
 
-### The Pattern
+## The Pattern
 
 You have a task that benefits from iteration: drafting a persuasive email, writing technical documentation, composing a code review comment. The naive approach is to call the LLM once and accept whatever comes back. Experienced practitioners know the first pass is rarely production-ready.
 
@@ -27,13 +27,13 @@ SPL gives this pattern a name and a syntax.
 
 <!-- --- -->
 
-### The SPL Approach
+## The SPL Approach
 
 Generate a draft, then loop: critique the draft, exit if satisfactory, otherwise refine and repeat — up to a configurable iteration limit.
 
 <!-- --- -->
 
-### The .spl File (Annotated)
+## The .spl File (Annotated)
 
 ```spl
 -- SPL 2.0: Self-Refine Pattern
@@ -102,7 +102,7 @@ END
 
 <!-- --- -->
 
-### The SQL Analogy in Depth
+## The SQL Analogy in Depth
 
 SQL practitioners are comfortable with cursor loops. The self-refine pattern is a cursor loop where the exit condition is semantic rather than positional.
 
@@ -128,7 +128,7 @@ A stored procedure that calls `UPDATE` in a loop until a quality score exceeds a
 
 <!-- --- -->
 
-### Running It
+## Running It
 
 ```bash
 spl run cookbook/05_self_refine/self_refine.spl \
@@ -155,7 +155,7 @@ from 0 to 80% in 45 minutes.
 
 <!-- --- -->
 
-### What Just Happened
+## What Just Happened
 
 **LLM calls made:** 3 (1 draft + 1 critique at iteration 0 + 1 critique at iteration 1).
 
@@ -175,7 +175,7 @@ The key insight: the workflow ran 2 fewer LLM calls than `max_iterations` would 
 
 <!-- --- -->
 
-### Reproducibility Note
+## Reproducibility Note
 
 **Hardware:** GTX 1080 Ti, 11GB VRAM. **Model:** gemma3 via Ollama.
 
@@ -187,7 +187,7 @@ Typical wall-clock time for a short copywriting task: 8–14 seconds for a 2-ite
 
 <!-- --- -->
 
-### When to Use This Pattern
+## When to Use This Pattern
 
 **Good fit:**
 - Content generation where quality has a measurable (if fuzzy) threshold: product copy, executive summaries, cover letters, commit messages.
@@ -205,7 +205,7 @@ Typical wall-clock time for a short copywriting task: 8–14 seconds for a 2-ite
 
 <!-- --- -->
 
-### Exercises
+## Exercises
 
 1. **Tighten the critique prompt.** The default critique function accepts any structured feedback. Modify the `CREATE FUNCTION critique()` to require a structured output: a rating 1–10 and a bullet-point list of specific issues. Change `EVALUATE @feedback` to check `WHEN > 7` instead of `WHEN 'satisfactory'`. How does output quality change?
 

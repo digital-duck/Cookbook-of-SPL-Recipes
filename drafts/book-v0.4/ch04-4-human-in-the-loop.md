@@ -4,7 +4,7 @@
 
 <!-- --- -->
 
-### The Pattern
+## The Pattern
 
 You have an agentic workflow that produces consequential output: a financial report, a customer-facing email, a database mutation, a code deployment. You want the speed of automation but not the risk of fully unsupervised execution. The solution is a human approval gate — a deliberate pause where the workflow surfaces its intermediate result, waits for a human decision, and only proceeds (or aborts) based on that decision.
 
@@ -14,7 +14,7 @@ The Python equivalent embeds the approval logic in the application layer — a w
 
 <!-- --- -->
 
-### The SPL Approach
+## The SPL Approach
 
 SPL expresses the approval gate through a `CALL` to a tool that blocks until human input is received, combined with conditional logic on the response. The tool handles the mechanics (sending a notification, presenting the draft, waiting for a response); the SPL file handles the workflow logic (what to do when approved, what to do when rejected).
 
@@ -22,7 +22,7 @@ The key insight: the approval step is a **deterministic operation** (`CALL`, not
 
 <!-- --- -->
 
-### The `.spl` File (Annotated)
+## The `.spl` File (Annotated)
 
 ```sql
 -- human_approval_gate.spl
@@ -113,7 +113,7 @@ END
 
 <!-- --- -->
 
-### The SQL Analogy
+## The SQL Analogy
 
 The approval gate is a stored procedure that includes a `WAITFOR` step — an explicit synchronization point that pauses execution until an external condition is met. SQL Server's `WAITFOR DELAY` is the closest syntactic analogue, though the semantics here are event-driven rather than time-driven.
 
@@ -123,7 +123,7 @@ The `EXCEPTION WHEN TimeoutError` block is the stored procedure's error handler 
 
 <!-- --- -->
 
-### Running It
+## Running It
 
 ```bash
 # Run with a local approval tool (development mode: auto-approves after 5 seconds)
@@ -147,7 +147,7 @@ Status: sent
 
 <!-- --- -->
 
-### What Just Happened
+## What Just Happened
 
 1. `draft_report` was called with the topic and data; the LLM produced a 312-word executive summary
 2. `tool.request_approval` sent the draft to the approver and blocked — no LLM tokens consumed during the wait
@@ -158,7 +158,7 @@ The EVALUATE/EXCEPTION structure means that all three outcomes (approve, revise,
 
 <!-- --- -->
 
-### Reproducibility Note
+## Reproducibility Note
 
 - **Hardware**: GTX 1080 Ti, 11 GB VRAM
 - **Model**: Gemma 3 via Ollama
@@ -168,7 +168,7 @@ The EVALUATE/EXCEPTION structure means that all three outcomes (approve, revise,
 
 <!-- --- -->
 
-### When to Use This Pattern
+## When to Use This Pattern
 
 **Use it when:**
 - The workflow output has real-world consequences (sending communications, writing files, calling external APIs)
@@ -185,7 +185,7 @@ The EVALUATE/EXCEPTION structure means that all three outcomes (approve, revise,
 
 <!-- --- -->
 
-### Exercises
+## Exercises
 
 1. Modify the `revise` branch to limit revision attempts: if the reviewer rejects a second revised draft, automatically escalate to a second approver rather than generating a third draft.
 2. Add an audit log: call `tool.write_log(disposition, timestamp, reviewer_comments)` at the end of each branch so every workflow execution produces an immutable audit trail.

@@ -52,7 +52,7 @@ DO
         EVALUATE @confidence
             WHEN > 0.85 THEN                   -- (4) The Confidence Threshold
                 COMMIT @answer WITH status = 'confident'
-            OTHERWISE
+            ELSE
                 -- Extract issues and correct
                 GENERATE extract_issues(@reflection) INTO @issues
                 GENERATE correct(@answer, @issues, @problem) INTO @answer

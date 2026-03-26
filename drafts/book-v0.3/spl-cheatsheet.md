@@ -40,11 +40,13 @@ END
 | `:=` | Assign value to variable |
 | `CAST(x AS TYPE)` | Type conversion |
 | `\|\|` | String concatenation |
+| `GENERATE a() | b() INTO @r` | Chain GENERATE steps: output of each feeds next |
 
 ### Generation
 | Keyword | Meaning |
 |---------|---------|
 | `GENERATE fn(@arg)` | Call LLM via named function template |
+| `GENERATE fn() USING MODEL @m` | Call LLM with specific model override |
 | `CALL tool.fn(@arg)` | Call deterministic Python tool (no tokens) |
 | `SELECT expr AS alias` | Assemble context for next GENERATE |
 
@@ -57,7 +59,7 @@ END
 | `WHEN 'value'` | String match in EVALUATE |
 | `ELSE` | Default branch in EVALUATE |
 | `BREAK` | Exit WHILE loop |
-| `RETRY` | Re-execute current step (in EXCEPTION handler) |
+| `RETRY WITH ... LIMIT n` | Re-execute current step, max n times (always specify limit) |
 
 ### State
 | Keyword | Meaning |
@@ -65,6 +67,14 @@ END
 | `COMMIT @var WITH key=val` | Write output and metadata |
 | `STORE @var IN memory.key` | Write to named memory slot |
 | `memory.get('key')` | Read from named memory slot |
+
+### LOGGING
+| Syntax | Meaning |
+|--------|---------|
+| `LOGGING expr` | Console output, INFO level |
+| `LOGGING expr LEVEL DEBUG` | Suppressed unless --log-level debug |
+| `LOGGING expr LEVEL WARN` | Always shown |
+| `LOGGING expr LEVEL ERROR TO 'file.log'` | Append to file with timestamp |
 
 ### Exception handling
 | Keyword | Meaning |
@@ -76,14 +86,12 @@ END
 
 | Error | When it fires |
 |-------|--------------|
-| `GenerationError` | LLM call failed or returned malformed output |
-| `MaxIterationsReached` | WHILE loop hit its bound without completing |
+| `HallucinationDetected` | Post-generation confidence check failed; runtime-configured threshold |
+| `ContextLengthExceeded` | Input exceeds model's context window |
 | `BudgetExceeded` | Token or cost limit exceeded |
-| `ContextLengthExceeded` | Input exceeded model's context window |
-| `HallucinationDetected` | Downstream validator flagged hallucination |
-| `ValidationError` | Structured output failed schema validation |
-| `TimeoutError` | Operation did not complete within time limit |
-| `FileNotFoundError` | Tool connector could not find the specified file |
+| `RefusalToAnswer` | LLM declined to respond |
+| `ModelOverloaded` | Model endpoint unavailable or rate-limited |
+| `ToolFailed` | Deterministic CALL tool raised an error |
 
 ## Tool Connectors (Planned)
 
@@ -152,10 +160,8 @@ spl run script.spl \
 | Type | SPL keyword |
 |------|-------------|
 | Text | `TEXT` |
-| Integer | `INT` |
-| Floating-point | `FLOAT` |
+| Number | `NUMBER` |
 | Boolean | `BOOL` |
-| JSON object | `JSON` |
 | List | `LIST` |
 
 ## Recipe Template Structure

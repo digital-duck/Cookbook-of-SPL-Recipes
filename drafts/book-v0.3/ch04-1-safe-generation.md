@@ -43,7 +43,7 @@ DO
     WHEN 'acceptable' THEN                     -- (4) Refinement loop
       GENERATE improved(@result, @prompt) INTO @result
       COMMIT @result WITH status = 'refined'
-    OTHERWISE
+    ELSE
       COMMIT @result WITH status = 'best_effort'
   END
 
@@ -132,6 +132,6 @@ Use the **Safe Generation** pattern when:
 
 ## Exercises
 
-1.  **Strict Guardrails.** Modify the `EVALUATE` block so that `OTHERWISE` results in a `REJECT` or an error message rather than a `best_effort` commit.
+1.  **Strict Guardrails.** Modify the `EVALUATE` block so that `ELSE` results in a `REJECT` or an error message rather than a `best_effort` commit.
 2.  **Add a "Banned Word" check.** Use a Python tool (Chapter 3.2) to check for specific words in `@result`. If found, trigger a custom exception.
 3.  **Two-Model Judge.** Modify the recipe to use two different models as judges and only commit if they *both* agree the quality is high.

@@ -39,7 +39,7 @@ CALL to_float(@score_str) INTO @score
 EVALUATE @score
     WHEN > 0.8 THEN COMMIT @text WITH grade = 'A'
     WHEN > 0.6 THEN COMMIT @text WITH grade = 'B'
-    OTHERWISE       COMMIT @text WITH grade = 'C'
+    ELSE       COMMIT @text WITH grade = 'C'
 END
 ```
 
@@ -84,7 +84,7 @@ Pattern functions return the strings `'true'` and `'false'` so they compose with
 CALL startswith(@category, 'error') INTO @is_error
 EVALUATE @is_error
     WHEN 'true' THEN COMMIT @event WITH severity = 'high'
-    OTHERWISE        COMMIT @event WITH severity = 'normal'
+    ELSE        COMMIT @event WITH severity = 'normal'
 END
 ```
 
@@ -150,7 +150,7 @@ CALL word_count(@summary) INTO @words
 EVALUATE @words
     WHEN > 150 THEN
         GENERATE shorten(@summary) INTO @summary
-    OTHERWISE
+    ELSE
         -- length is acceptable
 END
 ```

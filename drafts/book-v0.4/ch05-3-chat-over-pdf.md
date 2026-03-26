@@ -4,7 +4,7 @@
 
 <!-- --- -->
 
-### The Pattern
+## The Pattern
 
 You have a PDF — a research paper, a contract, a technical specification, a financial report. You want to ask questions about it in natural language and get answers grounded in the document's actual content, not the model's training data.
 
@@ -16,7 +16,7 @@ What makes this recipe different from Recipe 5.1 (RAG Query) is the *conversatio
 
 <!-- --- -->
 
-### The SPL Approach
+## The SPL Approach
 
 Two components work together: a PDF ingestion step (CALL to a tool connector) and a conversational RAG loop (WORKFLOW with memory). The PDF is ingested once at the start of the session; the conversation loop runs until the user ends the session.
 
@@ -24,7 +24,7 @@ The `tool.pdf_to_md()` connector handles the ingestion — no new SPL keywords, 
 
 <!-- --- -->
 
-### The `.spl` File (Annotated)
+## The `.spl` File (Annotated)
 
 ```sql
 -- chat_over_pdf.spl
@@ -129,7 +129,7 @@ END
 
 <!-- --- -->
 
-### The SQL Analogy
+## The SQL Analogy
 
 This recipe is a stored procedure with a cursor loop. The `WHILE @turns_completed < @max_turns DO` loop is a `WHILE` loop over a cursor. Each iteration:
 1. Fetches a new input row (the user's question)
@@ -143,7 +143,7 @@ The `memory.index_document` call is equivalent to building an index before query
 
 <!-- --- -->
 
-### Running It
+## Running It
 
 ```bash
 # Chat over a PDF document
@@ -176,7 +176,7 @@ Session ended. 2 turns completed.
 
 <!-- --- -->
 
-### What Just Happened
+## What Just Happened
 
 1. The PDF was ingested with `tool.pdf_to_md` and chunked into 148 overlapping segments
 2. On each turn, `extract_search_terms` resolved the question (including pronoun references) into retrieval terms
@@ -188,7 +188,7 @@ The architecture ensures the model never sees more than `top_k_chunks × chunk_s
 
 <!-- --- -->
 
-### Reproducibility Note
+## Reproducibility Note
 
 - **Hardware**: GTX 1080 Ti, 11 GB VRAM
 - **Model**: Gemma 3 via Ollama
@@ -200,7 +200,7 @@ The architecture ensures the model never sees more than `top_k_chunks × chunk_s
 
 <!-- --- -->
 
-### When to Use This Pattern
+## When to Use This Pattern
 
 **Use it when:**
 - The document is too long for a single prompt (most real-world PDFs qualify)
@@ -218,7 +218,7 @@ The architecture ensures the model never sees more than `top_k_chunks × chunk_s
 
 <!-- --- -->
 
-### Exercises
+## Exercises
 
 1. Add a citation mode: modify `answer_question` to always include the document page number or section heading from which it sourced the answer. Modify `memory.retrieve` to return chunk metadata (page number, section).
 2. Add multi-document support: accept a list of PDF paths as input and index all documents before the conversation begins. The retrieval step should label which document each chunk came from.

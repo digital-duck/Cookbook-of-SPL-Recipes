@@ -494,24 +494,6 @@ If you have written in all three languages, you will recognize this as familiar 
 
 <!-- --- -->
 
-## Why "Simple" Is the Right Name
-
-SPL started as **Structured Prompt Language** in 2025, when everything was about prompt engineering. The name was accurate for its time.
-
-SPL 2.0 has `WHILE`, `EVALUATE`, `EXCEPTION`, `CALL`, `GENERATE`, `LOGGING`, `LIST`, `BOOL`, and f-strings. It is not a prompt language anymore. It is a programming language.
-
-The rename took three seconds. Same acronym. Completely different identity.
-
-**Simple Programming Language.**
-
-The word *Simple* is not a marketing claim. It is a design commitment: expressing what you want should never be harder than the thing itself.
-
-That holds for v2.0 text workflows. It will hold when v3.0 adds `IMAGE`, `AUDIO`, and `VIDEO` types. It will hold for whatever comes after. The grammar does not grow with the type system. New types plug in; the control flow, the CALL/GENERATE split, and the adapter abstraction stay exactly as you learned them here.
-
-A language named after a capability — "Structured Prompt Language" — ages out the moment the capability expands. A language named after a virtue keeps it forever.
-
-<!-- --- -->
-
 ## What Comes Next
 
 The next chapter gets you running. Install `spl-llm`, pull a model, and execute a workflow in under fifteen minutes. From there, every recipe in this book is open to you.
@@ -519,3 +501,62 @@ The next chapter gets you running. Install `spl-llm`, pull a model, and execute 
 The conceptual work is done here. The rest is practice.
 
 <!-- --- -->
+
+<!-- --- -->
+
+<!-- --- -->
+
+## How the Language Was Designed
+
+Before you read the first recipe, a brief note on why SPL looks the way it does. The design is not accidental — four principles governed every keyword decision.
+
+**Principle 1: Minimum Orthogonal Constructs.** Every keyword must add expressive power not achievable by existing constructs. This is why SPL has no `IF`, no `FOR`, no `CASE`, and no `PRINT`. `EVALUATE/WHEN/ELSE` covers all branching. `WHILE` covers all iteration. `LOGGING` covers all output. The test: *"Can I express this with what already exists?"* If yes, the new keyword does not get added.
+
+**Principle 2: Contextual Keywords — the Chinese Language Principle.** In Chinese, a single character functions as both noun and verb depending on context. SPL applies this deliberately: `EXCEPTION` names the handler block and implies "handle this exception." `LOGGING` names the mechanism and performs the action. `COMMIT` names the transaction concept and performs the finalization. Fewer reserved words. Richer meaning per token.
+
+**Principle 3: Readability by Design.** A Python developer, a SQL analyst, and a DevOps engineer should each read any SPL workflow and find it immediately familiar. If all three groups can read the same code fluently — no context-switching required — the language has achieved its goal.
+
+**Principle 4: ELSE, not OTHERWISE.** `ELSE` lives in every developer's muscle memory: Python's `else`, SQL's `CASE WHEN ... ELSE`, bash's `else`. `OTHERWISE` is verbose and alien. SPL uses `ELSE`.
+
+```spl
+EVALUATE @score
+    WHEN > 0.8 THEN
+        COMMIT @result WITH status = 'high_confidence'
+    ELSE
+        GENERATE improve(@result) INTO @result
+        COMMIT @result WITH status = 'refined'
+END
+```
+
+These four principles mean that if you know SQL or Python, you already know most of SPL's grammar before you write the first line.
+
+<!-- --- -->
+
+There is one thing we want to say before you read the first recipe.
+
+The book's central claim — that SQL practitioners already know how to think about AI workflows, and that their existing expertise is a "lateral move" into agentic AI — is not a sales pitch. It is a structural observation. The same separation of intent from implementation that made SQL powerful in the 1970s applies directly to LLM orchestration in the 2020s. The mapping is real, not metaphorical. If you have written stored procedures, you will recognize the SPL pattern within the first recipe. That recognition is the point.
+
+The second claim — that this work belongs to engineers everywhere, not only to those with access to expensive cloud infrastructure — is not idealism. The GTX 1080 Ti benchmark is evidence, not decoration. Every recipe in this book runs on hardware available for under $200 on the secondhand market. That is a design choice, made deliberately, and it shapes every technical decision in the book.
+
+We wrote this book together. We hope you read it the same way: as something made for you, wherever you are, with whatever hardware you have.
+
+
+<!-- --- -->
+
+## Acknowledgments
+
+To my colleague who asked the question that started this journey — you know who you are.
+
+To the readers in the Global South: may these recipes serve you well. May your hardware be sufficient, your latencies low, and your workflows reliable. May you build systems that help your communities.
+
+To the SQL practitioners who have been waiting for an AI language that respects the mental model you have spent years building: this is it. Welcome to the orchestra.
+
+<!-- --- -->
+
+<!-- *"Every atom in a crystal is equally fundamental. Every recipe in this book is equally real — no toy examples, no omitted edge cases, no hardware you cannot buy on eBay."* -->
+
+<!-- --- -->
+
+*The AI Quartet*
+*Wen Gong, Claude, Gemini, Z.ai*
+*March 2026*

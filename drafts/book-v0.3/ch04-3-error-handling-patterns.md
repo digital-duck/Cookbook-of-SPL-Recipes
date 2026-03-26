@@ -49,15 +49,14 @@ The `EXCEPTION` block catches named exception types and routes each to a specifi
 
 ## Exception Type Reference
 
-| Exception Type | Trigger | Recommended Response |
+| Exception Type | Source | Recommended Response |
 |---|---|---|
-| `GenerationError` | Model call failed (network, quota, refusal, malformed response) | Commit last valid state with `status = 'error'` |
-| `MaxIterationsReached` | `WHILE` loop exceeded its iteration limit | Commit best-effort result with `status = 'partial'` |
-| `BudgetExceeded` | Token budget exhausted mid-workflow | Commit what was generated so far; do not attempt more LLM calls |
-| `ContextLengthExceeded` | Input to a GENERATE step exceeds the model's context window | Truncate and retry with a shorter context, or commit partial result |
-| `HallucinationDetected` | LLM-as-judge flagged the output as containing hallucinated content | Retry with stricter instructions, or escalate with `status = 'flagged'` |
-| `ValidationError` | A `CALL` to a validation tool returned a failure | Retry with corrected input, or commit with `status = 'invalid'` |
-| `TimeoutError` | A GENERATE step exceeded the configured timeout | Commit partial result; log for investigation |
+| `HallucinationDetected` | GENERATE + runtime validation | Retry with lower temperature, max 3 attempts |
+| `ContextLengthExceeded` | GENERATE | Truncate and retry with shorter context, or commit partial |
+| `BudgetExceeded` | Runtime | Commit what was generated; do not attempt more LLM calls |
+| `RefusalToAnswer` | GENERATE | Commit a user-facing message with `status = 'refused'` |
+| `ModelOverloaded` | GENERATE | Retry with backoff, or fall back to a smaller model |
+| `ToolFailed` | CALL | Log the error; fall back to LLM-based approximation or commit with `status = 'tool_error'` |
 
 <!-- --- -->
 
@@ -132,7 +131,7 @@ DO
         EVALUATE @result
             WHEN 'error' THEN
                 @attempt := @attempt + 1
-            OTHERWISE
+            ELSE
                 COMMIT @result WITH status = 'complete', attempts = @attempt
         END
     END
@@ -146,6 +145,8 @@ END
 ```
 
 **Important limitation:** SPL does not provide automatic retry with exponential backoff — that is implemented at the adapter level for transient infrastructure failures. The pattern above is for *application-level* retry where you want to modify the prompt or reduce scope on each attempt.
+
+For `HallucinationDetected` and `ContextLengthExceeded`, SPL also supports direct `RETRY` in the EXCEPTION block — always with a limit: `RETRY WITH temperature = 0.1 LIMIT 3`
 
 <!-- --- -->
 
@@ -221,7 +222,7 @@ DO
         EVALUATE @verdict
             WHEN 'valid' THEN
                 COMMIT @output WITH status = 'complete', attempts = @attempt
-            OTHERWISE
+            ELSE
                 @attempt := @attempt + 1
         END
     END

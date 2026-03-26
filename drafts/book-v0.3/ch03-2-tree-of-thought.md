@@ -27,54 +27,63 @@ This recipe demonstrates **Parallel Exploration**—generating multiple independ
 ```spl
 -- Recipe 17: Tree of Thought
 -- Explores multiple reasoning paths in parallel, then selects the best.
+-- Each path uses a distinct model for genuine reasoning diversity.
 
 WORKFLOW tree_of_thought
-    INPUT: @problem TEXT
+    INPUT:
+        @problem TEXT,
+        @model_a TEXT DEFAULT 'gemma3',   -- (1) Three model params — genuine diversity
+        @model_b TEXT DEFAULT 'phi4',
+        @model_c TEXT DEFAULT 'qwen2.5'
 DO
     -- Phase 1: Branching (The Brainstorm)
-    GENERATE approach_1(@problem) INTO @path_a -- (1) Three independent seeds
-    GENERATE approach_2(@problem) INTO @path_b
-    GENERATE approach_3(@problem) INTO @path_c
+    GENERATE approach_1(@problem) USING MODEL @model_a INTO @path_a -- (2) Each model reasons independently
+    GENERATE approach_2(@problem) USING MODEL @model_b INTO @path_b
+    GENERATE approach_3(@problem) USING MODEL @model_c INTO @path_c
 
     -- Phase 2: Developing (Following the map)
-    GENERATE develop(@path_a, @problem) INTO @path_a_dev -- (2) Elaborating each
-    GENERATE develop(@path_b, @problem) INTO @path_b_dev
-    GENERATE develop(@path_c, @problem) INTO @path_c_dev
+    GENERATE develop(@path_a, @problem) USING MODEL @model_a INTO @path_a_dev -- (3) Same model develops its own path
+    GENERATE develop(@path_b, @problem) USING MODEL @model_b INTO @path_b_dev
+    GENERATE develop(@path_c, @problem) USING MODEL @model_c INTO @path_c_dev
 
     -- Phase 3: Scoring (The Pruning)
-    GENERATE evaluate_path(@path_a_dev) INTO @score_a -- (3) Objective evaluation
+    GENERATE evaluate_path(@path_a_dev) INTO @score_a -- (4) Objective evaluation
     GENERATE evaluate_path(@path_b_dev) INTO @score_b
     GENERATE evaluate_path(@path_c_dev) INTO @score_c
 
     -- Phase 4: Selection and Refinement
-    GENERATE select_best(@path_a_dev, @score_a, ...) INTO @best_path
+    GENERATE select_best(@path_a_dev, @score_a, @path_b_dev, @score_b, @path_c_dev, @score_c) INTO @best_path
     GENERATE refine_solution(@best_path) INTO @best_solution
 
     -- Phase 5: Final Verification
     GENERATE verify(@best_solution) INTO @verification
-    EVALUATE @verification                     -- (4) The Final Check
+    EVALUATE @verification                     -- (5) The Final Check
         WHEN 'sound' THEN
             COMMIT @best_solution WITH status = 'complete'
-        OTHERWISE
-            GENERATE synthesize_all(...) INTO @best_solution
+        ELSE
+            GENERATE synthesize_all(@path_a_dev, @path_b_dev, @path_c_dev, @problem) INTO @best_solution
             COMMIT @best_solution WITH status = 'synthesized'
     END
 END
 ```
 
-### (1) Phase 1: Branching
+### (1) Three Model Parameters
 
-We ask the model to generate three distinct approaches to the same problem. For example, if the problem is "How to scale a database," Path A might be "Horizontal Sharding," Path B might be "Read Replicas," and Path C might be "Caching Layer."
+Recipe 17 takes three model input parameters — `@model_a` (default `gemma3`), `@model_b` (default `phi4`), `@model_c` (default `qwen2.5`) — so each reasoning path is explored by a genuinely different model. This is not cosmetic: different models have different reasoning priors, different strengths, and different failure modes. Using three distinct models maximises path diversity and reduces the risk of all three paths converging on the same blind spot.
 
-### (2) Phase 2: Developing
+### (2) Phase 1: Branching
 
-We take each seed and ask the model to "develop" it further—writing out the pros, cons, and implementation steps for each specific approach. This is where the "tree" grows its branches.
+Each model receives the same problem and generates a distinct initial approach using `GENERATE ... USING MODEL @model_a/b/c`. For example, if the problem is "How to scale a database," Path A (gemma3) might propose "Horizontal Sharding," Path B (phi4) might propose "Read Replicas," and Path C (qwen2.5) might propose "Caching Layer."
 
-### (3) Phase 3: Scoring
+### (3) Phase 2: Developing
 
-We use a "Judge" prompt to score each developed path on a set of criteria (e.g., feasibility, cost, scalability). This is the "Pruning" step. We are identifying which branches are worth keeping and which are dead ends.
+Each model continues developing its own path — the same model that generated the initial approach also elaborates it. This maintains internal consistency within each path: `gemma3` develops Path A, `phi4` develops Path B, `qwen2.5` develops Path C.
 
-### (4) The Final Check
+### (4) Phase 3: Scoring
+
+A "Judge" prompt (using the default model) scores each developed path on a set of criteria (e.g., feasibility, cost, scalability). This is the "Pruning" step. We are identifying which branches are worth keeping and which are dead ends.
+
+### (5) The Final Check
 
 Even after we've picked a "winner" and refined it, we perform one last verification. If the final solution is still not "sound," we fall back to a **Synthesis** step—taking the best ideas from *all three* paths and merging them. This ensures we don't lose the "good parts" of the losing paths.
 
@@ -87,9 +96,14 @@ Run the Tree of Thought on a strategic decision:
 ```bash
 spl run cookbook/17_tree_of_thought/tree_of_thought.spl --adapter ollama \
     problem="Should we rewrite our legacy monolith in Rust or Go?"
+
+# Override model assignments for your available models
+spl run cookbook/17_tree_of_thought/tree_of_thought.spl --adapter ollama \
+    problem="Should we rewrite our legacy monolith in Rust or Go?" \
+    model_a=gemma3 model_b=phi4 model_c=qwen2.5
 ```
 
-In the output, you will see the model exploring both languages (and perhaps a third option like "Refactor in place"), scoring them based on performance and developer velocity, and then providing a nuanced recommendation.
+In the output, you will see each model exploring a different approach — `gemma3` reasoning about one direction, `phi4` about another, `qwen2.5` about a third — scored, selected, and refined into a single recommendation.
 
 <!-- --- -->
 

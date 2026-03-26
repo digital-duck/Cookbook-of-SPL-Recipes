@@ -48,7 +48,7 @@ DO
         WHEN > 8 THEN                                  -- (4) Critical Escalation
             GENERATE escalation_alert(@ticket, @class) INTO @alert
             COMMIT @alert WITH status = 'escalated'
-        OTHERWISE
+        ELSE
             -- Phase 4: Response Generation
             GENERATE draft_response(
                 @ticket, 

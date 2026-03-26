@@ -47,7 +47,7 @@ DO
             WHEN 'failed' THEN                 -- (3) Automatic Re-planning
                 GENERATE replan(@task, @plan, @step_index, @step_result) INTO @plan
                 @step_index := 0
-            OTHERWISE
+            ELSE
                 @results := @results + @step_result
                 @step_index := @step_index + 1
         END

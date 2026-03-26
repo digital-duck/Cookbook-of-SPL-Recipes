@@ -62,7 +62,7 @@ DO
         WHEN >= 0.4 THEN                                      -- (2) Inconclusive
             GENERATE write_conclusion(@hypo, @evidence_json, 'uncertain') INTO @final
             COMMIT @final WITH verdict = 'needs_more_data'
-        OTHERWISE                                             -- (3) Refuted
+        ELSE                                             -- (3) Refuted
             GENERATE write_conclusion(@hypo, @evidence_json, 'refuted') INTO @final
             COMMIT @final WITH verdict = 'rejected'
     END

@@ -91,7 +91,8 @@ Here is where the project stands:
 | SPL 2.0 runtime published | Complete |
 | 37-recipe cookbook | Complete |
 | Momagrid adapter live | Complete |
-| Parser fixes for recipes 13, 14, 19 | In progress |
+| Parser fixes for recipes 13, 14, 19 | Complete (recipes 13, 14) |
+| SPL design v1.1 — AI Quartet review incorporated | Complete |
 | `PARALLEL DO` for concurrent execution | Planned |
 | Native `CHECKPOINT` for long-running workflows | Planned (v3) |
 | Code-RAG for Text2SPL | Deferred — awaiting spec stability |

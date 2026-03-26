@@ -1,4 +1,4 @@
-# The Road Ahead: Declarative AI, Momagrid, and Where SPL Fits
+# Declarative AI, Momagrid, and Where SPL Fits
 
 <!-- *"Every tool that survives its first decade does so by becoming infrastructure. The question is not whether SPL will be used — it is whether what it enables will be distributed equitably." — Wen Gong* -->
 

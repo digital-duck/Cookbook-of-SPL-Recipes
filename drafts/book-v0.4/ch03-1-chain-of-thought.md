@@ -1,6 +1,6 @@
 # Chain of Thought
 
-### The Pattern
+## The Pattern
 
 You have a topic — "distributed AI inference," say — and you want not just a surface summary but a piece of writing that demonstrates actual reasoning. The naive Python approach is a single `requests.post` to the LLM with an instruction like "think carefully and then summarise." Sometimes it works. More often you get a paragraph that opens confidently, wanders, and concludes with something vague. The model has to do the research thinking, the analytical thinking, and the synthesis all in one forward pass, which is a lot to ask. Debugging it is worse: when the output is thin, you cannot tell whether the model failed to surface facts, failed to analyse them, or failed to compress the analysis. The whole thing is a black box.
 
@@ -8,11 +8,11 @@ The sharper practitioners will try prompt engineering — "first list what you k
 
 The recurring pain is that reasoning is not a single act. It is a sequence of acts, each contingent on the one before. Compressing that sequence into one LLM call trades controllability for convenience, and in practice the convenience is illusory — you end up debugging by staring at final output and guessing.
 
-### The SPL Approach
+## The SPL Approach
 
 Model the reasoning stages explicitly as a linear chain of GENERATE steps, threading each output as context for the next, so that Research feeds Analysis and Analysis feeds Synthesis — a CTE chain written for thought instead of tables.
 
-### The .spl File (Annotated)
+## The .spl File (Annotated)
 
 ```sql
 -- Recipe 09: Chain of Thought
@@ -70,7 +70,7 @@ Each CTE can only see what the previous one produced. There is no way for `summa
 
 **On COMMIT.** `COMMIT @summary WITH status = 'complete'` writes the result to the output store with a status label. The workflow has no EXCEPTION block. This is deliberate for a recipe at this stage of complexity: the chain of thought pattern is the mechanism; safety wrapping is a separate concern handled in Part 4.
 
-### Running It
+## Running It
 
 ```bash
 spl run cookbook/09_chain_of_thought/chain.spl \
@@ -109,7 +109,7 @@ Expected output (truncated — your model's phrasing will differ):
 status: complete
 ```
 
-### What Just Happened
+## What Just Happened
 
 Three LLM calls were made, in strict sequence. No LLM call was made for anything other than reasoning — there is no CALL in this workflow, because there is no deterministic tool work to do.
 
@@ -123,7 +123,7 @@ Three LLM calls were made, in strict sequence. No LLM call was made for anything
 
 **Token budget awareness.** Three GENERATE calls means three round-trips to the model. For a local model on a GTX 1080 Ti this is noticeable — roughly 12–20 seconds total depending on output length. For a production API it is three billing events. This is the cost of the pattern. It is worth it when the quality gain matters; for a quick lookup it is not.
 
-### Reproducibility Note
+## Reproducibility Note
 
 Tested on a GTX 1080 Ti with gemma3 (4-bit quantised) via Ollama. End-to-end latency for `topic="distributed AI inference"`: approximately 14 seconds. For `topic="quantum computing"` with llama3.2: approximately 18 seconds.
 
@@ -133,7 +133,7 @@ If you need bit-for-bit reproducibility, set `temperature=0` on all three GENERA
 
 One observed failure mode: if `@topic` is extremely broad ("everything about AI"), the research step produces a sprawling dump that overwhelms the analysis step, which then produces a similarly sprawling analysis, and the summary step cannot compress it coherently. Keep topics scoped. The workflow does not enforce this — that is the caller's responsibility.
 
-### When to Use This Pattern
+## When to Use This Pattern
 
 **Use chain of thought when:**
 
@@ -158,7 +158,7 @@ One observed failure mode: if `@topic` is extremely broad ("everything about AI"
 
 The chain of thought pattern is the minimum viable structure for tasks where reasoning quality matters. Tree of thought adds parallel exploration when you are uncertain which reasoning path is best. Chain of thought assumes you know the right sequence of reasoning acts; tree of thought does not.
 
-### Exercises
+## Exercises
 
 1. **Add a fourth step.** After `summarize`, add `GENERATE critique(@summary, @topic) INTO @critique` that asks the model to identify the weakest claim in the summary. Then `COMMIT @critique WITH status = 'critique'`. Run both the original and the extended version; compare whether the critique surfaces anything the single-prompt approach would have missed.
 

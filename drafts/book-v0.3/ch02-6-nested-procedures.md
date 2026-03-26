@@ -43,7 +43,7 @@ DO
         WHEN > 8 THEN
             GENERATE simplify(text, audience) INTO @calibrated
             COMMIT @calibrated
-        OTHERWISE
+        ELSE
             COMMIT text
     END
 END

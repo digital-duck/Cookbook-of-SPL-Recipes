@@ -69,7 +69,7 @@ DO
         -- Early exit: quality threshold reached before max_iterations
         -- SQL analogy: BREAK in a cursor loop when WHERE condition is met
         COMMIT @current WITH status = 'complete', iterations = @iteration
-      OTHERWISE
+      ELSE
         -- Refine: feed the critique back into the LLM alongside the draft
         GENERATE refined(@current, @feedback) INTO @current
         @iteration := @iteration + 1
@@ -181,7 +181,7 @@ The key insight: the workflow ran 2 fewer LLM calls than `max_iterations` would 
 
 Typical wall-clock time for a short copywriting task: 8–14 seconds for a 2-iteration run, 18–28 seconds for a 5-iteration run.
 
-**Stability:** The critique function's "satisfactory" output is sensitive to prompt wording. If your critique prompt does not explicitly instruct the model to return the exact string "satisfactory" (and nothing else) when the draft meets the bar, you will see false negatives — the EVALUATE branch will always fall through to OTHERWISE, exhausting `max_iterations` every run. Test your critique prompt in isolation before embedding it in the loop.
+**Stability:** The critique function's "satisfactory" output is sensitive to prompt wording. If your critique prompt does not explicitly instruct the model to return the exact string "satisfactory" (and nothing else) when the draft meets the bar, you will see false negatives — the EVALUATE branch will always fall through to ELSE, exhausting `max_iterations` every run. Test your critique prompt in isolation before embedding it in the loop.
 
 **Non-determinism:** Two runs on identical input will often differ at iteration count. One run exits at iteration 1, the next at iteration 2. This is expected. The self-refine pattern is not designed to be deterministic at the iteration level — only at the structural level (the loop always terminates, the output is always committed, exceptions are always handled).
 

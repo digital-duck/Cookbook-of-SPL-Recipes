@@ -26,10 +26,10 @@ The SPL statement for defining a named prompt template that can be injected as s
 A style of programming in which you describe *what* you want rather than *how* to produce it. SQL is the canonical example: you specify the desired result set, and the query optimizer decides how to retrieve it. SPL applies this principle to LLM workflows: you specify the intent of each step, and the runtime (adapter) handles provider-specific execution details.
 
 **EVALUATE**
-The SPL statement for branching workflow execution based on the content of an LLM-generated value. Analogous to a semantic `WHERE` or `CASE` clause. Unlike a deterministic conditional (`IF value == 'x'`), `EVALUATE` matches against language model output, which means the branch taken is probabilistic — the same input may route differently across runs. This is expected behavior for semantic branching.
+The SPL statement for branching workflow execution based on the content of an LLM-generated value. Analogous to a semantic `WHERE` or `CASE` clause. All current EVALUATE modes — numeric comparison, string equality, string predicates, boolean — are deterministic and cost zero tokens. Semantic evaluation (fuzzy intent matching) is planned for v3.0 and will be LLM-backed. The branch taken for string matching is deterministic: if `@result` is exactly `'approved'`, it routes to the `WHEN 'approved'` branch consistently.
 
 **EXCEPTION**
-The SPL block that handles runtime errors and failure modes. Analogous to `BEGIN...EXCEPTION...END` in PL/SQL. Named exception types (e.g., `GenerationError`, `MaxIterationsReached`, `BudgetExceeded`) allow the workflow to handle different failures differently — graceful degradation, partial commit, early termination — without crashing the entire workflow.
+The SPL block that handles runtime errors and failure modes. Analogous to `BEGIN...EXCEPTION...END` in PL/SQL. Named exception types (e.g., `GenerationError`, `MaxIterationsReached`, `BudgetExceeded`) allow the workflow to handle different failures differently — graceful degradation, partial commit, early termination — without crashing the entire workflow. SPL v1.1 exception types: `HallucinationDetected`, `ContextLengthExceeded`, `BudgetExceeded`, `RefusalToAnswer`, `ModelOverloaded`, `ToolFailed`. The `RETRY` statement inside an exception handler must always specify `LIMIT n` to prevent infinite loops: `RETRY WITH temperature = 0.1 LIMIT 3`.
 
 **The AI Quartet**
 The four-member research team that produced this book: Wen Gong (human author and architect), Claude (Anthropic), Gemini (Google), and Z.ai (ZhiPu). Each brought a distinct perspective: Wen's architectural vision and lived experience, Claude's technical precision, Gemini's editorial breadth, and Z.ai's adversarial critical review.
@@ -48,6 +48,9 @@ A style of programming in which you specify *how* to produce a result, step by s
 
 **LLM (Large Language Model)**
 A neural network trained on large text corpora that can generate, classify, summarize, translate, and reason about text. In SPL, LLMs are invoked exclusively through `GENERATE` statements. They are the "orchestra" — the models are the musicians, SPL is the score, and the human is the conductor.
+
+**LOGGING**
+The SPL statement for emitting diagnostic output during workflow execution. Analogous to Python's `print()` or a structured logger. Supports four levels: `DEBUG` (suppressed by default), `INFO` (default minimum), `WARN` (always shown), `ERROR` (always shown, can redirect to file with `TO 'path'`). F-string interpolation is supported: `LOGGING f'Step {@i} of {@n}' LEVEL DEBUG`. The `@` sigil is retained inside f-strings for unambiguous variable identification.
 
 **Model**
 The specific LLM variant invoked by a `GENERATE` step. Specified with `--model` or `-m` at the CLI, or with `USING MODEL @var` inside a workflow. Different models have different capability, cost, and latency profiles. The workflow does not change when the model changes.
@@ -86,7 +89,7 @@ The Python package that provides the `spl` command-line tool. Installed with `pi
 The Python decorator that registers a Python function as a `CALL`-able tool in an SPL workflow. Functions decorated with `@spl_tool` must accept string parameters and return strings. They are loaded at workflow invocation time with `--tools path/to/tools.py`.
 
 **WHILE**
-The SPL looping construct for iterating a block of steps as long as a condition holds. Used for retry loops, multi-round patterns (debate, refinement), and step-by-step execution over a plan. The loop body should be lightweight: decide or route, not generate large artifacts. Heavy generation belongs outside loops.
+The SPL looping construct for iterating a block of steps as long as a condition holds. Used for retry loops, multi-round patterns (debate, refinement), and step-by-step execution over a plan. The loop body should be lightweight: decide or route, not generate large artifacts. Heavy generation belongs outside loops. Supports two iteration modes with one keyword: `WHILE @i < @n DO` (index-based) and `WHILE @item IN @items DO` (collection-based). No `FOR` keyword needed — orthogonality principle.
 
 **WORKFLOW**
 The SPL construct for a named, parameterized, multi-step agentic process. Analogous to a SQL stored procedure. Defines `INPUT` parameters (with optional defaults), an `OUTPUT` variable, a `DO` body (the steps), and an `EXCEPTION` block (error handling). The primary unit of composition in SPL 2.0.

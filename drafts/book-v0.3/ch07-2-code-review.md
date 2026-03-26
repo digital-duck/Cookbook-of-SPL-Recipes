@@ -31,49 +31,80 @@ This recipe demonstrates **Pass-by-Pass Analysis** and **Threshold-Based Branchi
 ```spl
 -- Recipe 15: Automated Code Review
 -- Multi-pass code review: security, performance, style, then synthesis.
+-- All findings and the final review written to @log_dir.
 
 WORKFLOW code_review
-    INPUT: @code TEXT, @language TEXT
+    INPUT:
+        @code     TEXT,
+        @language TEXT,
+        @log_dir  TEXT DEFAULT 'cookbook/15_code_review/logs'    -- (1) Log directory
+    OUTPUT: @review TEXT
 DO
     -- Pass 1-4: Specialized Audits
-    GENERATE security_audit(@code, @language) INTO @security_findings -- (1) Specialized Pass
+    GENERATE security_audit(@code, @language) INTO @security_findings  -- (2) Specialized Pass
+    CALL write_file(f'{@log_dir}/security.md', @security_findings) INTO @_
+
     GENERATE performance_review(@code, @language) INTO @perf_findings
+    CALL write_file(f'{@log_dir}/performance.md', @perf_findings) INTO @_
+
     GENERATE style_review(@code, @language) INTO @style_findings
+    CALL write_file(f'{@log_dir}/style.md', @style_findings) INTO @_
+
     GENERATE bug_detection(@code, @language) INTO @bug_findings
+    CALL write_file(f'{@log_dir}/bugs.md', @bug_findings) INTO @_
 
     -- Severity scoring (Turning prose into numbers)
-    GENERATE severity_score(@security_findings) INTO @sec_score      -- (2) Quantifying Risk
+    GENERATE severity_score(@security_findings) INTO @sec_score         -- (3) Quantifying Risk
     GENERATE severity_score(@perf_findings) INTO @perf_score
     GENERATE severity_score(@bug_findings) INTO @bug_score
 
     -- Synthesize all findings
-    GENERATE synthesize_review(...) INTO @review
+    GENERATE synthesize_review(
+        @security_findings, @sec_score,
+        @perf_findings, @perf_score,
+        @style_findings,
+        @bug_findings, @bug_score
+    ) INTO @review
+    CALL write_file(f'{@log_dir}/review.md', @review) INTO @_
 
-    -- Phase 5: Automated Verdict
-    EVALUATE @sec_score                                             -- (3) Threshold Branching
+    -- Automated Verdict
+    EVALUATE @sec_score                                                  -- (4) Threshold Branching
         WHEN > 8 THEN
             COMMIT @review WITH status = 'critical_issues', verdict = 'block'
         WHEN > 5 THEN
             COMMIT @review WITH status = 'needs_fixes', verdict = 'request_changes'
-        OTHERWISE
+        ELSE
             COMMIT @review WITH status = 'approved', verdict = 'approve'
     END
+
+EXCEPTION
+    WHEN ContextLengthExceeded THEN
+        GENERATE summarize_code(@code) INTO @summary
+        GENERATE quick_review(@summary, @language) INTO @review
+        CALL write_file(f'{@log_dir}/review.md', @review) INTO @_
+        COMMIT @review WITH status = 'partial_large_file'
+    WHEN BudgetExceeded THEN
+        COMMIT @security_findings WITH status = 'security_only'
 END
 ```
 
-### (1) Specialized Passes
+### (1) Log Directory Input
+
+The `@log_dir` input parameter (default `cookbook/15_code_review/logs`) gives the caller control over where all intermediate findings are written. After each pass, `CALL write_file(...)` persists the findings to disk, so nothing is lost if a later step fails.
+
+### (2) Specialized Passes
 
 Each `GENERATE` call uses a focused prompt. By asking the model to *only* look for security issues, we reduce the noise from style or performance concerns. This results in much higher "Recall" (finding actual bugs) than a single-pass review.
 
-### (2) Quantifying Risk (`severity_score`)
+### (3) Quantifying Risk (`severity_score`)
 
 LLMs are great at prose, but systems are better at numbers. We use a middle step to "quantify" the findings. We ask the model: "On a scale of 1–10, how severe are these security findings?" This turns a subjective text block into a objective metric that the `WORKFLOW` can act upon.
 
-### (3) Threshold Branching
+### (4) Threshold Branching
 
-This is where the automation takes action. We use the `@sec_score` to drive the `EVALUATE` block. 
-- If a critical security flaw is found (score > 8), we `block` the code immediately. 
-- If issues are moderate, we `request_changes`. 
+This is where the automation takes action. We use the `@sec_score` to drive the `EVALUATE` block.
+- If a critical security flaw is found (score > 8), we `block` the code immediately.
+- If issues are moderate, we `request_changes`.
 - Only if the score is low do we `approve`.
 
 SQL Analogy: A **Trigger with a Threshold**. If a transaction amount exceeds a limit, the trigger blocks the insert; otherwise, it allows it to proceed.

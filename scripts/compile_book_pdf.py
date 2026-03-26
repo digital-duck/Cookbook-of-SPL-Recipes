@@ -32,7 +32,7 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 REPO_ROOT        = Path(__file__).resolve().parent.parent
-_DEFAULT_DRAFT   = "book-v0.3"
+_DEFAULT_DRAFT   = "book-v0.5"
 DIST_DIR         = REPO_ROOT / "dist"
 COMBINED_MD = DIST_DIR / "spl-cookbook-combined.md"
 TEX_OUT     = DIST_DIR / "spl-cookbook.tex"

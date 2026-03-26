@@ -224,3 +224,9 @@ This is the same reason SQL outlasted every "better" imperative data access appr
 1.  **Describe a "Self-Healer".** Try compiling the description: *"Generate a blog post, check it for facts, and if facts are missing, search the web and rewrite."* Use `--mode auto` and see if it generates a `WHILE` loop.
 2.  **Fix and Re-run.** Take a generated `.spl` file that has a minor syntax error. Fix the error manually and run it. This is the "Human-in-the-loop" coding pattern.
 3.  **Model Showdown.** Use two different compiler models (e.g., `phi4` vs `gemma3`) to compile the same description. Compare the "coding style" of each model.
+
+<!-- --- -->
+
+## Want a Visual Interface?
+
+The CLI compiler is powerful, but if you prefer working in a browser, the **Recipe Kitchen** (Chapter 11.2) provides a full web UI for Text2SPL. You can describe a workflow in plain English, compile it, inspect the generated SPL, and run it — all from a browser tab, no terminal required. The Recipe Kitchen is SPL's answer to "low-code": the same declarative language, with a graphical front door.

@@ -67,7 +67,7 @@ DO
     EVALUATE @score                             -- (4) Conditional Refinement
         WHEN > 0.7 THEN
             COMMIT @final_summary WITH status = 'complete'
-        OTHERWISE
+        ELSE
             GENERATE improve_summary(@final_summary, @summaries) INTO @final_summary
             COMMIT @final_summary WITH status = 'refined'
     END

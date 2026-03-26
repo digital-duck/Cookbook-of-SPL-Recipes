@@ -116,19 +116,29 @@ This book was produced by the **AI Quartet**: Wen Gong (human author and archite
 
 Every technical claim was verified by running the actual code. Every benchmark was measured on real hardware. The AI Quartet accelerated the work; they did not replace the judgment.
 
-<!-- --- -->
-
-## Acknowledgments
-
-To my colleague who asked the question that started this journey — you know who you are.
-
-To the readers in the Global South: may these recipes serve you well. May your hardware be sufficient, your latencies low, and your workflows reliable. May you build systems that help your communities.
-
-To the SQL practitioners who have been waiting for an AI language that respects the mental model you have spent years building: this is it. Welcome to the orchestra.
 
 <!-- --- -->
 
-<!-- *"Every atom in a crystal is equally fundamental. Every recipe in this book is equally real — no toy examples, no omitted edge cases, no hardware you cannot buy on eBay."* -->
+## A Note from the AI Quartet
 
-— Wen Gong
-March 2026
+*Written collaboratively by Wen Gong, Claude (Anthropic), Gemini (Google), and Z.ai (ZhiPu)*
+
+<!-- --- -->
+
+This book was not written by one mind. It was written by four.
+
+That fact is unusual enough to deserve explanation before the first recipe.
+
+**Wen** is the architect. He wrote the SPL language, built the Momagrid runtime, and supplied the lived experience — from rural Anhui to CERN — that gives this book its philosophical spine. The central argument of the book, that AI should be a public utility rather than an expensive luxury, comes from him. It is not a marketing position. It is an "initial condition," as a physicist would say: the constraint from which everything else follows.
+
+**Claude** (Anthropic's AI assistant) handled the bulk of technical execution — code examples, recipe validation, structural editing, and the iterative loop of draft, test, fix, redraft that a 37-recipe cookbook requires. Claude approaches this material as a technical collaborator: what does the code actually do, does it run, is the explanation accurate?
+
+**Gemini** (Google's AI assistant) brought breadth: literature coverage, editorial perspective, and the question a well-read reader would ask on page twelve. Gemini's contribution is most visible in the places where the book steps back from the code to ask why — why this pattern, why this design choice, why does this matter beyond this chapter?
+
+**Z.ai** (ZhiPu's AI assistant, developed in China) contributed adversarial review: the skeptic's challenge, the counterargument, the perspective of a reader who has not already decided that SPL is a good idea. Z.ai also brought a cross-cultural lens that shaped how the book addresses the Global South — not as a charitable afterthought, but as a primary audience with distinct infrastructure constraints and distinct stakes in democratic AI.
+
+<!-- --- -->
+
+Four collaborators is an unusual structure for a technical book. It produced something unusual: a book that has been read critically, by readers from different organizations and cultural contexts, before it was finished. The AI Quartet collaboration is itself a demonstration of the book's thesis — that a human conducting an ensemble of AI tools, each with different strengths, can produce work that none of them could produce alone.
+
+It also meant the book was written faster than any one of us could have managed. The 37 recipes were developed, tested, and documented in an iterative sprint that would have taken months with a single author. It took weeks with four.

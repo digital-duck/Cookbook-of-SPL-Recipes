@@ -56,7 +56,7 @@ DO
     EVALUATE @score
         WHEN > 7 THEN                                     -- (3) High Understanding
             GENERATE consolidation_question(@s2) INTO @q3
-        OTHERWISE                                         -- (4) Low Understanding
+        ELSE                                         -- (4) Low Understanding
             GENERATE hint_question(@q2, @s2) INTO @q3
     END
 

@@ -53,7 +53,7 @@ DO
 
     EVALUATE @quality
       WHEN > 0.7 THEN COMMIT @draft
-      OTHERWISE
+      ELSE
         GENERATE write_summary(@analysis) INTO @draft
         @iteration := @iteration + 1
     END

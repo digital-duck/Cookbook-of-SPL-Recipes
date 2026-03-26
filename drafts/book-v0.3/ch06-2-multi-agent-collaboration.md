@@ -27,22 +27,26 @@ This recipe introduces the use of **Procedures as Agents** and the pattern of "L
 ```spl
 -- Recipe 14: Multi-Agent Collaboration
 -- Specialized agents (Researcher, Analyst, Writer) collaborate on a report.
+-- Each agent's output is written to @log_dir for traceability.
 
-PROCEDURE researcher(topic TEXT)              -- (1) Agent 1: The Researcher
+PROCEDURE researcher(topic TEXT) RETURNS TEXT  -- (1) Agent 1: The Researcher
 DO
     GENERATE research_facts(topic) INTO @facts
     GENERATE identify_key_themes(@facts) INTO @themes
-    COMMIT @facts + '\n\nKey Themes:\n' + @themes
+    @result := @facts || '\n\nKey Themes:\n' || @themes
+    COMMIT @result
 END
 
-PROCEDURE analyst(research TEXT, topic TEXT) -- (2) Agent 2: The Analyst
+PROCEDURE analyst(research TEXT, topic TEXT) RETURNS TEXT  -- (2) Agent 2: The Analyst
 DO
     GENERATE analyze_trends(research) INTO @trends
     GENERATE assess_risks(research, topic) INTO @risks
-    COMMIT 'Trends: ' + @trends + '\n\nRisks: ' + @risks
+    GENERATE find_opportunities(research, topic) INTO @opportunities
+    @result := 'Trends:\n' || @trends || '\n\nRisks:\n' || @risks || '\n\nOpportunities:\n' || @opportunities
+    COMMIT @result
 END
 
-PROCEDURE writer(research TEXT, analysis TEXT, topic TEXT) -- (3) Agent 3: The Writer
+PROCEDURE writer(research TEXT, analysis TEXT, topic TEXT) RETURNS TEXT  -- (3) Agent 3: The Writer
 DO
     GENERATE draft_report(topic, research, analysis) INTO @draft
     GENERATE critique(@draft) INTO @feedback
@@ -51,13 +55,29 @@ DO
 END
 
 WORKFLOW multi_agent_report
-    INPUT: @topic TEXT
+    INPUT:
+        @topic TEXT,
+        @log_dir TEXT DEFAULT 'cookbook/14_multi_agent/logs'
+    OUTPUT: @report TEXT
 DO
+    LOGGING f'Multi-agent report | topic={@topic}' LEVEL INFO
+
     CALL researcher(@topic) INTO @research    -- (4) Linear Delegation
+    CALL write_file(f'{@log_dir}/research.md', @research) INTO @_
+
     CALL analyst(@research, @topic) INTO @analysis
+    CALL write_file(f'{@log_dir}/analysis.md', @analysis) INTO @_
+
     CALL writer(@research, @analysis, @topic) INTO @report
+    CALL write_file(f'{@log_dir}/report.md', @report) INTO @_
 
     COMMIT @report WITH status = 'complete'
+
+EXCEPTION
+    WHEN BudgetExceeded THEN
+        COMMIT @research WITH status = 'partial_research_only'
+    WHEN HallucinationDetected THEN
+        RETRY WITH temperature = 0.1 LIMIT 3
 END
 ```
 

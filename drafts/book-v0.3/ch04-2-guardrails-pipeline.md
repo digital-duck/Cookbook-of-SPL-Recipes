@@ -54,7 +54,7 @@ DO
     EVALUATE @pii_report
         WHEN STARTSWITH 'pii_found' THEN
             CALL redact_pii(@user_input) INTO @clean_input
-        OTHERWISE
+        ELSE
             SET @clean_input = @user_input
     END
 
@@ -66,7 +66,7 @@ DO
     EVALUATE @output_check
         WHEN 'safe' THEN SET @safe_response = @raw_response
         WHEN 'contains_pii' THEN CALL redact_pii(@raw_response) INTO @safe_response
-        OTHERWISE SET @safe_response = 'Unable to generate safe response.'
+        ELSE SET @safe_response = 'Unable to generate safe response.'
     END
 
     COMMIT @safe_response WITH status = 'complete'

@@ -55,7 +55,7 @@ DO
             COMMIT @response_a WITH winner = 'A', margin = (@score_a - @score_b)
         WHEN < -1.5 THEN
             COMMIT @response_b WITH winner = 'B', margin = (@score_b - @score_a)
-        OTHERWISE
+        ELSE
             COMMIT 'Tie' WITH winner = 'none'
     END
 END

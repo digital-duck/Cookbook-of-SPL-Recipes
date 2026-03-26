@@ -185,7 +185,7 @@ WHERE sentiment_score > 0.7;
 EVALUATE @sentiment
   WHEN 'positive' THEN
     COMMIT @proposal WITH status = 'approved'
-  OTHERWISE
+  ELSE
     GENERATE revision(@proposal, @feedback) INTO @proposal
 END
 ```

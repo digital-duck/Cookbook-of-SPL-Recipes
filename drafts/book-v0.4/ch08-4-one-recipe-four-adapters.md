@@ -4,7 +4,7 @@
 
 <!-- --- -->
 
-### The Pattern
+## The Pattern
 
 Every recipe in this book includes the promise: *the same `.spl` file runs unchanged across adapters.* This chapter is the proof.
 
@@ -14,7 +14,7 @@ The outputs will differ. Different models produce different text. That is expect
 
 <!-- --- -->
 
-### The Recipe Under Test
+## The Recipe Under Test
 
 We use a condensed version of the Self-Refine pattern (Recipe 2.1). It was chosen because:
 
@@ -86,7 +86,7 @@ END
 
 <!-- --- -->
 
-### Running It Across Four Adapters
+## Running It Across Four Adapters
 
 ```bash
 # Adapter 1: Ollama (local, Gemma 3)
@@ -114,7 +114,7 @@ The `.spl` file is byte-for-byte identical across all four runs. Only `--adapter
 
 <!-- --- -->
 
-### Results
+## Results
 
 | Adapter | Model | Draft quality score | Refined? | Total latency | Final summary (excerpt) |
 |---------|-------|---------------------|----------|---------------|-------------------------|
@@ -131,7 +131,7 @@ The `.spl` file is byte-for-byte identical across all four runs. Only `--adapter
 
 <!-- --- -->
 
-### What Just Happened
+## What Just Happened
 
 The SPL runtime's adapter abstraction works as follows:
 
@@ -146,7 +146,7 @@ The adapter is a plugin. The SPL runtime does not know or care which adapter is 
 
 <!-- --- -->
 
-### The SQL Analogy
+## The SQL Analogy
 
 The adapter pattern is identical to JDBC. A SQL query written against the JDBC interface runs against Oracle, PostgreSQL, MySQL, or SQLite by changing the connection string — not the SQL. The query planner is the adapter. The SQL source is unchanged.
 
@@ -154,7 +154,7 @@ SPL's `--adapter` flag is the connection string. The `.spl` file is the SQL. The
 
 <!-- --- -->
 
-### Reproducibility Note
+## Reproducibility Note
 
 - **Hardware**: GTX 1080 Ti, 11 GB VRAM (for the Ollama run)
 - **Ollama model**: Gemma 3 (via local Ollama server)
@@ -166,7 +166,7 @@ SPL's `--adapter` flag is the connection string. The `.spl` file is the SQL. The
 
 <!-- --- -->
 
-### When to Use This Pattern
+## When to Use This Pattern
 
 **Use adapter portability when:**
 - Developing on a local Ollama instance and deploying to a cloud API — the `.spl` file promotes unchanged
@@ -179,7 +179,7 @@ SPL's `--adapter` flag is the connection string. The `.spl` file is the SQL. The
 
 <!-- --- -->
 
-### Exercises
+## Exercises
 
 1. Run `portability_test.spl` on two different local Ollama models (e.g., gemma3 and phi4) without changing the `.spl` file. Compare quality scores and output text. Does one model consistently score higher? Why?
 2. Add a fifth adapter run using a model you have access to. Update the results table with actual measured latency and quality scores.

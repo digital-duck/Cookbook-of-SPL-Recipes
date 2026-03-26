@@ -358,7 +358,7 @@ CALL classify_input_keywords(@user_input) INTO @keyword_class
 EVALUATE @keyword_class
     WHEN 'harmful'   THEN COMMIT 'I cannot help with that.' WITH status = 'blocked'
     WHEN 'off_topic' THEN COMMIT 'Outside my scope.'         WITH status = 'blocked'
-    OTHERWISE             -- pass through to LLM classification
+    ELSE             -- pass through to LLM classification
 END
 ```
 
