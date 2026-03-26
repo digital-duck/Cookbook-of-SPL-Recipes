@@ -78,6 +78,12 @@ And this is not a book with toy examples. Every recipe runs on real hardware, pr
 
 ## How This Book Works
 
+**CTOs, engineering leads, and technical decision-makers** evaluating SPL for their
+teams may want to start with Chapter 10.6 — *For Decision-Makers* — which addresses
+the governance case, the readability advantage across organisational roles, a
+side-by-side comparison with LangGraph on a non-trivial workflow, and an honest
+assessment of adoption risk. The rest of the book is there when you need the detail.
+
 Every chapter follows the same structure. You can open to any recipe and start there, or read sequentially. Each recipe includes:
 
 - **The Pattern** — What problem does this solve? Why would you need it?

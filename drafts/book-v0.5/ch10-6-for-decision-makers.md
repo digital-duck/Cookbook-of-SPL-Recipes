@@ -24,7 +24,105 @@ If your team includes SQL practitioners — and most data-adjacent teams do — 
 
 The transfer is structural, not a metaphor. A data engineer who has written PL/SQL will recognize the SPL pattern within the first recipe.
 
-More importantly: **business stakeholders can read an SPL script and approve it** without executing it. The intent is explicit in the syntax. "Generate a draft, evaluate its quality, refine if below threshold, commit the result" is readable by anyone. The equivalent Python implementation is not. This is a governance model that imperative code cannot provide, regardless of how good the documentation is.
+More importantly: **business stakeholders can read an SPL script and approve it**
+without executing it. The intent is explicit in the syntax. "Generate a draft,
+evaluate its quality, refine if below threshold, commit the result" is readable
+by anyone. The equivalent Python implementation is not. This is a governance model
+that imperative code cannot provide, regardless of how good the documentation is.
+
+## The Three Roles, One Language
+
+The readability benefit is not uniform across all roles. Different people find
+different things in the same SPL file:
+
+| Role | What they read in SPL |
+|---|---|
+| **Business Analyst** | `WORKFLOW`, `INPUT`, `OUTPUT`, `GENERATE`, prompt text inside `CREATE FUNCTION` — the *what* |
+| **Implementer** | `CALL`, `USING MODEL`, `WHILE`, `EXCEPTION WHEN` — the *how*; Python tools for deterministic computation |
+| **Governance Approver** | `INPUT`/`OUTPUT` contract, `EXCEPTION` handlers, `COMMIT WITH status=` — the audit trail |
+
+This has a practical consequence for the development cycle. The conventional path
+with Python-based frameworks involves three sequential handoffs:
+
+```mermaid
+sequenceDiagram
+    participant BA as Business Analyst
+    participant Dev as Developer
+    participant GA as Governance Approver
+    BA->>Dev: requirements doc
+    Dev->>Dev: translate + build (Python / LangGraph)
+    Dev->>GA: explanation doc
+    GA->>Dev: review + change requests
+    Dev->>BA: re-spec or accept?
+```
+
+Three handoffs. Three translation layers. Each one is a delay and a potential
+source of drift between intent and implementation.
+
+With SPL, all three roles work from the same file:
+
+```mermaid
+flowchart LR
+    BA["Business Analyst"]
+    Dev["Implementer"]
+    GA["Governance Approver"]
+    SPL(["workflow.spl"])
+    BA <-->|read + write| SPL
+    Dev <-->|read + write| SPL
+    GA <-->|read + audit| SPL
+```
+
+Whether this potential is fully realised depends on team adoption and workflow
+complexity — but the structural conditions for it are present in the language design.
+
+## Documentation That Stays Current
+
+Python-based AI workflows accumulate a documentation problem over time. The
+`TypedDict` drifts from the README. The routing logic is explained in a Confluence
+page that was last updated six months ago. The developer who understood the
+original graph left the team.
+
+The load-bearing structural elements of an SPL recipe are resistant to this problem
+because they are executable, not descriptive:
+
+| SPL construct | What it documents — and cannot misrepresent |
+|---|---|
+| `CREATE FUNCTION f(...) AS $$ prompt $$` | Exactly what the AI is asked, in plain English |
+| `INPUT: @param TYPE DEFAULT v` | The full parameter contract — types and defaults |
+| `GENERATE f() USING MODEL @m` | Which model is responsible for which task |
+| `CALL python_tool()` | Where deterministic logic replaces LLM inference |
+| `EXCEPTION WHEN X THEN` | Every known failure mode and its handling |
+| `COMMIT ... WITH status=` | The observable output contract |
+
+These cannot drift from the running behaviour because they *are* the running
+behaviour. Prose comments can still go stale, as in any language. But the contract
+— inputs, outputs, exceptions, model assignments — is always in sync with what
+executes.
+
+## A Concrete Comparison: Ensemble Voting in SPL and LangGraph
+
+Chapter 6.3 includes a detailed implementation of the ensemble voting recipe in
+both SPL and LangGraph, using the same algorithm, the same defaults, and the same
+log output. The comparison is included as working, runnable code.
+
+The headline numbers from that comparison:
+
+| Dimension | SPL | LangGraph |
+|---|---|---|
+| Non-comment lines | **107** | **213** |
+| State management | implicit `@variables` | explicit `TypedDict` with 14 fields |
+| Loop | `WHILE @i < @n DO` | conditional edge + routing function |
+| Model dispatch | `GENERATE ... USING MODEL @m` | `ChatOllama(model=m).invoke(prompt)` |
+| CLI entry point | `INPUT:` block | 10-line `argparse` block |
+| Graph wiring | sequential — read top to bottom | `add_node`, `add_edge`, `compile()` |
+
+The 2× line difference is a symptom of a deeper design difference: SPL makes the
+workflow the primary artefact; LangGraph makes the graph the primary artefact.
+LangGraph is the right choice when you need fully dynamic agent construction,
+complex memory systems, or tight enterprise platform integration. For the large
+majority of production AI workflow patterns — all 37 recipes in this book — the
+logic is expressible declaratively, and the declarative form is readable by the
+whole organisation, not just the engineers who built it.
 
 ## Deployment and Promotion Model
 
@@ -116,16 +214,24 @@ For teams evaluating infrastructure spend: Momagrid is the path from "cloud API 
 
 ## Competitive Landscape
 
-| | SPL | LangGraph | AutoGen | CrewAI |
-|-|-----|-----------|---------|--------|
-| Required language | SPL (SQL-like) | Python | Python | Python |
-| SQL practitioner accessible | Yes | No | No | No |
-| Stakeholder-reviewable | Yes | No | No | No |
-| Adapter portability | Yes (one flag) | No | No | No |
-| Runs on commodity GPU | Yes (GTX 1080 Ti) | Depends on model | Depends on model | Depends on model |
-| Dynamic agent construction | Limited | Yes | Yes | Yes |
-| Governance & reviewability | Yes (business-readable) | No | No | No |
-| Production ecosystem maturity | Early | Mature | Mature | Mature |
+| Dimension | SPL | LangGraph | AutoGen | CrewAI |
+|---|---|---|---|---|
+| Language required | SPL (SQL-like) | Python | Python | Python |
+| SQL practitioners | Yes | No | No | No |
+| Business Analyst readable | Yes | No | No | Partial¹ |
+| Governance auditable | Yes | No | No | No |
+| End-user transparent | Yes | No | No | No |
+| Docs cannot drift | Yes | No | No | No |
+| Adapter portability | Yes | No | No | No |
+| Commodity GPU | Yes | Vary² | Vary² | Vary² |
+| Dynamic agents | Limited | Yes | Yes | Yes |
+| Ecosystem maturity | Early | Mature | Mature | Mature |
+
+*¹ CrewAI's YAML agent/task config is more approachable than LangGraph graph
+wiring, but covers roles rather than full workflow logic.*
+
+*² Depends on the model chosen; smaller open-weight models run on commodity
+hardware, frontier API models do not.*
 
 SPL occupies a distinct niche: declarative, portable, accessible to non-Python teams, and designed for workflows whose logic is expressible without dynamic agent construction. LangGraph, AutoGen, and CrewAI are the right choice when you need fully dynamic agent construction, complex memory systems, or tight enterprise platform integration.
 
