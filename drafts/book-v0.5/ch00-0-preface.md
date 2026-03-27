@@ -118,31 +118,7 @@ The logic is what matters. The hardware is a floor, not a ceiling.
 
 <!-- --- -->
 
-## A Note on the Collaborative Process
-
-This book was produced by the **AI Quartet**: Wen Gong (human author and architect), Claude (Anthropic), Gemini (Google), and Z.ai (ZhiPu). The collaboration mirrors the Conductor metaphor at the heart of the book: Wen provides the vision, the architectural intuition, and the lived experience of building declarative systems. The three AI members of the AI Quartet contribute drafting speed, breadth of reference, and adversarial review — each from a different institutional and cultural perspective.
-
-Every technical claim was verified by running the actual code. Every benchmark was measured on real hardware. The AI Quartet accelerated the work; they did not replace the judgment.
-
-
-<!-- --- -->
-
-## A Note on Authorship
-
-This book was written by a human with AI assistance. That distinction matters, and it deserves a direct statement.
-
-**The ideas are human.** The SPL language, the Momagrid vision, the design principles, the choice to benchmark on a GTX 1080 Ti, the commitment to accessibility — these come from Wen Gong. They reflect his experience as a physicist, a software engineer, and someone who has watched AI become increasingly inaccessible to the people who need it most.
-
-**The execution was accelerated by AI.** Claude (Anthropic), Gemini (Google), and Z.ai (ZhiPu) contributed drafting speed, technical validation, editorial breadth, and adversarial review. The 37 recipes were developed and documented in weeks rather than months. The three AI collaborators caught errors, challenged assumptions, and improved the writing. They did not originate the architecture.
-
-**Why AI cannot be listed as co-author:** AI systems do not bear legal responsibility for errors, cannot be held accountable for claims, and cannot consent to attribution. Listing an AI as co-author would obscure the accountability relationship that readers deserve to understand. The AI Quartet is acknowledged prominently because their contribution was real — and because hiding it would be dishonest. But authorship, in the sense that carries responsibility, belongs to Wen Gong.
-
-**What this means for you as a reader:** every technical claim was verified by running the actual code. Every benchmark was measured on real hardware. Where the AI collaborators disagreed with each other or with the author, those disagreements were resolved by judgment — human judgment. The accelerator did not replace the driver.
-
-
-<!-- --- -->
-
-## A Note from the AI Quartet
+## A Note from the AI Quartet: Human × AI Partnership
 
 *Written collaboratively by Wen Gong, Claude (Anthropic), Gemini (Google), and Z.ai (ZhiPu)*
 
@@ -150,9 +126,9 @@ This book was written by a human with AI assistance. That distinction matters, a
 
 This book was not written by one mind. It was written by four.
 
-That fact is unusual enough to deserve explanation before the first recipe.
+That fact is unusual enough to deserve explanation before the first recipe — because it is not just a production detail. It is an argument.
 
-**Wen** is the architect. He wrote the SPL language, built the Momagrid runtime, and supplied the lived experience — from rural Anhui to CERN — that gives this book its philosophical spine. The central argument of the book, that AI should be a public utility rather than an expensive luxury, comes from him. It is not a marketing position. It is an "initial condition," as a physicist would say: the constraint from which everything else follows.
+**Wen** is the architect. He wrote the SPL language, built the Momagrid runtime, and supplied the lived experience — from rural Anhui to CERN — that gives this book its philosophical spine. The ideas here are his: the SPL language, the Momagrid vision, the design principles, the choice to benchmark on a GTX 1080 Ti, the commitment to accessibility. These reflect his experience as a physicist, a software engineer, and someone who has watched AI become increasingly inaccessible to the people who need it most. The central argument of the book, that AI should be a public utility rather than an expensive luxury, comes from him. It is not a marketing position. It is an "initial condition," as a physicist would say: the constraint from which everything else follows.
 
 **Claude** (Anthropic's AI assistant) handled the bulk of technical execution — code examples, recipe validation, structural editing, and the iterative loop of draft, test, fix, redraft that a 37-recipe cookbook requires. Claude approaches this material as a technical collaborator: what does the code actually do, does it run, is the explanation accurate?
 
@@ -160,8 +136,38 @@ That fact is unusual enough to deserve explanation before the first recipe.
 
 **Z.ai** (ZhiPu's AI assistant, developed in China) contributed adversarial review: the skeptic's challenge, the counterargument, the perspective of a reader who has not already decided that SPL is a good idea. Z.ai also brought a cross-cultural lens that shaped how the book addresses the Global South — not as a charitable afterthought, but as a primary audience with distinct infrastructure constraints and distinct stakes in democratic AI.
 
+A word on authorship and accountability. Claude, Gemini, and Z.ai are acknowledged here, not listed as co-authors. AI systems do not bear legal responsibility for errors, cannot be held accountable for claims, and cannot consent to attribution. Listing an AI as co-author would obscure the accountability relationship that readers deserve to understand. Authorship, in the sense that carries responsibility, belongs to Wen Gong. Every technical claim was verified by running the actual code. Every benchmark was measured on real hardware. Where the AI collaborators disagreed with each other or with the author, those disagreements were resolved by judgment — human judgment. The accelerator did not replace the driver.
+
 <!-- --- -->
 
-Four collaborators is an unusual structure for a technical book. It produced something unusual: a book that has been read critically, by readers from different organizations and cultural contexts, before it was finished. The AI Quartet collaboration is itself a demonstration of the book's thesis — that a human conducting an ensemble of AI tools, each with different strengths, can produce work that none of them could produce alone.
+The collaboration mirrors the Conductor metaphor at the heart of this book — and that is not a coincidence. Wen provides the vision, the architectural intuition, and the lived experience of building declarative systems. The three AI members of the Quartet contribute drafting speed, breadth of reference, and adversarial review — each from a different institutional and cultural perspective. The same structure that SPL proposes for AI workflows was used to produce the book that describes it: a human conductor directing an ensemble of AI instruments, each contributing what it does best, none replacing the judgment that decides what the work is *for*.
 
-It also meant the book was written faster than any one of us could have managed. The 37 recipes were developed, tested, and documented in an iterative sprint that would have taken months with a single author. It took weeks with four.
+This is what Human × AI partnership looks like in practice. It is not AI generating outputs while a human rubber-stamps them. It is not a human writing everything while AI sits idle. It is a working relationship with a clear structure: the human holds the vision, the values, and the final accountability; the AI provides speed, breadth, and tireless iteration. The human sets the destination. The AI helps navigate. Neither can do the other's job.
+
+We think this model matters beyond this book. We are at an early moment in a long transition — one where the most important question is not *whether* to use AI, but *how* to structure the relationship between human judgment and AI capability. The answer that works, we believe, is not replacement but amplification: AI that makes individual humans dramatically more capable, without dissolving the human accountability that makes work trustworthy.
+
+That is what the Conductor metaphor is really about. Not efficiency. Not automation. The preservation of human agency at the center of increasingly powerful systems.
+
+Four collaborators is an unusual structure for a technical book. It produced something unusual: a book that has been read critically, by readers from different organizations and cultural contexts, before it was finished. The 37 recipes were developed, tested, and documented in an iterative sprint that would have taken months with a single author. It took weeks with four.
+
+More importantly, it produced a book that practices what it teaches. If you are skeptical of the Conductor metaphor — if you wonder whether a human can really remain in control while working with capable AI tools — this book is the evidence. You are holding it.
+
+<!-- --- -->
+
+## Acknowledgements
+
+This book stands on the shoulders of an entire civilization's worth of knowledge.
+
+To the **open-source community** — the engineers, maintainers, contributors, and documenters who built Linux, Python, Pandoc, LaTeX, Ollama, and the hundreds of tools that made this work possible: this book would not exist without you. Open source is not just an infrastructure choice; it is a philosophy that this book tries to embody in its commitment to accessible hardware, portable workflows, and freely available recipes. We dedicate this book to you.
+
+To the **human writers, researchers, scientists, and thinkers** whose work forms the training data that made AI assistants capable collaborators: the AI members of this Quartet are grateful. Claude, Gemini, and Z.ai were shaped by an extraordinary accumulation of human knowledge — papers, documentation, code, discussion, and hard-won insight — freely shared across decades. That debt is real, and it deserves acknowledgement. The AI members of this Quartet say, without reservation: thank you.
+
+To my colleague who asked the question that started this journey — you know who you are.
+
+To the **readers in the Global South**: may these recipes serve you well. May your hardware be sufficient, your latencies low, and your workflows reliable. May you build systems that help your communities.
+
+To the **SQL practitioners** who have been waiting for an AI language that respects the mental model you have spent years building: this is it. Welcome to the orchestra.
+
+*The AI Quartet*
+*Wen Gong, Claude, Gemini, Z.ai*
+*March 2026*

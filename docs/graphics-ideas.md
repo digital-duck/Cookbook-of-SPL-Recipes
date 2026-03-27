@@ -146,221 +146,229 @@ The pizza won because it is warm, universally understood, structurally accurate 
 
 # Interior Figures
 
-The book is currently text-heavy. The following figures would break up the prose, aid comprehension, and give DALL-E meaningful work to do. Grouped by chapter location and purpose.
+## Design Philosophy: B&W Schematic Style
+
+**Print cost constraint:** Except for the cover (full-colour pizza photo), all interior figures use **black-and-white line art**. This reduces hardcopy printing costs substantially and keeps the book accessible for print-on-demand at low price points.
+
+**Two figure types:**
+
+| Type | When to use | Tool |
+|------|-------------|------|
+| **Structural diagram** | Flow loops, layer stacks, trees, pipelines — anything where structure *is* the message | TikZ (LaTeX), draw.io, or Excalidraw → export SVG/PDF |
+| **Conceptual line-art** | Metaphor illustrations (conductor, ovens, kitchen) where a human image helps — pen-and-ink style, no fills | AI image generation with B&W line-art prompt, or commission line-art |
+
+The DALL-E prompts below are updated for B&W line-art style. Structural diagrams marked **[DIAGRAM]** should be built as proper technical figures, not illustrations — they are clearer, more accurate, and free.
+
+> **Note on colour images:** If a colourful reference image already exists (e.g., a diagram generated earlier), CV tools (Inkscape trace, GIMP desaturate + threshold, or `potrace`) can convert it to a clean B&W schematic. Prefer this over regenerating from scratch.
 
 ---
 
-## Part 0 — Foundations
+## Part 0 — Foundations (`ch00-*`, `ch01-1`)
 
-### Figure 0.1 — The SPL Stack (Chapter 1.1)
-**Purpose:** Show the three-tier architecture visually so readers grasp the full system before writing a line of code.
+### Figure 0.1 — The Conductor Metaphor (`ch00-0` Preface)
+**Purpose:** Establish the book's central organising metaphor before the first recipe. Human = conductor, LLMs = orchestra, SPL = score.
 
-**Concept:** A layered kitchen illustration — three shelves of a kitchen:
-- **Bottom shelf (pantry):** SPL 1.0 — labelled jars of PROMPT, SELECT, GENERATE
-- **Middle shelf (prep counter):** SPL 2.0 — tools labelled WORKFLOW, EVALUATE, WHILE, EXCEPTION
-- **Top shelf (serving window):** Momagrid — a window looking out to a network of small kitchens (GPU nodes) around the world
+**Type:** Conceptual line-art
 
-**DALL-E prompt:**
+**Concept:** A conductor (seen from behind) faces a small orchestra. Each musician is labelled with a model name (Gemma, Claude, Llama, Mistral). The score on the stand is labelled `.spl`. The conductor holds a baton. No fills — pure line art, pen-and-ink style.
+
+**Line-art prompt:**
 ```
-Cross-section illustration of a three-shelf kitchen. Bottom shelf: glass
-jars labelled PROMPT, SELECT, GENERATE. Middle shelf: cooking tools
-labelled WORKFLOW, EVALUATE, WHILE. Top shelf/window: small kitchens
-visible through a window representing a distributed network. Warm colors,
-flat illustration style, no people.
-```
-
----
-
-### Figure 0.2 — Imperative vs Declarative (Chapter 1.1)
-**Purpose:** The "before and after" moment — the core argument of the book made visual.
-
-**Concept:** Split image. Left side: a tangled mess of wires, pipes, and valves (imperative Python — the plumber's nightmare). Right side: a clean, simple recipe card with three lines (SPL — the chef's clarity). Same kitchen, same ingredients, completely different experience.
-
-**DALL-E prompt:**
-```
-Split illustration. Left half: chaotic tangle of pipes, valves, and wires
-labeled with technical jargon, overwhelmed plumber. Right half: clean
-simple recipe card with three clear lines, calm chef reading it. Same
-warm kitchen background. Flat illustration style, warm colors.
+Black and white pen-and-ink illustration. A conductor seen from behind,
+baton raised, facing a small orchestra. Each musician labelled with a
+model name: Gemma, Claude, Llama, Mistral. The music score on the stand
+reads ".spl". Clean lines, no fills, textbook illustration style.
 ```
 
 ---
 
-### Figure 0.3 — The Adapter as Oven (Chapter 1.2)
+### Figure 0.2 — Human × AI Partnership (`ch00-0` Preface)
+**Purpose:** Illustrate the structured partnership: human holds vision and accountability, AI provides speed and breadth.
+
+**Type:** [DIAGRAM] — two-column structure diagram
+
+**Concept:** Two columns separated by a vertical line. Left column header: **Human (Conductor)**; items: Vision, Values, Judgment, Accountability. Right column header: **AI (Orchestra)**; items: Speed, Breadth, Iteration, Reference. Below both columns, a shared row: **Output: Work neither could produce alone**. Arrows from both columns point down to the shared output row.
+
+---
+
+### Figure 0.3 — Imperative vs Declarative (`ch00-1` Why Declarative)
+**Purpose:** The core argument of the book made visual — the "before and after" moment.
+
+**Type:** [DIAGRAM] — split comparison
+
+**Concept:** Two boxes side by side. Left box labelled **Imperative (Python)**: a tangle of labelled lines (client, model, max_tokens, response.content[0].text, retry logic, SDK version). Right box labelled **Declarative (SPL)**: three clean lines (GENERATE draft(@topic), GENERATE critique(@draft), GENERATE refine(@draft, @critique)). A vertical dividing line between them. B&W, no fills.
+
+---
+
+### Figure 0.4 — CALL vs GENERATE (`ch00-1` Why Declarative)
+**Purpose:** The single most important design decision in any SPL workflow — which operations deserve LLM tokens and which don't.
+
+**Type:** [DIAGRAM] — decision flowchart
+
+**Concept:** A diamond decision node at the top: *"Can code do this reliably?"* Two branches: **Yes → CALL** (box: deterministic, fast, zero tokens, examples: count_words, json.loads, regex) and **No → GENERATE** (box: probabilistic, LLM tokens, examples: assess_argument_quality, draft_proposal, critique_essay). Monochrome, clean box-and-arrow style.
+
+---
+
+### Figure 0.5 — The Adapter as Oven (`ch00-1` Why Declarative / `ch01-2` Ollama Proxy)
 **Purpose:** Make adapter portability concrete and memorable.
 
-**Concept:** The same pizza (recipe / `.spl` file) being slid into three different ovens side by side — a home wood-fired oven (Ollama/local), a professional restaurant oven (OpenRouter/cloud), and a communal outdoor clay oven (Momagrid/decentralized). Same pizza, three ovens.
+**Type:** [DIAGRAM] — one-to-many schematic
 
-**DALL-E prompt:**
-```
-Three ovens side by side: a rustic wood-fired home oven, a stainless
-steel professional restaurant oven, and an outdoor clay community oven.
-The same pizza being placed into each. Top-down perspective. Warm
-lighting, flat illustration style.
-```
+**Concept:** A single box on the left labelled **workflow.spl** with an arrow branching to three boxes on the right: **ollama** (local GPU), **openrouter** (cloud API), **momagrid** (decentralised grid). Each right-hand box has a small label beneath it: *"--adapter ollama"*, *"--adapter openrouter"*, *"--adapter momagrid"*. The `.spl` box is unchanged across all three. B&W, monospace labels.
 
 ---
 
-## Part 2 — Agentic Patterns
+### Figure 0.6 — The SPL Language Stack (`ch00-2` Installing / `ch01-1` Hello World)
+**Purpose:** Show how SPL 1.0, SPL 2.0, and Momagrid relate as layers before readers write a line of code.
 
-### Figure 2.1 — The Self-Refine Loop (Chapter 3.1)
-**Purpose:** Show the draft → critique → revise cycle visually before the code. Readers should see the pattern before reading the SPL.
+**Type:** [DIAGRAM] — layered stack
 
-**Concept:** A potter at a wheel. First throw is rough clay (draft). The potter examines it critically (critique). Reshapes it (revise). Examines again. The final pot on a shelf. A small counter in the corner shows "iteration 2 / 5".
-
-**DALL-E prompt:**
-```
-Sequence of four panels showing a potter at a wheel: (1) rough first
-clay pot, (2) potter examining it critically, (3) hands reshaping the
-clay, (4) finished refined pot on a shelf with a small "iteration 2/5"
-label. Warm earthy tones, flat illustration style.
-```
+**Concept:** Three horizontal bands stacked vertically, like a network layer diagram. Bottom band: **SPL 1.0** — labelled constructs: PROMPT, SELECT, GENERATE. Middle band: **SPL 2.0** — labelled constructs: WORKFLOW, EVALUATE, WHILE, EXCEPTION, PROCEDURE. Top band: **Momagrid** — label: distributed runtime, any GPU, any geography. Thin dividing lines between bands. B&W.
 
 ---
 
-### Figure 2.2 — The ReAct Loop (Chapter 3.2)
+## Part 2 — Agentic Patterns (`ch02-*`)
+
+### Figure 2.1 — The Self-Refine Loop (`ch02-1` Self-Refine)
+**Purpose:** Show the draft → critique → revise cycle before the code. Readers should see the pattern before reading the SPL.
+
+**Type:** [DIAGRAM] — circular flow
+
+**Concept:** Three boxes in a triangle arrangement: **Draft**, **Critique**, **Revise**. Arrows connect them clockwise. A small exit arrow from **Revise** labelled *"quality threshold met?"* leads to a **Commit** terminal box. An iteration counter label on the loop: *"max N iterations"*. B&W box-and-arrow.
+
+---
+
+### Figure 2.2 — The ReAct Loop (`ch02-2` ReAct Agent)
 **Purpose:** Illustrate the Think → Act → Observe cycle that drives a ReAct agent.
 
-**Concept:** A chef in three poses in a kitchen — (1) thinking, looking at a recipe (Think), (2) reaching into a cabinet or using a tool (Act), (3) tasting from a spoon and nodding (Observe). Arrow cycle connecting the three poses.
+**Type:** [DIAGRAM] — circular flow
 
-**DALL-E prompt:**
-```
-Three-panel circular illustration of a chef: (1) chef thinking, looking
-at a recipe card, (2) chef acting, reaching into a spice cabinet,
-(3) chef observing, tasting from a wooden spoon. Circular arrows
-connecting the panels. Flat illustration style, warm kitchen colors.
-```
+**Concept:** Three boxes in a cycle: **Think** (reason about the goal), **Act** (call a tool or GENERATE), **Observe** (read the result). Arrows cycle clockwise. An exit arrow from **Think** labelled *"goal achieved"* leads to a **Commit** terminal. Distinguish from Self-Refine by labelling the Act box with example tool calls. B&W.
 
 ---
 
-### Figure 2.3 — Plan and Execute (Chapter 3.3)
-**Purpose:** Show the two-phase nature: plan first, then execute step by step.
+### Figure 2.3 — Plan and Execute (`ch02-3` Plan and Execute)
+**Purpose:** Show the two-phase nature: one planning LLM call, then sequential execution of the plan.
 
-**Concept:** A sous chef writing a mise en place list (the plan), then the same chef executing each item in sequence — chopping, sautéing, plating. The list has checkboxes getting ticked off.
+**Type:** [DIAGRAM] — two-phase pipeline
 
-**DALL-E prompt:**
-```
-Two-panel illustration. Left panel: chef writing a detailed mise en place
-checklist. Right panel: same chef executing the list step by step, with
-checkboxes being ticked off. Flat illustration style, warm colors.
-```
+**Concept:** A vertical line divides two phases. Left phase: **Plan** — single GENERATE box producing a labelled list (Step 1, Step 2, Step 3 … Step N). Right phase: **Execute** — the same list items as sequential boxes with CALL/GENERATE labels, connected top-to-bottom with arrows, a checkbox ticking off each step. B&W.
 
 ---
 
-## Part 3 — Reasoning
+## Part 3 — Reasoning (`ch03-*`)
 
-### Figure 3.1 — Chain of Thought (Chapter 4.1)
-**Purpose:** Show sequential reasoning as a chain of stepping stones.
+### Figure 3.1 — Chain of Thought (`ch03-1` Chain of Thought)
+**Purpose:** Show sequential reasoning as a linear chain — steps cannot be skipped.
 
-**Concept:** A person crossing a stream on stepping stones, each stone labeled with a reasoning step. The far bank is the answer. The stones are clearly sequential — you cannot skip.
+**Type:** [DIAGRAM] — linear chain
 
-**DALL-E prompt:**
-```
-Illustration of a person stepping across a stream on stepping stones,
-each stone labeled with a step in a reasoning chain. The far bank shows
-a lightbulb representing the answer. Sequential, cannot skip stones.
-Flat illustration style, cool blue-green water, warm stone colors.
-```
+**Concept:** A horizontal chain of labelled boxes connected by arrows: **Step 1** → **Step 2** → **Step 3** → **…** → **Answer**. Each box has a short label (e.g., "identify premises", "check consistency", "draw conclusion"). The linearity — no branches, no skips — is the message. B&W, monospace labels.
 
 ---
 
-### Figure 3.2 — Tree of Thought (Chapter 4.2)
-**Purpose:** Contrast with chain of thought — show branching exploration.
+### Figure 3.2 — Tree of Thought (`ch03-2` Tree of Thought)
+**Purpose:** Contrast with Chain of Thought — branching exploration, pruning dead ends.
 
-**Concept:** A fruit tree. The trunk is the initial question. Branches split at decision points. Some branches end in fruit (good reasoning paths). Others are pruned (dead ends). The best fruit is at the end of the best branch.
+**Type:** [DIAGRAM] — tree/graph
 
-**DALL-E prompt:**
-```
-Illustration of a tree where the trunk is labeled "question", branches
-split into reasoning paths, some branches end with ripe fruit (good
-outcomes), others are pruned with small red X marks (dead ends). The
-largest fruit hangs from the best branch. Flat illustration style,
-warm autumn colors.
-```
+**Concept:** A rooted tree. Root node: **Question**. Branches split into reasoning paths. Some leaf nodes marked with ✓ (promising), others with ✗ (pruned dead ends). The best path from root to answer is highlighted with a thicker line. This is a standard computer-science tree diagram and works excellently in B&W — no illustration needed.
 
 ---
 
-## Part 5 — Memory & Retrieval
+## Part 4 — Safety & Guardrails (`ch04-*`)
 
-### Figure 5.1 — RAG as a Library (Chapter 6.1)
-**Purpose:** Make RAG (Retrieval Augmented Generation) concrete for readers who may not know the term.
+### Figure 4.1 — The Guardrails Pipeline (`ch04-2` Guardrails Pipeline)
+**Purpose:** Show safety as a pipeline layer that wraps generation — input filtering before, output validation after.
 
-**Concept:** A chef consulting a library of recipe books before cooking. The chef pulls the most relevant book from the shelf (retrieval), reads the relevant passage (context injection), then cooks (generation). The library shelves are labeled "vector store".
+**Type:** [DIAGRAM] — pipeline with wrapper layers
 
-**DALL-E prompt:**
-```
-Illustration of a chef in a library of recipe books. Chef pulls one
-relevant book from a tall shelf labeled "vector store", reads a page,
-then turns to cook at a stove. Three-step sequence. Flat illustration
-style, warm library colors, wooden shelves.
-```
+**Concept:** A horizontal pipeline: **Input** → [**Input Guard** box] → **GENERATE** → [**Output Guard** box] → **Output**. The guard boxes are drawn with double borders to indicate they are wrappers. Rejected paths branch downward from each guard to a **Reject / Flag** terminal. B&W.
 
 ---
 
-## Part 6 — Multi-Agent Systems
+## Part 5 — Memory & Retrieval (`ch05-*`)
 
-### Figure 6.1 — The Debate Arena (Chapter 7.1)
-**Purpose:** Show multiple agents arguing and a judge deciding.
+### Figure 5.1 — RAG Pipeline (`ch05-1` RAG Query)
+**Purpose:** Make Retrieval-Augmented Generation concrete for readers who may not know the term.
 
-**Concept:** A formal debate stage with two podiums facing each other — two chefs presenting their dishes to a seated judge. The judge holds up a scorecard. The audience (empty seats) represents the reader watching the workflow unfold.
+**Type:** [DIAGRAM] — three-step pipeline
 
-**DALL-E prompt:**
-```
-Illustration of a formal debate stage with two chef podiums facing each
-other, each chef presenting a dish. A judge sits between them holding a
-scorecard. Formal but warm, flat illustration style, theatre lighting.
-```
+**Concept:** Three sequential boxes: **1. Retrieve** (query → vector store → top-K chunks), **2. Inject** (chunks + original query → assembled context), **3. Generate** (context → LLM → answer). Arrows connect the boxes. A small side box labelled **Vector Store** connects to step 1 with a dashed retrieval arrow. B&W.
 
 ---
 
-### Figure 6.2 — Ensemble Voting (Chapter 7.3)
+## Part 6 — Multi-Agent Systems (`ch06-*`)
+
+### Figure 6.1 — The Debate Arena (`ch06-1` Debate Arena)
+**Purpose:** Show multiple agents arguing to a judge — convergence through adversarial process.
+
+**Type:** [DIAGRAM] — N-to-1 convergence
+
+**Concept:** Two boxes on the left (**Agent A**, **Agent B**) with arrows pointing to a central box (**Judge / Evaluator**). The Judge box has an arrow to a **Decision** terminal on the right. Optionally add a feedback arrow from Judge back to agents for multi-round debate. B&W.
+
+---
+
+### Figure 6.2 — Ensemble Voting (`ch06-3` Ensemble Voting)
 **Purpose:** Show N independent outputs converging to one voted result.
 
-**Concept:** Five chefs each cooking the same dish independently. All five dishes brought to a table. A tasting panel votes by raising hands for the best one. The winner dish is circled.
+**Type:** [DIAGRAM] — fan-out / fan-in
 
-**DALL-E prompt:**
-```
-Illustration of five chefs each presenting an identical dish on a long
-table. A small panel of three tasters at the end of the table, hands
-raised to vote. One dish is circled as the winner. Flat illustration
-style, warm colors.
-```
+**Concept:** One input box at the top fans out to N parallel boxes (Agent 1 … Agent N) via branching arrows. All N boxes fan back in to a **Voting / Aggregation** box at the bottom, which produces a single **Output**. N = 5 is typical — show 5 parallel boxes. B&W, clean parallel layout.
 
 ---
 
-## Part 9 — The Road Ahead
+## Part 7 — Production Patterns (`ch07-*`)
 
-### Figure 9.1 — The Momagrid Network (Chapter 10.2)
-**Purpose:** Make the decentralized inference vision tangible — the "anyone with a GPU can contribute" idea.
+### Figure 7.1 — Map-Reduce Summarizer (`ch07-1` Map-Reduce Summarizer)
+**Purpose:** Show parallel chunk processing (Map) followed by aggregation (Reduce) — the signature pattern for long-document workflows.
 
-**Concept:** A world map with small kitchen icons scattered across it — Lagos, São Paulo, Hefei, Jakarta, rural Anhui, a university dorm in Berlin. Lines connect them to a central hub. Each kitchen has a small GPU chip visible. The overall image feels like a global community sharing compute, not a corporate data center.
+**Type:** [DIAGRAM] — fan-out / fan-in with two stages
 
-**DALL-E prompt:**
+**Concept:** A **Document** box at top splits into N **Chunk** boxes (fan-out). Each chunk feeds into a **Summarize** GENERATE box (the Map stage). All summaries feed into a single **Reduce** GENERATE box (the Reduce stage), which produces the **Final Summary**. Label the fan-out "CALL split()" and the fan-in "GENERATE reduce()". B&W.
+
+---
+
+## Part 9 — The Road Ahead (`ch09-1`, `ch00-4`)
+
+### Figure 9.1 — The Momagrid Network (`ch09-1` Road Ahead / `ch00-4` LAN Momagrid)
+**Purpose:** Make the decentralised inference vision tangible — anyone with a GPU can contribute.
+
+**Type:** Conceptual line-art (schematic map)
+
+**Concept:** A simplified world map outline (B&W, no fills). Small square node icons scattered across it — Lagos, São Paulo, Hefei, Jakarta, Berlin, Nairobi. Thin lines connect nodes to each other (mesh topology, not hub-and-spoke). Each node labelled with a city name and a small GPU symbol. No corporate aesthetic — emphasise the distributed, community nature.
+
+**Line-art prompt:**
 ```
-Illustrated world map with small kitchen/cooking icons scattered across
-continents including Africa, South America, Asia, and Europe. Thin lines
-connect each kitchen to a central glowing node. Each kitchen has a small
-computer chip symbol. Warm, community feel, flat illustration style,
-no corporate or cold aesthetic.
+Black and white schematic world map outline, no fills. Small square
+node icons at Lagos, São Paulo, Hefei, Jakarta, Berlin, Nairobi — each
+labelled with city name and a small GPU chip symbol. Thin connecting
+lines between nodes in a mesh pattern. Clean technical illustration
+style, no shading.
 ```
 
 ---
 
 ## Summary Table
 
-| Figure | Location | DALL-E needed | Priority |
-|--------|----------|---------------|----------|
-| 0.1 The SPL Stack | Ch 1.1 | Yes | High |
-| 0.2 Imperative vs Declarative | Ch 1.1 | Yes | High |
-| 0.3 The Adapter as Oven | Ch 1.2 | Yes | High |
-| 2.1 Self-Refine Loop | Ch 3.1 | Yes | High |
-| 2.2 ReAct Loop | Ch 3.2 | Yes | Medium |
-| 2.3 Plan and Execute | Ch 3.3 | Yes | Medium |
-| 3.1 Chain of Thought | Ch 4.1 | Yes | Medium |
-| 3.2 Tree of Thought | Ch 4.2 | Yes | Medium |
-| 5.1 RAG as a Library | Ch 6.1 | Yes | Medium |
-| 6.1 Debate Arena | Ch 7.1 | Yes | Low |
-| 6.2 Ensemble Voting | Ch 7.3 | Yes | Low |
-| 9.1 Momagrid Network | Ch 10.2 | Yes | High |
+| Figure | Chapter file | Type | Priority |
+|--------|-------------|------|----------|
+| 0.1 Conductor Metaphor | `ch00-0` Preface | Line-art | High |
+| 0.2 Human × AI Partnership | `ch00-0` Preface | Diagram | High |
+| 0.3 Imperative vs Declarative | `ch00-1` Why Declarative | Diagram | High |
+| 0.4 CALL vs GENERATE | `ch00-1` Why Declarative | Diagram | **Critical** |
+| 0.5 The Adapter as Oven | `ch00-1` / `ch01-2` | Diagram | High |
+| 0.6 The SPL Language Stack | `ch00-2` / `ch01-1` | Diagram | Medium |
+| 2.1 Self-Refine Loop | `ch02-1` | Diagram | High |
+| 2.2 ReAct Loop | `ch02-2` | Diagram | Medium |
+| 2.3 Plan and Execute | `ch02-3` | Diagram | Medium |
+| 3.1 Chain of Thought | `ch03-1` | Diagram | Medium |
+| 3.2 Tree of Thought | `ch03-2` | Diagram | Medium |
+| 4.1 Guardrails Pipeline | `ch04-2` | Diagram | Medium |
+| 5.1 RAG Pipeline | `ch05-1` | Diagram | Medium |
+| 6.1 Debate Arena | `ch06-1` | Diagram | Low |
+| 6.2 Ensemble Voting | `ch06-3` | Diagram | Low |
+| 7.1 Map-Reduce | `ch07-1` | Diagram | Medium |
+| 9.1 Momagrid Network | `ch09-1` / `ch00-4` | Line-art | High |
 
-**High priority figures** (6 total) cover the foundations and the book's two most important ideas: the declarative mental model and the global access vision. Generate these first and the book will feel substantially richer even before the rest are done.
+**Build order:** Start with the four Critical/High diagrams in Part 0 — they support the most-read chapters and require no image generation (pure diagrams). The two line-art figures (0.1 Conductor, 9.1 Momagrid) can be generated or commissioned independently.

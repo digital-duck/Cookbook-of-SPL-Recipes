@@ -510,11 +510,6 @@ If you have written in all three languages, you will recognize this as familiar 
 
 <!-- --- -->
 
-## What Comes Next
-
-The next chapter gets you running. Install `spl-llm`, pull a model, and execute a workflow in under fifteen minutes. From there, every recipe in this book is open to you.
-
-The conceptual work is done here. The rest is practice.
 
 <!-- --- -->
 
@@ -557,22 +552,8 @@ The second claim — that this work belongs to engineers everywhere, not only to
 We wrote this book together. We hope you read it the same way: as something made for you, wherever you are, with whatever hardware you have.
 
 
-<!-- --- -->
+## What Comes Next
 
-## Acknowledgments
+The next chapter gets you running. Install `spl-llm`, pull a model, and execute a workflow in under fifteen minutes. From there, every recipe in this book is open to you.
 
-To my colleague who asked the question that started this journey — you know who you are.
-
-To the readers in the Global South: may these recipes serve you well. May your hardware be sufficient, your latencies low, and your workflows reliable. May you build systems that help your communities.
-
-To the SQL practitioners who have been waiting for an AI language that respects the mental model you have spent years building: this is it. Welcome to the orchestra.
-
-<!-- --- -->
-
-<!-- *"Every atom in a crystal is equally fundamental. Every recipe in this book is equally real — no toy examples, no omitted edge cases, no hardware you cannot buy on eBay."* -->
-
-<!-- --- -->
-
-*The AI Quartet*
-*Wen Gong, Claude, Gemini, Z.ai*
-*March 2026*
+The conceptual work is done here. The rest is practice.
