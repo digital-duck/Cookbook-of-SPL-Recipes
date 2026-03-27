@@ -498,11 +498,13 @@ Engineers context-switch constantly between these layers, marshalling data acros
 
 **SPL collapses all three into one.** Not by inventing new concepts, but by taking what works in each language and discarding what does not.
 
-From SQL: `GENERATE`, `SELECT`, `FROM`, `WHERE`, `COMMIT`, `||` for string concatenation, and the transaction semantics of `ROLLBACK`.
+This is SPL's core design philosophy: a **Synthesized Programming Language** — assembled deliberately from the proven parts of three established languages. The official name is *Structured Prompt Language*, but if you want to understand *why* it looks the way it does, think of it as a synthesis. Each construct has a clear lineage; nothing was invented for novelty's sake.
 
-From Python: `WHILE`, `EVALUATE/WHEN/ELSE`, `EXCEPTION`, `@var :=` assignment, f-string interpolation (`f'Chunk {@i} of {@n}'`), and `LOGGING` as the `print()` of SPL.
+From **SQL**: `GENERATE`, `SELECT`, `FROM`, `WHERE`, `COMMIT`, `||` for string concatenation, and the transaction semantics of `ROLLBACK`. This is the declarative layer — you describe *what* you want, and the runtime handles *how*.
 
-From Bash: pipe-style composition, `@var` substitution style, and `$$...$$` here-docs for raw prompt bodies.
+From **Python**: `WHILE`, `EVALUATE/WHEN/ELSE`, `EXCEPTION`, `@var :=` assignment, f-string interpolation (`f'Chunk {@i} of {@n}'`), and `LOGGING` as the `print()` of SPL. This is the control flow layer — the logic that decides what happens next.
+
+From **Bash**: pipe-style composition, `@var` substitution style, and `$$...$$` here-docs for raw prompt bodies. This is the composition layer — the glue that chains operations into workflows without ceremony.
 
 If you have written in all three languages, you will recognize this as familiar territory — just unified. If you have written primarily in SQL, you will find that Python's control flow and Bash's composition idioms are simpler than they look. The parts you need for AI workflows are a small subset of each language.
 
@@ -522,7 +524,7 @@ The conceptual work is done here. The rest is practice.
 
 ## How the Language Was Designed
 
-Before you read the first recipe, a brief note on why SPL looks the way it does. The design is not accidental — four principles governed every keyword decision.
+Before you read the first recipe, a brief note on why SPL looks the way it does. The design is not accidental — SPL is a *synthesized* language: every construct was drawn from SQL, Python, or Bash because it already worked there, and carried forward only if it earned its place. Four principles governed every keyword decision.
 
 **Principle 1: Minimum Orthogonal Constructs.** Every keyword must add expressive power not achievable by existing constructs. This is why SPL has no `IF`, no `FOR`, no `CASE`, and no `PRINT`. `EVALUATE/WHEN/ELSE` covers all branching. `WHILE` covers all iteration. `LOGGING` covers all output. The test: *"Can I express this with what already exists?"* If yes, the new keyword does not get added.
 

@@ -30,6 +30,8 @@ You have been largely left out of the agentic AI conversation. The frameworks as
 
 **SPL is SQL for LLM workflows.** The transfer is not a metaphor. `SELECT` assembles context going into the model. `GENERATE` invokes it and captures the output. `WORKFLOW` is a stored procedure. `EVALUATE` is a semantic `WHERE` clause. `EXCEPTION` is `BEGIN...EXCEPTION...END`. If you have written PL/SQL, you will recognize the pattern within the first recipe. The domain is new. The discipline is not.
 
+The design philosophy behind SPL is synthesis: it draws its declarative layer from SQL, its control flow from Python, and its composition style from Bash — taking what works in each and discarding the rest. The name *Structured Prompt Language* describes what it does; the design philosophy of *synthesizing* from proven languages explains why it looks the way it does.
+
 ### Audience Two: The Global South
 
 This book is dedicated to the engineers, researchers, students, and builders of the Global South — who have every right to participate in the AI revolution, and who face barriers their counterparts in San Francisco, London, or Shanghai never encounter.
