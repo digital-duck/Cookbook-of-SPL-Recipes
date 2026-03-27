@@ -102,4 +102,6 @@ You didn't write any Python. You didn't import an SDK. You didn't manage a respo
 
 In the next part, we will dive into the **Basics** and see how to pass parameters, handle multiple languages, and compare different models side-by-side.
 
+> **Optional — LAN Grid:** If you have a spare machine on your home network and want to distribute recipes across multiple GPUs, see **Chapter 0.4: Running Recipes on a LAN Momagrid**. It shows how to replace the `ollama` adapter with `momagrid` so SPL dispatches tasks across a cluster of Ollama nodes. Every recipe in this book works with either adapter — no `.spl` files change.
+
 <!-- --- -->

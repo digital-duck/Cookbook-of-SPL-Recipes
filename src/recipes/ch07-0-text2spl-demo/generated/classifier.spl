@@ -1,0 +1,17 @@
+PROMPT classify_intent
+SELECT intent AS classification
+GENERATE classify(intent) WITH TEMPERATURE 0.5;
+
+WORKFLOW route_handler
+  INPUT @intent TEXT
+  OUTPUT @handler TEXT
+DO
+  IF @intent = 'book_flight' THEN
+    @handler := 'book_flight_handler';
+  ELSIF @intent = 'make_reservation' THEN
+    @handler := 'make_reservation_handler';
+  ELSE
+    @handler := 'unknown_intent_handler';
+  END;
+  COMMIT @handler;
+END;

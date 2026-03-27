@@ -202,4 +202,121 @@ The `.spl` file is unchanged. The response will reflect Claude's style rather th
 
 <!-- --- -->
 
-*Next: Chapter 2.2 — Ollama Proxy: Parameterized LLM Queries*
+<!-- --- -->
+
+## Appendix: Hello World Across All Adapters
+
+The adapter portability promise is concrete: the same `.spl` file runs unchanged against every backend SPL supports. This section proves it — one file, every adapter, zero edits.
+
+```bash
+# The file under test — identical for every run below
+src/recipes/ch01-1-hello-world/hello.spl
+```
+
+### Local & LAN Adapters
+
+No API key required. Models run on your own hardware.
+
+```bash
+# Echo — no LLM, mirrors the prompt back (CI smoke test, zero latency)
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter echo
+
+# Ollama — local inference on your machine
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter ollama -m gemma3
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter ollama -m llama3.2
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter ollama -m mistral
+
+# Momagrid — LAN grid (hub must be running; see Chapter 0.4)
+# export MOMAGRID_HUB_URL=http://192.168.0.177:9000
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter momagrid -m gemma3
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter momagrid -m llama3.2
+```
+
+### API Gateway Adapters
+
+Single key, access to many models.
+
+```bash
+# Claude Code CLI — routes through the claude CLI binary (no API key in env)
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter claude_cli -m claude-sonnet-4-6
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter claude_cli -m claude-opus-4-6
+
+# OpenRouter — unified gateway to 200+ models
+# export OPENROUTER_API_KEY=sk-or-...
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter openrouter -m anthropic/claude-sonnet-4-5
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter openrouter -m openai/gpt-4o
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter openrouter -m google/gemini-2.5-flash
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter openrouter -m meta-llama/llama-3.1-70b-instruct
+```
+
+### Direct Cloud Provider Adapters
+
+Each requires the provider's own API key.
+
+```bash
+# Anthropic — Claude models via the Messages API
+# export ANTHROPIC_API_KEY=sk-ant-...
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter anthropic -m claude-sonnet-4-20250514
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter anthropic -m claude-opus-4-20250514
+
+# OpenAI — GPT models via Chat Completions API
+# export OPENAI_API_KEY=sk-...
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter openai -m gpt-4o
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter openai -m gpt-4o-mini
+
+# Google — Gemini models via GenAI SDK
+# export GOOGLE_API_KEY=AIza...
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter google -m gemini-2.5-flash
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter google -m gemini-2.5-pro
+
+# DeepSeek — via DeepSeek API (OpenAI-compatible)
+# export DEEPSEEK_API_KEY=sk-...
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter deepseek -m deepseek-chat
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter deepseek -m deepseek-reasoner
+
+# Qwen — Alibaba Cloud via DashScope API
+# export DASHSCOPE_API_KEY=sk-...
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter qwen -m qwen-plus
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter qwen -m qwen-max
+
+# AWS Bedrock — uses AWS credentials (IAM role, env vars, or ~/.aws/credentials)
+# export AWS_ACCESS_KEY_ID=... AWS_SECRET_ACCESS_KEY=... AWS_DEFAULT_REGION=us-east-1
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter bedrock \
+    -m us.anthropic.claude-sonnet-4-20250514-v1:0
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter bedrock \
+    -m us.amazon.nova-pro-v1:0
+
+# GCP Vertex AI — uses GCP Application Default Credentials
+# gcloud auth application-default login
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter vertex -m gemini-2.5-flash
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter vertex -m gemini-2.5-pro
+
+# Azure OpenAI — requires endpoint + deployment name
+# export AZURE_OPENAI_ENDPOINT=https://<resource>.openai.azure.com/
+# export AZURE_OPENAI_API_KEY=...
+spl run src/recipes/ch01-1-hello-world/hello.spl --adapter azure_openai -m gpt-4o
+```
+
+### Adapter Quick-Reference
+
+| Adapter | Category | Required credential | Default model |
+|---|---|---|---|
+| `echo` | Local | none | — |
+| `ollama` | Local | none | `gemma3` |
+| `momagrid` | LAN grid | `MOMAGRID_HUB_URL` | `gemma3` |
+| `claude_cli` | API gateway | `claude` CLI binary | `claude-sonnet-4-6` |
+| `openrouter` | API gateway | `OPENROUTER_API_KEY` | `anthropic/claude-sonnet-4-5` |
+| `anthropic` | Direct cloud | `ANTHROPIC_API_KEY` | `claude-sonnet-4-20250514` |
+| `openai` | Direct cloud | `OPENAI_API_KEY` | `gpt-4o` |
+| `google` | Direct cloud | `GOOGLE_API_KEY` | `gemini-2.5-flash` |
+| `deepseek` | Direct cloud | `DEEPSEEK_API_KEY` | `deepseek-chat` |
+| `qwen` | Direct cloud | `DASHSCOPE_API_KEY` | `qwen-plus` |
+| `bedrock` | Direct cloud | AWS credentials | *(specify model ARN)* |
+| `vertex` | Direct cloud | GCP ADC | `gemini-2.5-flash` |
+| `azure_openai` | Direct cloud | `AZURE_OPENAI_API_KEY` + `AZURE_OPENAI_ENDPOINT` | `gpt-4o` |
+
+Every adapter above runs `hello.spl` without touching the file. The credential and the `--adapter` flag are the only variables. This is the portability guarantee in practice.
+
+<!-- --- -->
+
+*Next: Chapter 1.2 — Ollama Proxy: Parameterized LLM Queries*

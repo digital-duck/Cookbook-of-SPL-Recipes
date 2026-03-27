@@ -1,0 +1,32 @@
+WORKFLOW review_agent
+  INPUT @draft TEXT
+  OUTPUT @final TEXT
+DO
+  @quality := 0.0;
+  @current := @draft;
+  WHILE @quality < 0.8 DO
+    GENERATE rewrite(@current, style='improved') INTO @current;
+    GENERATE sentiment(@current) INTO @quality;
+    IF @quality = 0.8 THEN
+      BREAK;
+    END;
+  END;
+  @final := @current;
+  COMMIT @final;
+
+CREATE FUNCTION rewrite(text TEXT, style TEXT)
+RETURNS TEXT
+AS $$  
+
+CASE style
+    WHEN 'improved' THEN text || ' improved'
+    WHEN 'standardized' THEN text || ' standardized'
+    ELSE text
+  END;
+$$;
+
+CREATE FUNCTION sentiment(text TEXT) RETURNS NUMBER
+AS $$  
+
+SELECT sum(1) WHERE text LIKE '%good%' OR text LIKE '%great%'
+$$;
